@@ -9,7 +9,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 
 - 프로젝트명: DonTouch(돈 터치)
 - 개발 기간: (2026-04-07 ~ 2026-04-13)
-- 개발 인원: 4명 (돈 터치 미)
+- 개발 인원: 5명 (돈 터치 미)
 
 ### 프로젝트 목적
 
@@ -24,11 +24,13 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 ## 2. 기술 스택
 
 ### Frontend
+
 - Vue 3 (Composition API)
 - Vue Router
 - Pinia
 
 ### Backend (Mock Server)
+
 - json-server
 
 ---
