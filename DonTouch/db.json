@@ -1,15 +1,16 @@
 {
-  "User": [
+  "user": [
     {
       "user_no": 1,
       "user_id": "user01",
       "user_pw": "0000",
       "user_name": "user01",
       "user_email": "user01@gmail.com",
-      "user_phone": "010-1234-5678"
+      "user_phone": "010-1234-5678",
+      "user_state": 0
     }
   ],
-  "History": [
+  "history": [
     {
       "history_no": 1,
       "history_title": "가게이름",
@@ -18,13 +19,14 @@
       "history_type": "in",
       "category_no": "1",
       "history_date": "2026-04-07",
-      "user_no": 1
+      "user_no": 1,
+      "history_state": 0
     }
   ],
-  "Category": [
+  "category": [
     {
       "category_no": 1,
-      "category_name": "월급",
+      "category_name": "급여",
       "category_type": "in"
     },
     {
@@ -49,42 +51,42 @@
     },
     {
       "category_no": 6,
+      "category_name": "기타",
+      "category_type": "in"
+    },
+    {
+      "category_no": 7,
       "category_name": "식비",
       "category_type": "out"
     },
     {
-      "category_no": 7,
+      "category_no": 8,
       "category_name": "교통/차량",
       "category_type": "out"
     },
     {
-      "category_no": 8,
+      "category_no": 9,
       "category_name": "문화생활",
       "category_type": "out"
     },
     {
-      "category_no": 9,
+      "category_no": 10,
       "category_name": "마트/편의점",
       "category_type": "out"
     },
     {
-      "category_no": 10,
+      "category_no": 11,
       "category_name": "패션/미용",
       "category_type": "out"
     },
     {
-      "category_no": 11,
-      "category_name": "생활용품",
-      "category_type": "out"
-    },
-    {
       "category_no": 12,
-      "category_name": "주거/통신",
+      "category_name": "생필품",
       "category_type": "out"
     },
     {
       "category_no": 13,
-      "category_name": "건강",
+      "category_name": "의료/건강",
       "category_type": "out"
     },
     {
@@ -100,6 +102,31 @@
     {
       "category_no": 16,
       "category_name": "부모님",
+      "category_type": "out"
+    },
+    {
+      "category_no": 17,
+      "category_name": "저축",
+      "category_type": "out"
+    },
+    {
+      "category_no": 18,
+      "category_name": "월세",
+      "category_type": "out"
+    },
+    {
+      "category_no": 19,
+      "category_name": "통신비",
+      "category_type": "out"
+    },
+    {
+      "category_no": 20,
+      "category_name": "공과금",
+      "category_type": "out"
+    },
+    {
+      "category_no": 21,
+      "category_name": "보험",
       "category_type": "out"
     }
   ]
