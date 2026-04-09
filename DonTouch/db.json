@@ -21,6 +21,105 @@
       "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
+    },
+    {
+      "history_no": 2,
+      "history_title": "aaaaa",
+      "history_content": "aaaa",
+      "history_money": 33333,
+      "history_type": "in",
+      "category_no": 2,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 3,
+      "history_title": "bbbbb",
+      "history_content": "bbbbb",
+      "history_money": 555555,
+      "history_type": "in",
+      "category_no": 6,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 4,
+      "history_title": "cccccc",
+      "history_content": "cccccc",
+      "history_money": 10000,
+      "history_type": "in",
+      "category_no": 9,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 5,
+      "history_title": "ddddd",
+      "history_content": "ddddd",
+      "history_money": 10000,
+      "history_type": "out",
+      "category_no": 7,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 6,
+      "history_title": "eeeeee",
+      "history_content": "eeeeee",
+      "history_money": 10000,
+      "history_type": "in",
+      "category_no": 6,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 7,
+      "history_title": "fffffff",
+      "history_content": "fffffff",
+      "history_money": 10000,
+      "history_type": "out",
+      "category_no": 1,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 8,
+      "history_title": "ggggggg",
+      "history_content": "gggggg",
+      "history_money": 10000,
+      "history_type": "in",
+      "category_no": 4,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 9,
+      "history_title": "hhhhhhh",
+      "history_content": "hhhhhhh",
+      "history_money": 10000,
+      "history_type": "in",
+      "category_no": 2,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "history_no": 10,
+      "history_title": "zzzzz",
+      "history_content": "zzzzz",
+      "history_money": 5000,
+      "history_type": "out",
+      "category_no": 3,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
     }
   ],
   "category": [
