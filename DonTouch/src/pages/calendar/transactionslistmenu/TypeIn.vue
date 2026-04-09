@@ -2,23 +2,64 @@
   <div>
     <!-- 각 유형 -->
     <div>
-      수입
-      <span>
-        <input type="checkbox" name="" id="" />
-        <span>유형 이름</span>
-      </span>
+      <div>수입</div>
+
+      <div v-for="i in categoryIn" :key="i.category_no">
+        <input type="checkbox" />
+        <span>{{ i.category_name }}</span>
+      </div>
+      <button>조회</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { useSearchStore } from '@/stores/transactionsearch';
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
+import { defineEmits } from 'vue';
 
-// data
+//const searchStore = useSearchStore();
 
-// methods
+// 2. category 데이터
+const categoryURL = '/api/category';
+// 2.1 category 배열 생성
+const category = ref([]);
 
-// computed 활용해서 계산 할 때마다 새 filter data return
+// 2.2 데이터 가져오는 함수
+const fetchCategory = async () => {
+  try {
+    const response = await axios.get(categoryURL);
+    // axios 결과의 data를 categoryDatas에 할당
+    category.value = response.data;
+    console.log('category 데이터 로드 완료:', category.value);
+  } catch (error) {
+    console.error('데이터를 가져오는데 실패했습니다:', error);
+  }
+};
+// 2.3 컴포넌트 Mount시 요청
+onMounted(() => {
+  fetchCategory();
+});
+
+// 3. categoryIn 필터링 (computed 사용 : 실시간으로 변동 데이터 받아옴)
+const categoryIn = computed(() => {
+  return category.value.filter((i) => i.category_type === 'in');
+});
+
+// 4. category 선택에 따른 historydata 필터링
+const props = defineProps({
+  inquiry: { type: Array, required: true },
+});
+console.log('prop check', props.inquiry);
+
+// 5. 필터링 데이터 emit
+const emit = defineEmits([]);
+emit('');
+
+//999. 콘솔 확인용
+// const check = () => console.log('카테고리', categoryIn);
+// check();
 </script>
 
 <style scoped></style>
