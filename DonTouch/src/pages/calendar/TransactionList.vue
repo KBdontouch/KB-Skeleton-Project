@@ -14,9 +14,9 @@
     <div>
       <!-- 거래 타입 -->
       <div>
-        <button @click="showAll">전체</button>
-        <button @click="showIn">수입</button>
-        <button @click="showOut">지출</button>
+        <button @click="searchStore.showAll">전체</button>
+        <button @click="searchStore.showIn">수입</button>
+        <button @click="searchStore.showOut">지출</button>
       </div>
 
       <!-- 조회 기간 필터 -->
@@ -35,7 +35,7 @@
       <!-- 개별 거래 항목 -->
       <div>
         <!-- 거래 내역 정보 -->
-        <div v-for="trans in inquiry" :key="trans.history_no">
+        <div v-for="trans in searchStore.inquiry" :key="trans.id">
           <div>icon {{ trans.category_no }}</div>
           <div>거래 제목 {{ trans.history_title }}</div>
           <div>거래 메모{{ trans.history_content }}</div>
@@ -44,7 +44,7 @@
           <!-- 수정/삭제 버튼 -->
           <div>
             <button>수정</button>
-            <button @click="deleteInquiry">삭제</button>
+            <button @click="deleteInquiry(trans.id)">삭제</button>
           </div>
         </div>
       </div>
@@ -57,11 +57,11 @@
       <div>거래유형 별 조회</div>
       <!-- 거래 타입 버튼 -->
       <div>
-        <button @click="activeTab = 'TypeIn'">수입</button>
+        <!-- <button @click="activeTab = 'TypeIn'">수입</button>
         <button @click="activeTab = 'TypeOut'">지출</button>
         <hr />
 
-        <component :is="tabs[activeTab]" :inquiry="inquiry" />
+        <component :is="tabs[activeTab]" :inquiry="inquiry" /> -->
       </div>
     </div>
   </div>
@@ -77,36 +77,11 @@ import TypeOut from './transactionslistmenu/TypeOut.vue';
 
 // data
 const searchStore = useSearchStore();
-const props = defineProps({
-  inquiry: { type: Array, required: true },
-});
 
-// 0. db.json data API
-const historyURL = '/api/history';
-// 1. db.json에서 거래 내역 데이터 가져오기
-// 1.1 history/inquiry 배열 생성
-const history = ref([]);
-// 1.2 데이터 가져오는 함수
-const fetchHistory = async () => {
-  try {
-    const response = await axios.get(historyURL);
-    // axios 결과의 data를 historyDatas에 할당
-    history.value = response.data;
-    console.log('데이터 로드 완료:', history.value);
-  } catch (error) {
-    console.error('데이터를 가져오는데 실패했습니다:', error);
-  }
-};
-//1.3 데이터 최신순 정렬
-const sortedHistory = computed(() => {
-  return [...history.value].sort((a, b) => {
-    // 날짜 문자열 Date 객체로 변환하여 비교(내림차순)
-    return new Date(b.history_date) - new Date(a.history_date);
-  });
-});
 // 1.4 컴포넌트 Mount시 요청
-onMounted(() => {
-  fetchHistory();
+onMounted(async () => {
+  await searchStore.fetchHistory();
+  searchStore.inquiry = searchStore.sortedHistory;
 });
 // methods
 
@@ -115,45 +90,30 @@ onMounted(() => {
 const activeTab = ref('TypeIn'); // 기본값
 const tabs = { TypeIn, TypeOut };
 
-// 2. 전체/수입/지출 필터링
-const inquiry = ref([]);
-// 2.1 (ai) inquiry 기본값 세팅(sortedHistory)
-// sortedHistory에 실제 데이터가 들어오는 순간을 감시
-watch(
-  sortedHistory,
-  (newList) => {
-    // inquiry가 비어있을 때만 초기값으로 세팅 (원하는 조건에 따라 수정 가능)
-    if (newList.length > 0 && inquiry.value.length === 0) {
-      inquiry.value = [...newList];
-    }
-  },
-  { immediate: true },
-); // 즉시 실행 옵션
-// 2.2 전체
-const showAll = () => {
-  inquiry.value = sortedHistory.value;
-};
-// 2.3 수입
-const showIn = () => {
-  inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'in');
-};
-// 2.4 지출
-const showOut = () => {
-  inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'out');
-};
-
 // 3. 수정/삭제 버튼 이벤트
-const modifyInquiry = () => {};
-const deleteInquiry = () => {
-  if (confirm('거래 내역을 삭제하겠습니까?')) {
-    //CRUD 삭제
-    alert('삭제 되었습니다.');
+const edtiInquiry = () => {};
+const deleteInquiry = async (id) => {
+  console.log(id);
+
+  try {
+    if (confirm('거래 내역을 삭제하겠습니까?')) {
+      // (ai) CRUD 삭제
+      await axios.delete('/api/history/' + id);
+
+      // (ai) 스토어에 만들어둔 데이터 로드 함수를 다시 실행
+      await searchStore.fetchHistory();
+      alert('삭제 되었습니다.');
+    } else {
+      alert('삭제가 취소되었씁니다.');
+    }
+  } catch (e) {
+    alert('오류 발생: ' + e);
   }
 };
 
 // 999. 콘솔 확인용
-const check = () => console.log('코드 확인', sortedHistory);
-check();
+// const check = () => console.log('코드 확인', sortedHistory);
+// check();
 </script>
 
 <style scoped></style>
