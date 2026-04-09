@@ -62,7 +62,7 @@
         <button @click="activeTab = 'TypeOut'">지출</button>
         <hr />
 
-        <component :is="tabs[activeTab]" />
+        <component :is="tabs[activeTab]" :inquiry="inquiry" />
       </div>
     </div>
   </div>
@@ -71,12 +71,16 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
+import { defineProps } from 'vue';
 import { useSearchStore } from '@/stores/transactionsearch';
 import TypeIn from './transactionslistmenu/TypeIn.vue';
 import TypeOut from './transactionslistmenu/TypeOut.vue';
 
 // data
 const searchStore = useSearchStore();
+const props = defineProps({
+  inquiry: { type: Array, required: true },
+});
 
 // 0. db.json data API
 const historyURL = '/api/history';
