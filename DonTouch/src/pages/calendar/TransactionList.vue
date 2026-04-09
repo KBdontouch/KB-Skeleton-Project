@@ -41,12 +41,11 @@
           <div>거래 메모{{ trans.history_content }}</div>
           <!-- 거래 금액  -->
           <div>{{ trans.history_money }}</div>
-        </div>
-
-        <!-- 수정/삭제 버튼 -->
-        <div>
-          <button>수정</button>
-          <button>삭제</button>
+          <!-- 수정/삭제 버튼 -->
+          <div>
+            <button>수정</button>
+            <button @click="deleteInquiry">삭제</button>
+          </div>
         </div>
       </div>
       <!-- 개별 거래항목 끝 -->
@@ -130,14 +129,26 @@ watch(
   },
   { immediate: true },
 ); // 즉시 실행 옵션
+// 2.2 전체
 const showAll = () => {
   inquiry.value = sortedHistory.value;
 };
+// 2.3 수입
 const showIn = () => {
   inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'in');
 };
+// 2.4 지출
 const showOut = () => {
   inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'out');
+};
+
+// 3. 수정/삭제 버튼 이벤트
+const modifyInquiry = () => {};
+const deleteInquiry = () => {
+  if (confirm('거래 내역을 삭제하겠습니까?')) {
+    //CRUD 삭제
+    alert('삭제 되었습니다.');
+  }
 };
 
 // 999. 콘솔 확인용
