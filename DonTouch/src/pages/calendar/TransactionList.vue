@@ -35,18 +35,17 @@
       <!-- 개별 거래 항목 -->
       <div>
         <!-- 거래 내역 정보 -->
-        <div v-for="trans in searchStore.inquiry" :key="trans.history_no">
+        <div v-for="trans in searchStore.inquiry" :key="trans.id">
           <div>icon {{ trans.category_no }}</div>
           <div>거래 제목 {{ trans.history_title }}</div>
           <div>거래 메모{{ trans.history_content }}</div>
           <!-- 거래 금액  -->
           <div>{{ trans.history_money }}</div>
-        </div>
-
-        <!-- 수정/삭제 버튼 -->
-        <div>
-          <button>수정</button>
-          <button>삭제</button>
+          <!-- 수정/삭제 버튼 -->
+          <div>
+            <button>수정</button>
+            <button @click="deleteInquiry(trans.id)">삭제</button>
+          </div>
         </div>
       </div>
       <!-- 개별 거래항목 끝 -->
@@ -84,6 +83,37 @@ onMounted(async () => {
   await searchStore.fetchHistory();
   searchStore.inquiry = searchStore.sortedHistory;
 });
+// methods
+
+// 1. 수입/지출 카테고리 동적 컴포넌트
+// 1.1 (ai) 컴포넌트 넣을 변수 지정(ref)
+const activeTab = ref('TypeIn'); // 기본값
+const tabs = { TypeIn, TypeOut };
+
+// 3. 수정/삭제 버튼 이벤트
+const edtiInquiry = () => {};
+const deleteInquiry = async (id) => {
+  console.log(id);
+
+  try {
+    if (confirm('거래 내역을 삭제하겠습니까?')) {
+      // (ai) CRUD 삭제
+      await axios.delete('/api/history/' + id);
+
+      // (ai) 스토어에 만들어둔 데이터 로드 함수를 다시 실행
+      await searchStore.fetchHistory();
+      alert('삭제 되었습니다.');
+    } else {
+      alert('삭제가 취소되었씁니다.');
+    }
+  } catch (e) {
+    alert('오류 발생: ' + e);
+  }
+};
+
+// 999. 콘솔 확인용
+// const check = () => console.log('코드 확인', sortedHistory);
+// check();
 </script>
 
 <style scoped></style>
