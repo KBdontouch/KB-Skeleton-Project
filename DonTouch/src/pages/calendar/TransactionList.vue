@@ -14,17 +14,19 @@
     <div>
       <!-- 거래 타입 -->
       <div>
-        <button>전체</button>
-        <button>수입</button>
-        <button>지출</button>
+        <button @click="showAll">전체</button>
+        <button @click="showIn">수입</button>
+        <button @click="showOut">지출</button>
       </div>
 
       <!-- 조회 기간 필터 -->
       <div>
-        <span>조회기간</span>
+        <span>조회기간 :</span>
         <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
         <!-- 캘린더에도 완료버튼 -->
-        <button>토글버튼</button>
+        <input type="date" />
+        <input type="date" />
+        <button>조회</button>
       </div>
     </div>
 
@@ -33,11 +35,11 @@
       <!-- 개별 거래 항목 -->
       <div>
         <!-- 거래 내역 정보 -->
-        <div v-for="trans in sortedHistory" :key="trans.history_no">
+        <div v-for="trans in inquiry" :key="trans.history_no">
           <div>icon {{ trans.category_no }}</div>
           <div>거래 제목 {{ trans.history_title }}</div>
           <div>거래 메모{{ trans.history_content }}</div>
-          <!--거래 금액  -->
+          <!-- 거래 금액  -->
           <div>{{ trans.history_money }}</div>
         </div>
 
@@ -67,20 +69,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
+import { useSearchStore } from '@/stores/transactionsearch';
 import TypeIn from './transactionslistmenu/TypeIn.vue';
 import TypeOut from './transactionslistmenu/TypeOut.vue';
 
 // data
-const state = ref(null);
-
-// methods
+const searchStore = useSearchStore();
 
 // 0. db.json data API
 const historyURL = '/api/history';
 // 1. db.json에서 거래 내역 데이터 가져오기
-// 1.1 history 배열 생성
+// 1.1 history/inquiry 배열 생성
 const history = ref([]);
 // 1.2 데이터 가져오는 함수
 const fetchHistory = async () => {
@@ -100,18 +101,40 @@ const sortedHistory = computed(() => {
     return new Date(b.history_date) - new Date(a.history_date);
   });
 });
-
 // 1.4 컴포넌트 Mount시 요청
 onMounted(() => {
   fetchHistory();
 });
+// methods
 
-// 2. 수입/지출 카테고리 동적 컴포넌트
-// 2.1 (ai) 컴포넌트 넣을 변수 지정(ref)
+// 1. 수입/지출 카테고리 동적 컴포넌트
+// 1.1 (ai) 컴포넌트 넣을 변수 지정(ref)
 const activeTab = ref('TypeIn'); // 기본값
 const tabs = { TypeIn, TypeOut };
 
-// 3. 카테고리 필터
+// 2. 전체/수입/지출 필터링
+const inquiry = ref([]);
+// 2.1 (ai) inquiry 기본값 세팅(sortedHistory)
+// sortedHistory에 실제 데이터가 들어오는 순간을 감시
+watch(
+  sortedHistory,
+  (newList) => {
+    // inquiry가 비어있을 때만 초기값으로 세팅 (원하는 조건에 따라 수정 가능)
+    if (newList.length > 0 && inquiry.value.length === 0) {
+      inquiry.value = [...newList];
+    }
+  },
+  { immediate: true },
+); // 즉시 실행 옵션
+const showAll = () => {
+  inquiry.value = sortedHistory.value;
+};
+const showIn = () => {
+  inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'in');
+};
+const showOut = () => {
+  inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'out');
+};
 
 // 999. 콘솔 확인용
 const check = () => console.log('코드 확인', sortedHistory);
