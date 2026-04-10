@@ -2,8 +2,6 @@
   <div>
     <!-- 각 유형 -->
     <div>
-      <div>지출</div>
-
       <div v-for="i in categoryOut" :key="i.id">
         <input
           type="checkbox"
