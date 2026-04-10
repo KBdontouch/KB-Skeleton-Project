@@ -54,6 +54,7 @@ const handleLogin = async () => {
   // 유저 데이터 있으면 로그인 되고 , 없으면 로그인 안되게
   if (user) {
     const token = `token_${Date.now()}_${user.user_id}`;
+
     authStore.login(user, token);
 
     // 로그인 성공 시 로직

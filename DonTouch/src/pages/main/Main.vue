@@ -52,11 +52,12 @@ import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 
 const mainStore = useMainStore();
-
+const authStore = useAuthStore();
 const router = useRouter();
 
 onMounted(async () => {
   await mainStore.dataInit();
+  console.log(authStore.user);
 });
 
 const move = () => {
