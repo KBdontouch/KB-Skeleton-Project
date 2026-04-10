@@ -2,7 +2,7 @@
 <template>
   <div class="page">
     <div class="container">
-      <h2 class="title">거래 내역 추가</h2>
+      <h2 class="title">거래 내역 수정</h2>
 
       <button
         type="button"
@@ -98,9 +98,7 @@
       </div>
       <!-- 메모와 메모창 입력 -->
       <div class="actions">
-        <button type="button" class="action-btn" @click="register">
-          등록하기
-        </button>
+        <button type="button" class="action-btn" @click="edit">수정하기</button>
         <button type="button" class="action-btn" @click="cancel">
           취소하기
         </button>
@@ -167,32 +165,11 @@ const cancel = () => {
   }
 };
 
-const register = async () => {
+const edit = async () => {
   const res = await axios.get('/api/history');
   const id = res.data[res.data.length - 1].id;
   transactionStore.history.id = parseInt(id) + 1;
   console.log(transactionStore.history);
-
-  if (
-    transactionStore.history.id == 0 ||
-    transactionStore.history.history_title == '' ||
-    transactionStore.history.history_content == '' ||
-    transactionStore.history.history_money == 0 ||
-    transactionStore.history.category_no == 0
-  ) {
-    alert('데이터를 입력하세요.');
-  } else {
-    const postResult = await axios.post(
-      '/api/history',
-      transactionStore.history,
-    );
-    if (postResult.status == 201) {
-      alert('거래 내역이 등록 되었습니다.');
-      router.push('/transaction');
-    } else {
-      alert('거래 내역 등록이 실패하였습니다.');
-    }
-  }
 };
 </script>
 
