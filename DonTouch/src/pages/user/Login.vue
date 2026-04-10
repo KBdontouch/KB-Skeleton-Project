@@ -1,22 +1,34 @@
 <template>
   <div class="login-wrapper">
     <div class="login-logo">
-      <div class="logo-img-box">로고 이미지</div>
-      <div class="logo-text">DON Touch</div>
+      <div class="logo-img-box">
+        <img
+          src="@/assets/image/Logo.png"
+          alt="로고이미지"
+          style="width: 200px; height: 200px"
+        />
+      </div>
+      <div class="logo-text" style="font-weight: bold">DON Touch</div>
     </div>
     <div class="login-box">
       <div class="input-group">
-        <input v-model="loginData.id" type="text" placeholder="아이디" />
-        <input
-          v-model="loginData.password"
-          type="password"
-          placeholder="비밀번호"
-          @keyup.enter="handleLogin"
-        />
-        <button @click="handleLogin">Login</button>
-        <router-link to="/join">
-          <button>회원가입</button>
-        </router-link>
+        <div class="id-pw">
+          <div id="id" style="font-weight: bold">ID:</div>
+          <input v-model="loginData.id" type="text" placeholder="아이디" />
+          <div id="pw" style="font-weight: bold">PW:</div>
+          <input
+            v-model="loginData.password"
+            type="password"
+            placeholder="비밀번호"
+            @keyup.enter="handleLogin"
+          />
+        </div>
+        <div class="input-btn">
+          <button class="btn-login" @click="handleLogin">Login</button>
+          <router-link to="/join">
+            <button class="btn-join">회원가입</button>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -67,4 +79,6 @@ const handleLogin = async () => {
 };
 </script>
 
-<style scoped></style>
+<style>
+@import '@/assets/login.css';
+</style>

@@ -1,14 +1,31 @@
+.page {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+.body {
+  display: flex;
+  flex-direction: column; /* ★ 세로 배치 */
+  gap: 5px;
+}
 .header {
   font-size: 32px;
   margin: 15px;
+  margin-left: 80px;
 }
 
-.headerBar {
+/* .headerBar {
   background-color: #f2f2f2;
   border-radius: 20px;
   margin: 10px;
   width: 600px;
   height: 30px;
+  display: flex;
+} */
+.appliedFilter {
+  display: flex;
+  margin-right: 0;
+  text-align: right;
 }
 
 button {
@@ -24,8 +41,30 @@ button:hover {
   color: #f2f2f2;
   cursor: pointer;
 }
+.typeButton > button {
+  width: 200px;
+}
+.btn-all {
+  border-radius: 20px 0 0 20px;
+}
+.btn-out {
+  border-radius: 0 20px 20px 0;
+}
 
-.typeButton button.active {
+.button-group {
+  display: flex;
+  flex-direction: column; /* ★ 세로 배치 */
+  gap: 5px; /* 버튼 사이 간격 */
+  margin-right: 15px;
+  margin-left: auto;
+  width: 50px;
+}
+
+.button-group button {
+  width: 100%;
+}
+
+.active {
   background-color: #0d0d0d !important;
   color: #f2f2f2 !important;
   font-weight: bold;
@@ -33,17 +72,6 @@ button:hover {
 
 .appliedFilter {
   background-color: #f2f2f2;
-}
-
-.page {
-  display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
-}
-.body {
-  display: flex;
-  flex-direction: column; /* ★ 세로 배치 */
-  gap: 5px;
 }
 
 /* 전체 리스트 박스 */
@@ -69,16 +97,50 @@ button:hover {
   gap: 20px; /* 항목 간 간격 */
   border-radius: 10px;
 }
-.inquiry-each .info-group {
+.inquiry-each {
   flex: 1; /* ★ 중요: 가운데 영역을 꽉 채워 오른쪽 그룹을 끝으로 밀어냄 */
   display: flex;
-  flex-direction: column;
 }
+.info-group {
+  flex: 1; /* 남는 공간을 차지 */
+  min-width: 0; /* ★ 중요: flex 자식 요소에서 ellipsis가 작동하게 만드는 핵심 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* 왼쪽 정렬 고정 */
+  padding-left: 15px;
+}
+
+.info-group .title,
+.info-group .content {
+  display: block; /* 한 줄 전체 차지 */
+  width: 100%; /* 부모 너비만큼만 */
+  text-align: left; /* 왼쪽 정렬 명시 */
+
+  /* 말줄임표 세트 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info-group .title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+  color: #333;
+}
+
+.info-group .content {
+  font-size: 12px;
+  color: #888;
+}
+
 .money {
   font-weight: bold;
   font-size: 16px;
   text-align: right;
-  min-width: 120px; /* 금액 영역이 밀리지 않게 너비 확보 */
+  width: 120px; /* 금액 영역이 밀리지 않게 너비 확보 */
+  margin-left: auto;
 }
 .money-in {
   color: #28a745;
@@ -87,12 +149,7 @@ button:hover {
 .money-out {
   color: #dc3545;
 }
-.button-group {
-  display: flex;
-  flex-direction: column; /* ★ 세로 배치 */
-  gap: 5px; /* 버튼 사이 간격 */
-  margin-right: 15px;
-}
+
 /* 스크롤바 디자인 (선택 사항) */
 .inquiryListBox::-webkit-scrollbar {
   width: 8px;
@@ -107,12 +164,28 @@ button:hover {
   margin: 5px;
   width: 200px;
   border-radius: 20px;
-  height: 450px;
+  height: 4230x;
   text-align: center;
 }
 
+.filter-menu button {
+  margin-top: 5px;
+  width: 50%;
+}
+
 .category-list {
-  height: 150px;
-  background-color: #ffffff;
-  overflow: scroll;
+  height: 120px;
+  border: solid darkgray 1px;
+  border-left: none; /* 왼쪽 제거 */
+  border-right: none; /* 오른쪽 제거 */
+  text-align: left;
+  padding: 0 20px;
+  overflow-y: scroll;
+}
+#filter-search {
+  width: 100%;
+  margin-top: 0;
+  background-color: #0d0d0d;
+  color: #f2f2f2;
+  border-radius: 0 0 20px 20px;
 }
