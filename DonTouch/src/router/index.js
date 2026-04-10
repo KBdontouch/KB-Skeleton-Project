@@ -1,6 +1,8 @@
 import SideBar from '@/components/SideBar.vue';
 import Budget from '@/pages/budget/Budget.vue';
 import Calendar from '@/pages/calendar/Calendar.vue';
+import TransactionDetail from '@/pages/calendar/TransactionDetail.vue';
+import TransactionEdit from '@/pages/calendar/TransactionEdit.vue';
 import TransactionList from '@/pages/calendar/TransactionList.vue';
 import Main from '@/pages/main/Main.vue';
 import Join from '@/pages/user/Join.vue';
@@ -13,6 +15,10 @@ const router = createRouter({
     {
       path: '/',
       component: Login,
+    },
+    {
+      path: '/join',
+      component: Join,
     },
     {
       path: '/main',
@@ -43,8 +49,18 @@ const router = createRouter({
       },
     },
     {
-      path: '/join',
-      component: Join,
+      path: '/transaction/add',
+      components: {
+        default: TransactionDetail,
+        side: SideBar,
+      },
+    },
+    {
+      path: '/transaction/edit',
+      components: {
+        default: TransactionEdit,
+        side: SideBar,
+      },
     },
   ],
 });

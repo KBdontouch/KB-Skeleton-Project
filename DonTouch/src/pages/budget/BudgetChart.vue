@@ -39,7 +39,7 @@ const chartOptions = {
   plugins: {
     legend: {
       display: true,
-      position: 'top',
+      position: 'bottom',
     },
     datalabels: {
       color: '#000',
