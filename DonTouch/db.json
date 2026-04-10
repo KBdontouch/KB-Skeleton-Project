@@ -360,8 +360,20 @@
   "budget": [
     {
       "id": 1,
-      "budget_date": "2026-04",
+      "budget_date": "2026-05",
       "budget_money": 1000000,
+      "user_no": 2
+    },
+    {
+      "id": 2,
+      "budget_date": "2026-03",
+      "budget_money": 20000000,
+      "user_no": 2
+    },
+    {
+      "id": 3,
+      "budget_date": "2026-02",
+      "budget_money": 30000000,
       "user_no": 2
     }
   ]
