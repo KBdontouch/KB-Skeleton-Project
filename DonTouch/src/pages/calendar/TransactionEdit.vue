@@ -112,9 +112,33 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useTransactionStore } from '@/stores/transaction';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
+// 거래 내역 리스트 불러오기 (id 포함해서)
 const transactionStore = useTransactionStore();
+const route = useRoute();
+const router = useRouter();
+
+const historyId = route.params.id;
+
+const edit = async () => {
+  try {
+    const putResult = await axios.put(
+      `/api/history/${historyId}`,
+      transactionStore.history,
+    );
+
+    if (putResult.status === 200) {
+      alert('거래 내역이 수정되었습니다.');
+      router.push('/transaction');
+    } else {
+      alert('거래 내역 수정이 실패했습니다.');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('에러발생');
+  }
+};
 
 // 카테고리 API
 const categoryURL = '/api/category';
@@ -130,18 +154,34 @@ const fetchCategory = async () => {
     console.error('데이터를 가져오는데 실패했습니다:', error);
   }
 };
-// 컴포넌트 실행 시 카테고리 요청
+
+// 컴포넌트 실행 시
 onMounted(async () => {
   await fetchCategory();
-  categoryIn();
+  if (!transactionStore.history.id) {
+    alert('수정할 거래 정보가 없습니다.');
+    router.push('/transaction');
+    return;
+  }
+  if (transactionStore.history.history_type === 'in') {
+    currentCategories.value = category.value.filter(
+      (item) => item.category_type === 'in',
+    );
+  } else {
+    currentCategories.value = category.value.filter(
+      (item) => (item.category_type = 'out'),
+    );
+  }
 });
+
 // 수입 카테고리
 const categoryIn = () => {
   transactionStore.history.history_type = 'in';
   currentCategories.value = category.value.filter(
     (item) => item.category_type === 'in',
   );
-  console.log(currentCategories.value);
+  //추가
+  transactionStore.history.category_no = 0;
 };
 // 지출 카테고리
 const categoryOut = () => {
@@ -149,27 +189,45 @@ const categoryOut = () => {
   currentCategories.value = category.value.filter(
     (item) => item.category_type === 'out',
   );
+  transactionStore.history.category_no = 0;
 };
 // 거래 내역 x 버튼 되돌리기
 const clearAmount = () => {
   transactionStore.history.history_money = null;
 };
 
-// 현재 거래 타입에 맞는 카테고리 목록
-const currentCategories = ref([]);
-
-const router = useRouter();
 const cancel = () => {
   if (confirm('취소하시겠습니까?')) {
     router.push('/transaction');
   }
 };
-
-const edit = async () => {
-  const res = await axios.get('/api/history');
-  const id = res.data[res.data.length - 1].id;
-  transactionStore.history.id = parseInt(id) + 1;
+const editget = async () => {
   console.log(transactionStore.history);
+  if (
+    transactionStore.history.id == 0 ||
+    transactionStore.history.history_title == '' ||
+    transactionStore.history_content == '' ||
+    transactionStore.history.history_money == 0 ||
+    transactionStore.history.category_no == 0
+  ) {
+    alert('데이터를 입력하세요.');
+  } else {
+    try {
+      const putResult = await axios.put(
+        `/api/history/${historyId}`,
+        transactionStore.history,
+      );
+      if (putResult.status === 200) {
+        alert('거래 냉역이 수정되었습니다.');
+        router.push('/transaction');
+      } else {
+        alert('거래 내역 수정이 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('에러발생');
+    }
+  }
 };
 </script>
 
