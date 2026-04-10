@@ -47,6 +47,7 @@ const handleLogin = async () => {
   // 유저 데이터 있으면 로그인 되고 , 없으면 로그인 안되게
   if (user) {
     // 로그인 성공 시 로직
+    localStorage.setItem('user', JSON.stringify(user));
     alert(`${user.id}님, 안녕하세요!`);
   } else {
     // 로그인 실패 시 로직
