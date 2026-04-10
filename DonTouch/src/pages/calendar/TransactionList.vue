@@ -1,35 +1,35 @@
 <template>
+  <div class="header">거래 내역 조회</div>
   <div class="page">
     <!-- 제목 -->
-    <div class="header">거래 내역 조회</div>
-    <div class="headerBar">
-      <!-- 거래 타입 -->
-      <div class="typeButton">
-        <button :class="{ active: currentTab === 'all' }" @click="selectAll">
-          전체
-        </button>
-        <button :class="{ active: currentTab === 'in' }" @click="selectIn">
-          수입
-        </button>
-        <button :class="{ active: currentTab === 'out' }" @click="selectOut">
-          지출
-        </button>
-      </div>
-      <!-- 필터 조건 출력 -->
-      <div class="appliedFilter">
-        <div v-if="searchKeyword">검색 내용: "{{ searchKeyword }}"</div>
-
-        <div v-if="startDate && endDate">
-          조회 기간: {{ startDate }} ~ {{ endDate }}
-        </div>
-
-        <div v-if="searchStore.selectedCategories.length > 0">
-          선택 유형: {{ searchStore.selectedCategories.length }}건 선택됨
-        </div>
-      </div>
-    </div>
-
     <div class="body">
+      <div class="headerBar">
+        <!-- 거래 타입 -->
+        <div class="typeButton">
+          <button :class="{ active: currentTab === 'all' }" @click="selectAll">
+            전체
+          </button>
+          <button :class="{ active: currentTab === 'in' }" @click="selectIn">
+            수입
+          </button>
+          <button :class="{ active: currentTab === 'out' }" @click="selectOut">
+            지출
+          </button>
+        </div>
+        <!-- 필터 조건 출력 -->
+        <div class="appliedFilter">
+          <div v-if="searchKeyword">검색 내용: "{{ searchKeyword }}"</div>
+
+          <div v-if="startDate && endDate">
+            조회 기간: {{ startDate }} ~ {{ endDate }}
+          </div>
+
+          <div v-if="searchStore.selectedCategories.length > 0">
+            선택 유형: {{ searchStore.selectedCategories.length }}건 선택됨
+          </div>
+        </div>
+      </div>
+
       <!-- 거래내역 리스트 : scroll 사용, db에서 axios-->
       <div class="inquiry-listbox">
         <!-- 개별 거래 항목 -->
@@ -54,30 +54,20 @@
                 <input v-model="trans.history_content" class="edit-content" />
               </div>
             </div>
+
             <div class="money">
-              <span v-if="editingId !== trans.id"
-                >{{ trans.history_money.toLocaleString() }}원</span
-              >
-              <input
-                v-else
-                v-model.number="trans.history_money"
-                type="number"
-              />
+              <div v-if="trans.history_type === 'in'" class="money-in">
+                <span>{{ '+ ' + trans.history_money.toLocaleString() }}원</span>
+              </div>
+              <div v-else class="money-out">
+                <span>{{ '- ' + trans.history_money.toLocaleString() }}원</span>
+              </div>
             </div>
             <!-- 수정/삭제 버튼 -->
-            <div>
+            <div class="button-group">
               <button @click="editMove(trans)">수정</button>
               <button @click="deleteInquiry(trans.id)">삭제</button>
             </div>
-            <!-- <div>
-              <button @click="editInquiry(trans)">
-                {{ editingId === trans.id ? '저장' : '수정' }}
-              </button>
-              <button v-if="editingId === trans.id" @click="cancelEdit">
-                취소
-              </button>
-              <button v-else @click="deleteInquiry(trans.id)">삭제</button>
-            </div> -->
           </div>
           <!-- 조회된 거래 내역이 없을 경우 -->
           <div v-else class="no-data-message">
@@ -90,55 +80,57 @@
         <!-- 개별 거래항목 끝 -->
       </div>
       <!-- 거래내역 리스트 끝 -->
-      <hr />
-      <!-- 거래 내역 필터 바 : 오른쪽 floating, scroll사용 -->
+    </div>
+
+    <!-- 거래 내역 필터 바 : 오른쪽 floating, scroll사용 -->
+    <div class="filter-menu">
+      <!-- 제목/내용 검색창 -->
       <div>
-        <!-- 제목/내용 검색창 -->
-        <div>
-          <span>(아이콘)검색</span>
-          <input
-            class="searchbox"
-            type="text"
-            @keyup.enter="applyFilter"
-            v-model="searchKeyword"
-            placeholder="검색어를 입력하고 엔터를 누르세요"
-          />
-        </div>
-        <!-- 조회 기간 필터 -->
-        <div>
-          <span>조회기간 :</span>
-          <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
-          <!-- 캘린더에도 완료버튼 -->
-          <input type="date" class="start_date" v-model="startDate" />
-          <input type="date" class="end_date" v-model="endDate" />
-        </div>
-        <div>거래유형 별 조회</div>
-        <!-- 거래 타입 버튼 -->
-        <div>
-          <button
-            @click="
-              activeTab = 'TypeIn';
-              resetCheck;
-            "
-          >
-            수입
-          </button>
-          <button
-            @click="
-              activeTab = 'TypeOut';
-              resetCheck;
-            "
-          >
-            지출
-          </button>
-          <hr />
+        <span>(아이콘)검색</span>
+        <input
+          class="searchbox"
+          type="text"
+          @keyup.enter="applyFilter"
+          v-model="searchKeyword"
+          placeholder="검색어를 입력하고 엔터를 누르세요"
+        />
+      </div>
+      <!-- 조회 기간 필터 -->
+      <div>
+        <span>조회기간 :</span>
+        <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
+        <!-- 캘린더에도 완료버튼 -->
+        <input type="date" class="start_date" v-model="startDate" />
+        ~<input type="date" class="end_date" v-model="endDate" />
+      </div>
+      <div>거래유형 별 조회</div>
+      <!-- 거래 타입 버튼 -->
+      <div>
+        <button
+          @click="
+            activeTab = 'TypeIn';
+            resetCheck;
+          "
+        >
+          수입
+        </button>
+        <button
+          @click="
+            activeTab = 'TypeOut';
+            resetCheck;
+          "
+        >
+          지출
+        </button>
+        <hr />
+        <div class="category-list">
           <component :is="tabs[activeTab]" :inquiry="searchStore.inquiry" />
         </div>
-        <!-- 조회버튼 -->
-        <button @click="applyFilter">조회</button>
       </div>
-      <!-- 거래 내역 필터바 끝 -->
+      <!-- 조회버튼 -->
+      <button @click="applyFilter">조회</button>
     </div>
+    <!-- 거래 내역 필터바 끝 -->
   </div>
 </template>
 
@@ -175,37 +167,6 @@ const editMove = (trans) => {
   transactionStore.history = trans;
   router.push('/');
 };
-// // 3.1 (ai) 수정 이벤트
-// const editingId = ref(null); // 현재 어떤 항목을 수정 중인지 저장
-
-// const editInquiry = async (item) => {
-//   // 3.1.1 수정 버튼 클릭시 수정창 변경
-//   if (editingId.value !== item.id) {
-//     editingId.value = item.id;
-//     return; // 여기서 함수 종료 (창만 띄움)
-//   }
-
-//   // 3.1.2 저장 버튼 클릭시 서버에 PUT 요청 보냄
-//   try {
-//     if (!confirm('수정된 내용을 저장하시겠습니까?')) return;
-
-//     await axios.put(`/api/history/${item.id}`, item);
-//     alert('수정되었습니다.');
-
-//     editingId.value = null; // 수정 완료 후 다시 조회 모드로 변경
-//     await searchStore.fetchHistory(); // 목록 새로고침
-//   } catch (e) {
-//     alert('수정 실패: ' + e);
-//   }
-// };
-
-// // 3.1.1 수정 취소 이벤트
-// const cancelEdit = async () => {
-//   editingId.value = null;
-//   // v-model로 이미 변해버린 로컬 데이터를 원상복구하기 위해 서버에서 다시 읽어옴
-//   await searchStore.fetchHistory();
-//   searchStore.inquiry = searchStore.sortedHistory;
-// };
 
 // 3.2 삭제 이벤트
 const deleteInquiry = async (id) => {
