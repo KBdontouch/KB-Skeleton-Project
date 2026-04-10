@@ -1,0 +1,33 @@
+.header {
+  font-size: 32px;
+}
+
+.headerBar {
+  background-color: #f2f2f2;
+}
+
+button {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+button:hover {
+  background-color: #0d0d0d;
+  color: #f2f2f2;
+  cursor: pointer;
+}
+
+.typeButton button.active {
+  background-color: #0d0d0d !important;
+  color: #f2f2f2 !important;
+  font-weight: bold;
+}
+
+.appliedFilter {
+  background-color: #f2f2f2;
+}
+
+.inquiryList {
+  display: flex;
+}

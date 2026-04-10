@@ -1,17 +1,36 @@
 <template>
   <div>
     <!-- 제목 -->
-    <div>거래 내역 조회</div>
-    <!-- 거래 타입 -->
+    <div class="header">거래 내역 조회</div>
+    <div class="headerBar">
+      <!-- 거래 타입 -->
+      <div class="typeButton">
+        <button :class="{ active: currentTab === 'all' }" @click="selectAll">
+          전체
+        </button>
+        <button :class="{ active: currentTab === 'in' }" @click="selectIn">
+          수입
+        </button>
+        <button :class="{ active: currentTab === 'out' }" @click="selectOut">
+          지출
+        </button>
+      </div>
+      <!-- 필터 조건 출력 -->
+      <div class="appliedFilter">
+        <div v-if="searchKeyword">검색 내용: "{{ searchKeyword }}"</div>
 
-    <div>
-      <button @click="searchStore.showAll">전체</button>
-      <button @click="searchStore.showIn">수입</button>
-      <button @click="searchStore.showOut">지출</button>
+        <div v-if="startDate && endDate">
+          조회 기간: {{ startDate }} ~ {{ endDate }}
+        </div>
+
+        <div v-if="searchStore.selectedCategories.length > 0">
+          선택 유형: {{ searchStore.selectedCategories.length }}건 선택됨
+        </div>
+      </div>
     </div>
 
     <!-- 거래내역 리스트 : scroll 사용, db에서 axios-->
-    <div>
+    <div class="inquiryList">
       <!-- 개별 거래 항목 -->
       <div>
         <!-- 거래 내역 정보 -->
@@ -256,9 +275,31 @@ watch(activeTab, () => {
   searchStore.selectedCategories = [];
 });
 
+// 7. 버튼 클릭시 선택된 버튼 정보 저장(배경색 CSS 적용)
+// 현재 선택된 탭을 저장 (기본값: 'all')
+const currentTab = ref('all');
+
+// 버튼 클릭 시 실행될 함수들
+const selectAll = () => {
+  currentTab.value = 'all';
+  searchStore.showAll();
+};
+
+const selectIn = () => {
+  currentTab.value = 'in';
+  searchStore.showIn();
+};
+
+const selectOut = () => {
+  currentTab.value = 'out';
+  searchStore.showOut();
+};
+
 // 999. 콘솔 확인용
 // const check = () => console.log('코드 확인', sortedHistory);
 // check();
 </script>
 
-<style scoped></style>
+<style>
+@import '@/assets/transactionList.css';
+</style>
