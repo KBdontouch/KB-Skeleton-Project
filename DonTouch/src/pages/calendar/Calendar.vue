@@ -2,12 +2,13 @@
   <div class="calendar-container">
     <header class="calendar-header">
       <div class="month-selector-wrapper">
-        <span class="year-month-display"
-          >{{ selectedYear }}년 {{ selectedMonth }}월</span
-        >
-        <div class="input-wrapper">
+        <span class="year-month-display">
+          {{ selectedYear }}년 {{ selectedMonth }}월
+        </span>
+        <div class="input-wrapper" @click="triggerPicker">
           <input
             type="month"
+            ref="monthInputRef"
             v-model="selectedMonthStr"
             @change="handleMonthChange"
             class="real-month-input"
@@ -16,16 +17,26 @@
         </div>
       </div>
 
-      <div class="budget-center">예산 : {{ budget.toLocaleString() }}원</div>
+      <div class="budget-center">
+        예산 : {{ calendarStore.budget.toLocaleString() }}원
+      </div>
 
       <div class="total-stats">
         <p>
           총 지출 :
-          <span class="expense">{{ totalExpense.toLocaleString() }}원</span>
+          <span class="expense"
+            >{{
+              calendarStore.monthlyStats.totalExpense.toLocaleString()
+            }}원</span
+          >
         </p>
         <p>
           총 수입 :
-          <span class="income">{{ totalIncome.toLocaleString() }}원</span>
+          <span class="income"
+            >{{
+              calendarStore.monthlyStats.totalIncome.toLocaleString()
+            }}원</span
+          >
         </p>
       </div>
     </header>
@@ -40,18 +51,24 @@
 import { ref, computed, reactive, onMounted, nextTick, watch } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { useTransactionStore } from "@/stores/transaction";
+// interactionPlugin과 useRouter는 요청하신 대로 제거했습니다.
+import { useCalendarStore } from "@/stores/calendar";
 
 const fullCalendar = ref(null);
-const transactionStore = useTransactionStore();
+const monthInputRef = ref(null);
+const calendarStore = useCalendarStore();
 
-const budget = ref(0);
-const selectedYear = ref(2026);
-const selectedMonth = ref(4);
+// --- [초기값 및 상태] ---
+const now = new Date();
+const selectedYear = ref(now.getFullYear());
+const selectedMonth = ref(now.getMonth() + 1);
 
-const totalExpense = computed(() => transactionStore.totalExpense || 0);
-const totalIncome = computed(() => transactionStore.totalIncome || 0);
-const dailyData = computed(() => transactionStore.dailyTotals || {});
+// [연동] calendar.js에서 가공한 날짜별 합계 데이터
+const dailyData = computed(() => calendarStore.dailyTotals || {});
+
+const triggerPicker = () => {
+  if (monthInputRef.value) monthInputRef.value.showPicker();
+};
 
 const selectedMonthStr = computed({
   get: () =>
@@ -61,6 +78,8 @@ const selectedMonthStr = computed({
     const [y, m] = val.split("-");
     selectedYear.value = parseInt(y);
     selectedMonth.value = parseInt(m);
+    // 스토어에 현재 보고 있는 날짜 알려주기
+    calendarStore.setCurrentDate(parseInt(y), parseInt(m));
   },
 });
 
@@ -73,6 +92,7 @@ const handleMonthChange = () => {
   }
 };
 
+// --- [로직] 주별 요약 (기존 유지) ---
 const updateWeeklySummary = () => {
   document.querySelectorAll(".weekly-summary-bar").forEach((el) => el.remove());
 
@@ -95,6 +115,8 @@ const updateWeeklySummary = () => {
       if (!dateStr) continue;
       if (parseInt(dateStr.split("-")[1]) === currentViewMonth)
         hasCurrentMonthDay = true;
+
+      // [연동] 스토어의 dailyData에서 주간 합계 계산
       if (dailyData.value[dateStr]) {
         weeklyExpense += dailyData.value[dateStr].expense || 0;
         weeklyIncome += dailyData.value[dateStr].income || 0;
@@ -104,24 +126,24 @@ const updateWeeklySummary = () => {
     if (hasCurrentMonthDay) {
       const summaryBar = document.createElement("div");
       summaryBar.className = "weekly-summary-bar";
-
       let htmlContent = `<div class="summary-content">`;
       if (weeklyIncome > 0)
         htmlContent += `<span class="w-income">+ ${weeklyIncome.toLocaleString()}원</span>`;
       if (weeklyExpense > 0)
         htmlContent += `<span class="w-expense">- ${weeklyExpense.toLocaleString()}원</span>`;
       htmlContent += `</div>`;
-
       summaryBar.innerHTML = htmlContent;
+
       const firstCellInWeek = days[i * 7];
       if (firstCellInWeek) {
         const frame = firstCellInWeek.querySelector(".fc-daygrid-day-frame");
-        frame.appendChild(summaryBar);
+        if (frame) frame.appendChild(summaryBar);
       }
     }
   }
 };
 
+// 데이터나 날짜가 바뀌면 주별 요약 다시 계산
 watch(
   [dailyData, selectedMonth, selectedYear],
   () => {
@@ -130,8 +152,9 @@ watch(
   { deep: true },
 );
 
+// --- [설정] FullCalendar ---
 const calendarOptions = reactive({
-  plugins: [dayGridPlugin],
+  plugins: [dayGridPlugin], // interaction 제거
   initialView: "dayGridMonth",
   locale: "ko",
   headerToolbar: false,
@@ -142,11 +165,12 @@ const calendarOptions = reactive({
     const m = String(arg.date.getMonth() + 1).padStart(2, "0");
     const d = String(arg.date.getDate()).padStart(2, "0");
     const dateStr = `${y}-${m}-${d}`;
-    const data = dailyData.value[dateStr];
 
+    // [연동] 스토어의 날짜별 상자에서 데이터 꺼내기
+    const data = dailyData.value[dateStr];
     const isSunday = arg.date.getDay() === 0;
     const sundayClass = isSunday ? "is-sunday" : "";
-    const dayNum = arg.dayNumberText.replace("일", ""); // 숫자만 남김
+    const dayNum = arg.dayNumberText.replace("일", "");
 
     let html = `<div class='day-cell'>
                   <div class='day-header'>
@@ -161,22 +185,26 @@ const calendarOptions = reactive({
     html += `</div>`;
     return { html };
   },
-  datesSet: () => {
-    const calendarApi = fullCalendar.value.getApi();
-    const currentStart = calendarApi.view.currentStart;
-    selectedYear.value = currentStart.getFullYear();
-    selectedMonth.value = currentStart.getMonth() + 1;
+  datesSet: (info) => {
+    const currentStart = info.view.currentStart;
+    const y = currentStart.getFullYear();
+    const m = currentStart.getMonth() + 1;
+    selectedYear.value = y;
+    selectedMonth.value = m;
+
+    // 스토어 상태 업데이트
+    calendarStore.setCurrentDate(y, m);
     nextTick(() => setTimeout(updateWeeklySummary, 300));
   },
 });
 
 onMounted(async () => {
-  if (transactionStore.fetchHistory) await transactionStore.fetchHistory();
+  // [연동] 페이지 로드 시 데이터 불러오기
+  await calendarStore.fetchHistory();
 });
 </script>
 
 <style scoped>
-/* 컨테이너 및 헤더 */
 .calendar-container {
   padding: 20px;
   background-color: #f9f9f9;
@@ -202,58 +230,83 @@ onMounted(async () => {
 }
 .input-wrapper {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer !important;
+  z-index: 10;
 }
 .real-month-input {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
   opacity: 0;
-  cursor: pointer;
-  z-index: 10;
+  pointer-events: none;
 }
 .arrow-icon {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #555;
+  pointer-events: none;
 }
 .budget-center {
   flex: 1;
   text-align: center;
+  font-size: 28px;
   font-weight: bold;
 }
 .total-stats {
   flex: 1;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
   font-size: 0.9rem;
 }
-.expense {
-  color: #d9534f;
-}
-.income {
-  color: #5cb85c;
+
+.total-stats p {
+  margin: 0;
 }
 
-/* 날짜 숫자 스타일 */
+.expense {
+  color: #d9534f;
+  font-size: 18px;
+  font-weight: bold;
+}
+.income {
+  color: green;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 :deep(.day-header) {
   display: flex;
-  align-items: baseline;
+  justify-content: flex-end;
+  top: 45px;
+  left: 10px;
+  z-index: 10;
 }
 :deep(.day-number) {
   color: #333 !important;
   font-weight: bold !important;
   text-decoration: none !important;
+  font-size: 16px;
+  font-weight: bold;
 }
 :deep(.day-number.is-sunday) {
   color: #ff4d4d !important;
 }
-
-/* 요일 헤더 스타일 ('일'만 빨강) */
 :deep(.fc-col-header-cell) {
   background-color: #fff;
   z-index: 10;
   position: relative;
-  border-bottom: 2px solid #007bff !important;
+  border-bottom: 1px solid #000 !important;
 }
 :deep(.fc-col-header-cell-cushion) {
   text-decoration: none !important;
@@ -262,31 +315,30 @@ onMounted(async () => {
 :deep(.fc-day-sun .fc-col-header-cell-cushion) {
   color: #ff4d4d !important;
 }
-
-/* 달력 셀 레이아웃 */
 :deep(.day-cell) {
   min-height: 120px;
   padding: 45px 5px 5px 5px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 :deep(.fc-day-other .day-number) {
-  opacity: 0.3;
+  opacity: 0.5;
 }
 :deep(.daily-expense) {
-  font-size: 11px;
+  font-size: 14px;
   color: #d9534f;
   text-align: right;
   margin: 2px 0;
+  line-height: 1.4;
 }
 :deep(.daily-income) {
-  font-size: 11px;
+  font-size: 14px;
   color: #5cb85c;
   text-align: right;
   margin: 2px 0;
+  line-height: 1.4;
 }
-
-/* 주간 합계 바 */
 :deep(.fc-daygrid-body tr) {
   position: relative !important;
 }
@@ -296,6 +348,7 @@ onMounted(async () => {
   left: 0;
   width: 100%;
   background-color: #e9ecef;
+  border-top: 1px solid #ced4da;
   border-bottom: 2px solid #ced4da;
   padding: 4px 20px;
   z-index: 5;
@@ -309,7 +362,7 @@ onMounted(async () => {
   justify-content: flex-end;
   width: 100%;
   gap: 20px;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 850;
 }
 :deep(.w-income) {
@@ -318,8 +371,6 @@ onMounted(async () => {
 :deep(.w-expense) {
   color: #dc3545;
 }
-
-/* FullCalendar 내부 보정 */
 :deep(.fc-daygrid-day-frame) {
   position: static !important;
 }
