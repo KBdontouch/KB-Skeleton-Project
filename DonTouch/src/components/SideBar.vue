@@ -1,7 +1,7 @@
 <template>
   <nav class="sidebar">
     <div class="logo">
-      <router-link to="/" class="logo-link">
+      <router-link to="/main" class="logo-link">
         <img src="https://placehold.co/100x100/png" alt="로고 이미지" />
       </router-link>
     </div>
@@ -14,10 +14,23 @@
 
     <div class="userpage">
       <div><router-link to="/mypage">마이페이지</router-link></div>
-      <div><router-link to="/logout">로그아웃</router-link></div>
+      <div @click="logout">로그아웃</div>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const authStore = useAuthStore();
+const logout = () => {
+  authStore.logout();
+  router.push('/');
+};
+</script>
 
 <style scoped>
 /* 사이드바 기본 레이아웃 */
