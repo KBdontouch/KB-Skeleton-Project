@@ -7,12 +7,15 @@
 
 .headerBar {
   background-color: #f2f2f2;
+  border-radius: 20px;
+  margin: 10px;
 }
 
 button {
   border: none;
   outline: none;
   box-shadow: none;
+  text-decoration: none;
 }
 
 button:hover {
@@ -39,9 +42,10 @@ button:hover {
 
 /* 전체 리스트 박스 */
 .inquiry-listbox {
+  border-radius: 20px;
   width: 800px;
-  height: 1200px; /* 요청하신 고정 크기 */
-
+  height: 400px; /* 요청하신 고정 크기 */
+  overflow-y: auto;
   border: 1px solid #eee;
   padding: 10px;
   margin: 0 auto;
@@ -54,7 +58,10 @@ button:hover {
   align-items: center; /* 세로 중앙 정렬 */
   padding: 15px 10px;
   border-bottom: 1px solid #f2f2f2;
+  background-color: #ffffff;
+  margin: 5px 0;
   gap: 20px; /* 항목 간 간격 */
+  border-radius: 20px;
 }
 
 /* 스크롤바 디자인 (선택 사항) */
