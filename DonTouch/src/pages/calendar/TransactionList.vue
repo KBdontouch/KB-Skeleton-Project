@@ -66,6 +66,10 @@
             </div>
             <!-- 수정/삭제 버튼 -->
             <div>
+              <button @click="editMove(trans)">수정</button>
+              <button @click="deleteInquiry(trans.id)">삭제</button>
+            </div>
+            <!-- <div>
               <button @click="editInquiry(trans)">
                 {{ editingId === trans.id ? '저장' : '수정' }}
               </button>
@@ -73,7 +77,7 @@
                 취소
               </button>
               <button v-else @click="deleteInquiry(trans.id)">삭제</button>
-            </div>
+            </div> -->
           </div>
           <!-- 조회된 거래 내역이 없을 경우 -->
           <div v-else class="no-data-message">
@@ -143,11 +147,15 @@ import { ref, onMounted, computed, watch } from 'vue';
 import axios from 'axios';
 
 import { useSearchStore } from '@/stores/transactionsearch';
+import { useTransactionStore } from '@/stores/transaction';
 import TypeIn from './transactionslistmenu/TypeIn.vue';
 import TypeOut from './transactionslistmenu/TypeOut.vue';
+import { useRouter } from 'vue-router';
 
 // data
 const searchStore = useSearchStore();
+const transactionStore = useTransactionStore();
+const router = useRouter();
 
 // 1.4 컴포넌트 Mount시 요청
 onMounted(async () => {
@@ -162,37 +170,42 @@ const activeTab = ref('TypeIn'); // 기본값
 const tabs = { TypeIn, TypeOut };
 
 // 3. 수정/삭제 버튼 이벤트
-// 3.1 (ai) 수정 이벤트
-const editingId = ref(null); // 현재 어떤 항목을 수정 중인지 저장
-
-const editInquiry = async (item) => {
-  // 3.1.1 수정 버튼 클릭시 수정창 변경
-  if (editingId.value !== item.id) {
-    editingId.value = item.id;
-    return; // 여기서 함수 종료 (창만 띄움)
-  }
-
-  // 3.1.2 저장 버튼 클릭시 서버에 PUT 요청 보냄
-  try {
-    if (!confirm('수정된 내용을 저장하시겠습니까?')) return;
-
-    await axios.put(`/api/history/${item.id}`, item);
-    alert('수정되었습니다.');
-
-    editingId.value = null; // 수정 완료 후 다시 조회 모드로 변경
-    await searchStore.fetchHistory(); // 목록 새로고침
-  } catch (e) {
-    alert('수정 실패: ' + e);
-  }
+// 3.0 수정 컴포넌트로 이동
+const editMove = (trans) => {
+  transactionStore.history = trans;
+  router.push('/');
 };
+// // 3.1 (ai) 수정 이벤트
+// const editingId = ref(null); // 현재 어떤 항목을 수정 중인지 저장
 
-// 3.1.1 수정 취소 이벤트
-const cancelEdit = async () => {
-  editingId.value = null;
-  // v-model로 이미 변해버린 로컬 데이터를 원상복구하기 위해 서버에서 다시 읽어옴
-  await searchStore.fetchHistory();
-  searchStore.inquiry = searchStore.sortedHistory;
-};
+// const editInquiry = async (item) => {
+//   // 3.1.1 수정 버튼 클릭시 수정창 변경
+//   if (editingId.value !== item.id) {
+//     editingId.value = item.id;
+//     return; // 여기서 함수 종료 (창만 띄움)
+//   }
+
+//   // 3.1.2 저장 버튼 클릭시 서버에 PUT 요청 보냄
+//   try {
+//     if (!confirm('수정된 내용을 저장하시겠습니까?')) return;
+
+//     await axios.put(`/api/history/${item.id}`, item);
+//     alert('수정되었습니다.');
+
+//     editingId.value = null; // 수정 완료 후 다시 조회 모드로 변경
+//     await searchStore.fetchHistory(); // 목록 새로고침
+//   } catch (e) {
+//     alert('수정 실패: ' + e);
+//   }
+// };
+
+// // 3.1.1 수정 취소 이벤트
+// const cancelEdit = async () => {
+//   editingId.value = null;
+//   // v-model로 이미 변해버린 로컬 데이터를 원상복구하기 위해 서버에서 다시 읽어옴
+//   await searchStore.fetchHistory();
+//   searchStore.inquiry = searchStore.sortedHistory;
+// };
 
 // 3.2 삭제 이벤트
 const deleteInquiry = async (id) => {
