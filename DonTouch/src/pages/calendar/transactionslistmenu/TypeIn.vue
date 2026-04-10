@@ -47,16 +47,6 @@ const categoryIn = computed(() => {
   return category.value.filter((i) => i.category_type === 'in');
 });
 
-// 4. category 선택에 따른 historydata 필터링
-const props = defineProps({
-  inquiry: { type: Array, required: true },
-});
-console.log('prop check', props.inquiry);
-
-// 5. 필터링 데이터 emit
-const emit = defineEmits([]);
-emit('');
-
 //999. 콘솔 확인용
 // const check = () => console.log('카테고리', categoryIn);
 // check();

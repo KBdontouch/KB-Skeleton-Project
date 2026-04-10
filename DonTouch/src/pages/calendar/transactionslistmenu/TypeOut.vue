@@ -8,6 +8,7 @@
         <input type="checkbox" />
         <span>{{ i.category_name }}</span>
       </div>
+      <button>조회</button>
     </div>
   </div>
 </template>
