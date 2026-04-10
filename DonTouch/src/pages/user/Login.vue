@@ -11,6 +11,7 @@
           v-model="loginData.password"
           type="password"
           placeholder="비밀번호"
+          @keyup.enter="handleLogin"
         />
         <button @click="handleLogin">Login</button>
         <router-link to="/join">
