@@ -18,7 +18,8 @@
       </div>
 
       <div class="budget-center">
-        예산 : {{ calendarStore.budget.toLocaleString() }}원
+        예산 :
+        {{ (budgetStore.activeBudget?.budget_money || 0).toLocaleString() }}원
       </div>
 
       <div class="total-stats">
@@ -53,6 +54,10 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 // interactionPlugin과 useRouter는 요청하신 대로 제거했습니다.
 import { useCalendarStore } from "@/stores/calendar";
+import { useBudgetStore } from "@/stores/budget";
+
+// 예산 데이터 불러오기
+const budgetStore = useBudgetStore();
 
 const fullCalendar = ref(null);
 const monthInputRef = ref(null);
@@ -201,6 +206,7 @@ const calendarOptions = reactive({
 onMounted(async () => {
   // [연동] 페이지 로드 시 데이터 불러오기
   await calendarStore.fetchHistory();
+  await budgetStore.initBudget();
 });
 </script>
 
@@ -208,6 +214,7 @@ onMounted(async () => {
 .calendar-container {
   padding: 20px;
   background-color: #f9f9f9;
+  overflow: scroll;
 }
 .calendar-header {
   display: flex;

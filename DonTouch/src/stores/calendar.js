@@ -22,7 +22,7 @@ export const useCalendarStore = defineStore("calendar", {
 
     setCurrentDate(year, month) {
       this.currentYear = year;
-      this.currenMonth = month;
+      this.currentMonth = month;
     },
 
     setBudget(amount) {
@@ -49,7 +49,7 @@ export const useCalendarStore = defineStore("calendar", {
 
     monthlyStats: (state) => {
       const yearStr = String(state.currentYear);
-      const monthStr = String(state.currenMonth).padStart(2, "0");
+      const monthStr = String(state.currentMonth).padStart(2, "0");
       const targetMonth = `${yearStr}-${monthStr}`;
 
       return state.history
