@@ -23,17 +23,17 @@
 
       <div class="total-stats">
         <p>
-          총 지출 :
+          <b>총 지출 : </b>
           <span class="expense"
-            >{{
+            >-{{
               calendarStore.monthlyStats.totalExpense.toLocaleString()
             }}원</span
           >
         </p>
         <p>
-          총 수입 :
+          <b>총 수입 : </b>
           <span class="income"
-            >{{
+            >+{{
               calendarStore.monthlyStats.totalIncome.toLocaleString()
             }}원</span
           >
@@ -267,7 +267,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 0px;
-  font-size: 0.9rem;
+  font-size: 18px;
 }
 
 .total-stats p {
