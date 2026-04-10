@@ -98,12 +98,7 @@ export const useBudgetStore = defineStore('budget', () => {
       } else {
         if (confirm('예산을 설정하시겠습니까?')) {
           const postResult = await axios.post('/api/budget', update);
-          if (postResult.status === 201) {
-            alert('예산 설정이 완료되었습니다.');
-            initBudget();
-          } else {
-            alert('예산 설정에 실패하였습니다.');
-          }
+          alert('예산 설정이 완료되었습니다.');
         }
       }
     } else {
@@ -117,15 +112,12 @@ export const useBudgetStore = defineStore('budget', () => {
             '/api/budget/' + update.id,
             update,
           );
-          if (updateResult.status === 200) {
-            alert('예산 설정이 완료되었습니다.');
-            initBudget();
-          } else {
-            alert('예산 설정에 실패하였습니다.');
-          }
+          alert('예산 설정이 완료되었습니다.');
         }
       }
     }
+    initBudget();
+    getChartData();
   };
 
   const chartData = ref({
