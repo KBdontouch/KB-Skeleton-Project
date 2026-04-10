@@ -214,7 +214,8 @@ onMounted(async () => {
 .calendar-container {
   padding: 20px;
   background-color: #f9f9f9;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .calendar-header {
   display: flex;
