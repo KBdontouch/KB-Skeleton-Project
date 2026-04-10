@@ -1,10 +1,11 @@
 <script setup>
-import Main from './pages/Main.vue';
+import Footer from './components/Footer.vue';
 </script>
 <template>
   <div>
     <RouterView />
   </div>
+  <Footer />
 </template>
 
 <script setup></script>
