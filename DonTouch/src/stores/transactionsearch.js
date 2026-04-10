@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const useSearchStore = defineStore('search', () => {
   // 0. db.json data API
-  const historyURL = '/api/history';
+  const historyURL = '/api/history?user_no=1';
   // 1. db.json에서 거래 내역 데이터 가져오기
   // 1.1 history/inquiry 배열 생성
   const history = ref([]);
@@ -40,11 +40,15 @@ export const useSearchStore = defineStore('search', () => {
     inquiry.value = sortedHistory.value.filter((i) => i.history_type === 'out');
   };
 
+  // 3. 카테고리 항목
+  const selectedCategories = ref([]);
+
   return {
     history,
     fetchHistory,
     sortedHistory,
     inquiry,
+    selectedCategories,
     showAll,
     showIn,
     showOut,

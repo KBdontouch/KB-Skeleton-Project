@@ -4,21 +4,25 @@
     <div>
       <div>지출</div>
 
-      <div v-for="i in categoryOut" :key="i.category_no">
-        <input type="checkbox" />
-        <span>{{ i.category_name }}</span>
+      <div v-for="i in categoryOut" :key="i.id">
+        <input
+          type="checkbox"
+          :id="'cate-' + i.id"
+          :value="i.id"
+          v-model="searchStore.selectedCategories"
+        />
+        <label :for="'cate-' + i.id">{{ i.category_name }}</label>
       </div>
-      <button>조회</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useSearchStore } from '@/stores/transactionsearch';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import { useSearchStore } from '@/stores/transactionsearch';
 
-//const searchStore = useSearchStore();
+const searchStore = useSearchStore();
 
 // 2. category 데이터
 const categoryURL = '/api/category';
@@ -41,7 +45,7 @@ onMounted(() => {
   fetchCategory();
 });
 
-// 3. categoryIn 필터링
+// 3. categoryOut 필터링 (computed 사용 : 실시간으로 변동 데이터 받아옴)
 const categoryOut = computed(() => {
   return category.value.filter((i) => i.category_type === 'out');
 });
