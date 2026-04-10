@@ -1,14 +1,17 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-import App from './App.vue';
-import router from './router';
-import 'bootstrap/dist/css/bootstrap.css';
-import '@/assets/main.css';
+import App from "./App.vue";
+import router from "./router";
+import "bootstrap/dist/css/bootstrap.css";
+import "@/assets/main.css";
+
+// FullCalendar CSS 로드
+import "@fullcalendar/core";
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 
-app.mount('#app');
+app.mount("#app");
