@@ -6,18 +6,26 @@
       <div class="headerBar">
         <!-- 거래 타입 -->
         <div class="typeButton">
-          <button :class="{ active: currentTab === 'all' }" @click="selectAll">
+          <button
+            class="btn-all"
+            :class="{ active: currentTab === 'all' }"
+            @click="selectAll"
+          >
             전체
           </button>
           <button :class="{ active: currentTab === 'in' }" @click="selectIn">
             수입
           </button>
-          <button :class="{ active: currentTab === 'out' }" @click="selectOut">
+          <button
+            class="btn-out"
+            :class="{ active: currentTab === 'out' }"
+            @click="selectOut"
+          >
             지출
           </button>
         </div>
         <!-- 필터 조건 출력 -->
-        <div class="appliedFilter">
+        <!-- <div class="appliedFilter">
           <div v-if="searchKeyword">검색 내용: "{{ searchKeyword }}"</div>
 
           <div v-if="startDate && endDate">
@@ -25,9 +33,9 @@
           </div>
 
           <div v-if="searchStore.selectedCategories.length > 0">
-            선택 유형: {{ searchStore.selectedCategories.length }}건 선택됨
+            {{ searchStore.selectedCategories.category_name }}
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- 거래내역 리스트 : scroll 사용, db에서 axios-->
@@ -44,15 +52,10 @@
             <div>{{ trans.history_date }}</div>
             <div>icon {{ trans.category_no }}</div>
             <!-- 기본 정보창 -->
+
             <div class="info-group">
-              <div v-if="editingId !== trans.id">
-                <div class="title">{{ trans.history_title }}</div>
-                <div class="content">{{ trans.history_content }}</div>
-              </div>
-              <div v-else class="edit-inputs">
-                <input v-model="trans.history_title" class="edit-title" />
-                <input v-model="trans.history_content" class="edit-content" />
-              </div>
+              <div class="title">{{ trans.history_title }}</div>
+              <div class="content">{{ trans.history_content }}</div>
             </div>
 
             <div class="money">
@@ -84,18 +87,20 @@
 
     <!-- 거래 내역 필터 바 : 오른쪽 floating, scroll사용 -->
     <div class="filter-menu">
+      <br />
       <!-- 제목/내용 검색창 -->
-      <div>
-        <span>(아이콘)검색</span>
+      <div class="inquiry-search">
+        <span>검색</span>
         <input
           class="searchbox"
           type="text"
           @keyup.enter="applyFilter"
           v-model="searchKeyword"
-          placeholder="검색어를 입력하고 엔터를 누르세요"
+          placeholder="거래 제목/내용 입력"
         />
       </div>
       <!-- 조회 기간 필터 -->
+      <hr />
       <div>
         <span>조회기간 :</span>
         <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
@@ -103,32 +108,38 @@
         <input type="date" class="start_date" v-model="startDate" />
         ~<input type="date" class="end_date" v-model="endDate" />
       </div>
+      <hr />
       <div>거래유형 별 조회</div>
       <!-- 거래 타입 버튼 -->
-      <div>
+      <div catebutton-group>
         <button
+          :class="{ active: activeTabInfo === 'in' }"
           @click="
             activeTab = 'TypeIn';
             resetCheck;
+            selectCateIn();
           "
         >
           수입
         </button>
         <button
+          :class="{ active: activeTabInfo === 'out' }"
           @click="
             activeTab = 'TypeOut';
             resetCheck;
+            selectCateOut();
           "
         >
           지출
         </button>
-        <hr />
+
         <div class="category-list">
           <component :is="tabs[activeTab]" :inquiry="searchStore.inquiry" />
         </div>
       </div>
+
       <!-- 조회버튼 -->
-      <button @click="applyFilter">조회</button>
+      <button id="filter-search" @click="applyFilter">조회</button>
     </div>
     <!-- 거래 내역 필터바 끝 -->
   </div>
@@ -148,6 +159,9 @@ import { useRouter } from 'vue-router';
 const searchStore = useSearchStore();
 const transactionStore = useTransactionStore();
 const router = useRouter();
+// 7. 현재 선택된 탭을 저장 (기본값: 'all')
+const currentTab = ref('all');
+const activeTabInfo = ref('in');
 
 // 1.4 컴포넌트 Mount시 요청
 onMounted(async () => {
@@ -243,7 +257,7 @@ const applyFilter = () => {
       return searchStore.selectedCategories.includes(item.category_no);
     });
   }
-
+  currentTab.value = '';
   searchStore.inquiry = filtered;
   console.log(`필터링 완료: ${filtered.length}건`);
 };
@@ -253,10 +267,8 @@ watch(activeTab, () => {
 });
 
 // 7. 버튼 클릭시 선택된 버튼 정보 저장(배경색 CSS 적용)
-// 현재 선택된 탭을 저장 (기본값: 'all')
-const currentTab = ref('all');
 
-// 버튼 클릭 시 실행될 함수들
+// 버튼 클릭 시 실행될 함수 목록
 const selectAll = () => {
   currentTab.value = 'all';
   searchStore.showAll();
@@ -272,6 +284,12 @@ const selectOut = () => {
   searchStore.showOut();
 };
 
+const selectCateIn = () => {
+  activeTabInfo.value = 'in';
+};
+const selectCateOut = () => {
+  activeTabInfo.value = 'out';
+};
 // 999. 콘솔 확인용
 // const check = () => console.log('코드 확인', sortedHistory);
 // check();
