@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useAuthStore } from "./auth";
 
 export const useCalendarStore = defineStore("calendar", {
   state: () => ({
@@ -13,7 +14,9 @@ export const useCalendarStore = defineStore("calendar", {
     // 데이터를 서버(db.json)에서 불러오는 함수
     async fetchHistory() {
       try {
-        const response = await axios.get("http://localhost:3000/history"); // 윤재야 프록시 설정 해야한다 나중에 반드시 꼬
+        const response = await axios.get(
+          "http://localhost:3000/history?user_no=" + useAuthStore().user.id,
+        ); // 윤재야 프록시 설정 해야한다 나중에 반드시 꼬
         this.history = response.data;
       } catch (error) {
         console.error("데이터 로드 실패 : ", error);
