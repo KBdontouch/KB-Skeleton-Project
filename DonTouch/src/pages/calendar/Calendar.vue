@@ -284,12 +284,12 @@ onMounted(async () => {
 }
 
 .expense {
-  color: #d9534f;
+  color: #dc3545;
   font-size: 18px;
   font-weight: bold;
 }
 .income {
-  color: green;
+  color: #28a745;
   font-size: 18px;
   font-weight: bold;
 }
@@ -309,7 +309,7 @@ onMounted(async () => {
   font-weight: bold;
 }
 :deep(.day-number.is-sunday) {
-  color: #ff4d4d !important;
+  color: #dc3545 !important;
 }
 :deep(.fc-col-header-cell) {
   background-color: #fff;
@@ -322,7 +322,7 @@ onMounted(async () => {
   color: #000 !important;
 }
 :deep(.fc-day-sun .fc-col-header-cell-cushion) {
-  color: #ff4d4d !important;
+  color: #dc3545 !important;
 }
 :deep(.day-cell) {
   min-height: 120px;
@@ -336,14 +336,14 @@ onMounted(async () => {
 }
 :deep(.daily-expense) {
   font-size: 14px;
-  color: #d9534f;
+  color: #dc3545;
   text-align: right;
   margin: 2px 0;
   line-height: 1.4;
 }
 :deep(.daily-income) {
   font-size: 14px;
-  color: #5cb85c;
+  color: #28a745;
   text-align: right;
   margin: 2px 0;
   line-height: 1.4;
