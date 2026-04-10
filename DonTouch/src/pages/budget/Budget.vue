@@ -25,7 +25,11 @@
     <div>
       <span>예산 설정하기</span><br />
       <div>
-        <input type="month" :value="budgetStore.formatDate" />
+        <input
+          type="month"
+          v-model="budgetStore.formatDate"
+          @change="budgetStore.fetchDate"
+        />
         <input
           type="number"
           v-if="budgetStore.activeBudget"
@@ -41,8 +45,8 @@
       <span>지난달 소비 분석</span><br />
       <input
         type="month"
-        :value="budgetStore.formatDate"
-        @change="(e) => budgetStore.handleDateChange(e.target.value)"
+        v-model="budgetStore.formatDate"
+        @change="budgetStore.fetchDate"
       />
       <BudgetChart />
     </div>
