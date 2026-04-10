@@ -7,6 +7,7 @@ import TransactionList from '@/pages/calendar/TransactionList.vue';
 import Main from '@/pages/main/Main.vue';
 import Join from '@/pages/user/Join.vue';
 import Login from '@/pages/user/Login.vue';
+import MyPage from '@/pages/user/MyPage.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -19,6 +20,13 @@ const router = createRouter({
     {
       path: '/join',
       component: Join,
+    },
+    {
+      path: '/mypage',
+      components: {
+        default: MyPage,
+        side: SideBar,
+      },
     },
     {
       path: '/main',
