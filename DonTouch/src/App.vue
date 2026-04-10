@@ -49,6 +49,7 @@ import Footer from './components/Footer.vue';
   display: flex;
   flex-direction: column; /* 내부 요소들을 세로로 정렬 */
   position: relative;
+  margin: 40px 80px 40px 80px;
   padding-bottom: 60px; /* 푸터 높이만큼 여백 확보 (푸터가 겹치지 않게) */
 }
 
