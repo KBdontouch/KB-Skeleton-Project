@@ -29,7 +29,7 @@
         <input
           type="number"
           v-if="budgetStore.activeBudget"
-          :value="budgetStore.activeBudget.budget_money"
+          v-model="budgetStore.updateMoney"
         />
         <input type="number" v-model="budgetStore.updateMoney" v-else />
       </div>
@@ -39,7 +39,11 @@
     </div>
     <div>
       <span>지난달 소비 분석</span><br />
-      <input type="month" :value="budgetStore.formatDate" />
+      <input
+        type="month"
+        :value="budgetStore.formatDate"
+        @change="(e) => budgetStore.handleDateChange(e.target.value)"
+      />
       <BudgetChart />
     </div>
   </div>
@@ -54,6 +58,7 @@ const budgetStore = useBudgetStore();
 
 onMounted(async () => {
   await budgetStore.initBudget();
+  budgetStore.getChartData();
 });
 </script>
 

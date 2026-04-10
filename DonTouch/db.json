@@ -375,6 +375,12 @@
       "budget_date": "2026-02",
       "budget_money": 30000000,
       "user_no": 2
+    },
+    {
+      "id": 4,
+      "budget_date": "2026-04",
+      "budget_money": 111111,
+      "user_no": 2
     }
   ]
 }

@@ -37,6 +37,7 @@ export const useBudgetStore = defineStore('budget', () => {
     });
     if (findBudget) {
       activeBudget.value = findBudget;
+      updateMoney.value = activeBudget.value.budget_money;
     }
   };
 
@@ -66,9 +67,12 @@ export const useBudgetStore = defineStore('budget', () => {
     );
     if (res.data.length == 0) {
       activeBudget.value = null;
+      updateMoney.value = 0;
     } else {
       activeBudget.value = res.data[0];
+      updateMoney.value = activeBudget.value.budget_money;
     }
+    await getChartData();
   };
 
   const updateBudget = async () => {
@@ -88,9 +92,92 @@ export const useBudgetStore = defineStore('budget', () => {
       update.budget_date =
         activeYear.value + '-' + String(activeMonth.value).padStart(2, '0');
       update.budget_money = updateMoney.value;
-      console.log(update);
+      update.user_no = authStore.user.id;
+
+      if (update.budget_money <= 0 || update.budget_money == '') {
+        alert('예산을 입력하세요 음수는 예산 설정이 불가능합니다.');
+      } else {
+        if (confirm('예산을 설정하시겠습니까?')) {
+          const postResult = await axios.post('/api/budget', update);
+          if (postResult.status === 201) {
+            alert('예산 설정이 완료되었습니다.');
+            initBudget();
+          } else {
+            alert('예산 설정에 실패하였습니다.');
+          }
+        }
+      }
     } else {
+      update = { ...activeBudget.value };
+      update.budget_money = updateMoney.value;
+      if (update.budget_money <= 0 || update.budget_money == '') {
+        alert('예산을 입력하세요 음수는 예산 설정이 불가능합니다.');
+      } else {
+        if (confirm('예산을 설정하시겠습니까?')) {
+          const updateResult = await axios.put(
+            '/api/budget/' + update.id,
+            update,
+          );
+          if (updateResult.status === 200) {
+            alert('예산 설정이 완료되었습니다.');
+            initBudget();
+          } else {
+            alert('예산 설정에 실패하였습니다.');
+          }
+        }
+      }
     }
+  };
+
+  const chartData = ref({
+    labels: [],
+    datasets: [],
+  });
+
+  const getChartData = async () => {
+    const res = await axios.get(
+      `/api/budget?user_no=${authStore.user.id}&budget_date=${formatDate.value}`,
+    );
+    const budgetMoney = res.data[0]?.budget_money || 0;
+
+    const historyRes = await axios.get(
+      `/api/history?user_no=${authStore.user.id}`,
+    );
+
+    const historyData = historyRes.data.filter(
+      (h) =>
+        new Date(h.history_date).getFullYear() +
+          '-' +
+          String(new Date(h.history_date).getMonth() + 1).padStart(2, '0') ==
+        formatDate.value,
+    );
+
+    const totalSpend = historyData.reduce(
+      (acc, cur) => acc + cur.history_money,
+      0,
+    );
+
+    chartData.value = {
+      labels: ['예산', '지출금액'],
+      datasets: [
+        {
+          label: `${formatDate.value} 현황`,
+          backgroundColor: ['#42A5F5', '#FF7043'],
+          data: [budgetMoney, totalSpend],
+        },
+      ],
+    };
+  };
+
+  const handleDateChange = async (newDate) => {
+    if (!newDate) return;
+
+    const [y, m] = newDate.split('-');
+
+    activeYear.value = parseInt(y);
+    activeMonth.value = parseInt(m);
+
+    await changeMonth(activeYear.value, activeMonth.value);
   };
 
   return {
@@ -104,5 +191,8 @@ export const useBudgetStore = defineStore('budget', () => {
     prevMonth,
     nextMonth,
     updateBudget,
+    chartData,
+    getChartData,
+    handleDateChange,
   };
 });
