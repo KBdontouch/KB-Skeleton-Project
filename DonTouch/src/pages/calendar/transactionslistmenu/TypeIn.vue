@@ -4,22 +4,25 @@
     <div>
       <div>수입</div>
 
-      <div v-for="i in categoryIn" :key="i.category_no">
-        <input type="checkbox" />
-        <span>{{ i.category_name }}</span>
+      <div v-for="i in categoryIn" :key="i.id">
+        <input
+          type="checkbox"
+          :id="'cate-' + i.id"
+          :value="i.id"
+          v-model="searchStore.selectedCategories"
+        />
+        <label :for="'cate-' + i.id">{{ i.category_name }}</label>
       </div>
-      <button>조회</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useSearchStore } from '@/stores/transactionsearch';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import { defineEmits } from 'vue';
+import { useSearchStore } from '@/stores/transactionsearch';
 
-//const searchStore = useSearchStore();
+const searchStore = useSearchStore();
 
 // 2. category 데이터
 const categoryURL = '/api/category';

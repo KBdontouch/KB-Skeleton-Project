@@ -2,40 +2,13 @@
   <div>
     <!-- 제목 -->
     <div>거래 내역 조회</div>
+    <!-- 거래 타입 -->
 
-    <!-- 검색창 -->
     <div>
-      <span>(아이콘)검색</span>
-      <input
-        class="searchbox"
-        type="text"
-        v-model="searchKeyword"
-        @keyup.enter="searchFilter"
-        placeholder="검색어를 입력하고 엔터를 누르세요"
-      />
-      <button @click="searchFilter">검색</button>
+      <button @click="searchStore.showAll">전체</button>
+      <button @click="searchStore.showIn">수입</button>
+      <button @click="searchStore.showOut">지출</button>
     </div>
-
-    <!-- 검색 필터바 -->
-    <div>
-      <!-- 거래 타입 -->
-      <div>
-        <button @click="searchStore.showAll">전체</button>
-        <button @click="searchStore.showIn">수입</button>
-        <button @click="searchStore.showOut">지출</button>
-      </div>
-
-      <!-- 조회 기간 필터 -->
-      <div>
-        <span>조회기간 :</span>
-        <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
-        <!-- 캘린더에도 완료버튼 -->
-        <input type="date" class="start_date" v-model="startDate" />
-        <input type="date" class="end_date" v-model="endDate" />
-        <button @click="periodFilter">조회</button>
-      </div>
-    </div>
-    <!-- 검색필터바 끝 -->
 
     <!-- 거래내역 리스트 : scroll 사용, db에서 axios-->
     <div>
@@ -47,6 +20,7 @@
           v-for="trans in searchStore.inquiry"
           :key="trans.id"
         >
+          <div>{{ trans.history_date }}</div>
           <div>icon {{ trans.category_no }}</div>
           <!-- 기본 정보창 -->
           <div v-if="editingId !== trans.id">
@@ -86,18 +60,59 @@
     </div>
     <!-- 거래내역 리스트 끝 -->
 
-    <!-- 거래유형 조회 바 : 오른쪽 floating, scroll사용 -->
+    <hr />
+
+    <!-- 거래 내역 필터 바 : 오른쪽 floating, scroll사용 -->
     <div>
+      <!-- 제목/내용 검색창 -->
+      <div>
+        <span>(아이콘)검색</span>
+        <input
+          class="searchbox"
+          type="text"
+          @keyup.enter="applyFilter"
+          v-model="searchKeyword"
+          placeholder="검색어를 입력하고 엔터를 누르세요"
+        />
+      </div>
+
+      <!-- 조회 기간 필터 -->
+      <div>
+        <span>조회기간 :</span>
+        <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
+        <!-- 캘린더에도 완료버튼 -->
+        <input type="date" class="start_date" v-model="startDate" />
+        <input type="date" class="end_date" v-model="endDate" />
+      </div>
+
       <div>거래유형 별 조회</div>
       <!-- 거래 타입 버튼 -->
       <div>
-        <button @click="activeTab = 'TypeIn'">수입</button>
-        <button @click="activeTab = 'TypeOut'">지출</button>
+        <button
+          @click="
+            activeTab = 'TypeIn';
+            resetCheck;
+          "
+        >
+          수입
+        </button>
+        <button
+          @click="
+            activeTab = 'TypeOut';
+            resetCheck;
+          "
+        >
+          지출
+        </button>
         <hr />
 
         <component :is="tabs[activeTab]" :inquiry="searchStore.inquiry" />
       </div>
+
+      <!-- 조회버튼 -->
+      <button @click="applyFilter">조회</button>
     </div>
+    <!-- 거래 내역 필터바 끝 -->
   </div>
 </template>
 
@@ -148,6 +163,7 @@ const editInquiry = async (item) => {
     alert('수정 실패: ' + e);
   }
 };
+
 // 3.1.1 수정 취소 이벤트
 const cancelEdit = async () => {
   editingId.value = null;
@@ -176,64 +192,69 @@ const deleteInquiry = async (id) => {
   }
 };
 
-// 3. (ai) 검색 이벤트
-// 3.1 사용자가 입력한 검색어를 담을 반응형 변수
+// **필터바**
+// 100. 전체 조건 적용 함수
 const searchKeyword = ref('');
-// 3.2 검색 필터 함수
-const searchFilter = () => {
-  const keyword = searchKeyword.value.trim();
-
-  // 3.2.1 검색어가 비어있을 경우, 전체 리스트(sortedHistory) 반환
-  if (!keyword) {
-    searchStore.inquiry = searchStore.sortedHistory;
-    return;
-  }
-
-  // 3.2.2 필터링 로직 실행
-  searchStore.inquiry = searchStore.sortedHistory.filter((item) => {
-    // 제목(history_title) 또는 내용(history_content)에 키워드가 포함되어 있는지 확인
-    // 제목/내용값 falsy일 경우 대비 기본값('') 처리
-    const title = item.history_title || '';
-    const content = item.history_content || '';
-
-    return title.includes(keyword) || content.includes(keyword);
-  });
-
-  console.log(`검색 결과: ${searchStore.inquiry.length}건`);
-};
-
-// 4. (ai) 기간 필터링
 // 4.1 날짜 입력을 저장할 변수
 const startDate = ref('');
 const endDate = ref('');
 
-// 4.2 기간 필터링 함수
-const periodFilter = () => {
-  // 4.2.1 유효성 검사: 둘 중 하나라도 입력되지 않았을 경우
-  if (!startDate.value || !endDate.value) {
-    alert('시작 날짜와 종료 날짜를 모두 선택해주세요.');
-    return;
+const applyFilter = () => {
+  let filtered = [...searchStore.sortedHistory];
+  // 3. (ai) 검색 이벤트
+  // 3.1 검색 필터 함수
+  // 3.1.1 사용자가 입력한 검색어를 담을 반응형 변수
+  const keyword = searchKeyword.value.trim();
+  if (keyword) {
+    filtered = filtered.filter((item) => {
+      // 3.3 제목(history_title) 또는 내용(history_content)에 키워드가 포함되어 있는지 확인
+      //     제목/내용값 falsy일 경우 대비 기본값('') 처리
+      const title = item.history_title || '';
+      const content = item.history_content || '';
+
+      return title.includes(keyword) || content.includes(keyword);
+    });
   }
 
-  // 시작일이 종료일보다 반드시 이전일로 선택
-  if (startDate.value > endDate.value) {
-    alert('시작 날짜는 종료 날짜보다 빠를 수 없습니다.');
-    return;
-  }
+  // 4. (ai) 기간 필터링
 
-  // 필터링 시작
-  searchStore.inquiry = searchStore.sortedHistory.filter((item) => {
-    // 날짜 비교를 위해 Date 객체로 변환 (문자열 "2026-04-09" -> Date 객체)
-    const itemDate = new Date(item.history_date);
+  // 4.2 기간 필터링 함수
+  if (startDate.value && endDate.value) {
+    // 4.2.1 유효성 검사: 둘 중 하나라도 입력되지 않았을 경우
+
+    // 시작일이 종료일보다 반드시 이전일로 선택
+    if (startDate.value > endDate.value) {
+      alert('시작 날짜는 종료 날짜보다 빠를 수 없습니다.');
+      return;
+    }
+
     const start = new Date(startDate.value);
     const end = new Date(endDate.value);
+    // 필터링 시작
+    filtered = filtered.filter((item) => {
+      // 날짜 비교를 위해 Date 객체로 변환 (문자열 "2026-04-09" -> Date 객체)
+      const itemDate = new Date(item.history_date);
 
-    return itemDate >= start && itemDate <= end;
-  });
+      return itemDate >= start && itemDate <= end;
+    });
+  }
+
+  // 5. 거래 유형 필터링
+  // 선택된 카테고리가 있을 때만 필터링 수행
+  if (searchStore.selectedCategories.length > 0) {
+    filtered = filtered.filter((item) => {
+      // 거래 내역의 category_no가 선택된 배열에 포함되어 있는지 확인
+      return searchStore.selectedCategories.includes(item.category_no);
+    });
+  }
+
+  searchStore.inquiry = filtered;
+  console.log(`필터링 완료: ${filtered.length}건`);
 };
-
-// 5. 거래 유형 필터링
-const categoryFilter = () => {};
+// 6. 카테고리 탭 변경시 체크박스 초기화
+watch(activeTab, () => {
+  searchStore.selectedCategories = [];
+});
 
 // 999. 콘솔 확인용
 // const check = () => console.log('코드 확인', sortedHistory);
