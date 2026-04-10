@@ -8,6 +8,24 @@
       "user_email": "user01@gmail.com",
       "user_phone": "010-1234-5678",
       "user_state": 0
+    },
+    {
+      "id": 2,
+      "user_id": "user02",
+      "user_pw": "0000",
+      "user_name": "user02",
+      "user_email": "user02@gmail.com",
+      "user_phone": "010-0000-1111",
+      "user_state": 0
+    },
+    {
+      "id": 3,
+      "user_id": "user03",
+      "user_pw": "0000",
+      "user_name": "user03",
+      "user_email": "user03@gmail.com",
+      "user_phone": "010-4444-3333",
+      "user_state": 0
     }
   ],
   "history": [
@@ -40,7 +58,7 @@
       "history_money": 555555,
       "history_type": "in",
       "category_no": 6,
-      "history_date": "2026-07-07",
+      "history_date": "2026-01-21",
       "user_no": 1,
       "history_state": 0
     },
@@ -51,7 +69,7 @@
       "history_money": 10000,
       "history_type": "in",
       "category_no": 9,
-      "history_date": "2026-01-07",
+      "history_date": "2026-01-27",
       "user_no": 1,
       "history_state": 0
     },
@@ -62,7 +80,7 @@
       "history_money": 10000,
       "history_type": "out",
       "category_no": 7,
-      "history_date": "2026-04-07",
+      "history_date": "2026-04-15",
       "user_no": 1,
       "history_state": 0
     },
@@ -73,7 +91,7 @@
       "history_money": 10000,
       "history_type": "in",
       "category_no": 6,
-      "history_date": "2026-04-07",
+      "history_date": "2026-04-09",
       "user_no": 1,
       "history_state": 0
     },
@@ -84,7 +102,7 @@
       "history_money": 10000,
       "history_type": "out",
       "category_no": 1,
-      "history_date": "2026-04-07",
+      "history_date": "2026-03-25",
       "user_no": 1,
       "history_state": 0
     },
@@ -95,7 +113,7 @@
       "history_money": 10000,
       "history_type": "in",
       "category_no": 4,
-      "history_date": "2026-04-07",
+      "history_date": "2026-04-01",
       "user_no": 1,
       "history_state": 0
     },
@@ -106,7 +124,7 @@
       "history_money": 10000,
       "history_type": "in",
       "category_no": 2,
-      "history_date": "2026-04-07",
+      "history_date": "2026-02-06",
       "user_no": 1,
       "history_state": 0
     },
@@ -119,6 +137,116 @@
       "category_no": 3,
       "history_date": "2026-04-07",
       "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 11,
+      "history_title": "a2a2a2a2",
+      "history_content": "a2a22aa2",
+      "history_money": 10000,
+      "history_type": "in",
+      "category_no": 6,
+      "history_date": "2026-02-12",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 12,
+      "history_title": "2b2bb2b2",
+      "history_content": "bbb222bb2",
+      "history_money": 40000,
+      "history_type": "in",
+      "category_no": 1,
+      "history_date": "2026-04-07",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 13,
+      "history_title": "l2l2l2l2l",
+      "history_content": "lllll",
+      "history_money": 5000,
+      "history_type": "out",
+      "category_no": 16,
+      "history_date": "2026-03-18",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 14,
+      "history_title": "c3322c2c",
+      "history_content": "ccccc",
+      "history_money": 15000,
+      "history_type": "in",
+      "category_no": 6,
+      "history_date": "2026-02-26",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 15,
+      "history_title": "2d2d2d2d",
+      "history_content": "dddddd",
+      "history_money": 20000,
+      "history_type": "out",
+      "category_no": 11,
+      "history_date": "2026-03-14",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 16,
+      "history_title": "2x2x2",
+      "history_content": "xxxxx",
+      "history_money": 10000,
+      "history_type": "in",
+      "category_no": 4,
+      "history_date": "2026-04-02",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 17,
+      "history_title": "3x3x33ee",
+      "history_content": "e33e2e2e",
+      "history_money": 5000,
+      "history_type": "out",
+      "category_no": 16,
+      "history_date": "2026-04-03",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 18,
+      "history_title": "2s2ss2s",
+      "history_content": "ssssss",
+      "history_money": 5000,
+      "history_type": "out",
+      "category_no": 13,
+      "history_date": "2026-04-01",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 19,
+      "history_title": "2v2v2v2v",
+      "history_content": "vvvvv",
+      "history_money": 100000,
+      "history_type": "out",
+      "category_no": 15,
+      "history_date": "2026-04-03",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 20,
+      "history_title": "2zz2z22",
+      "history_content": "z222z2z",
+      "history_money": 5000,
+      "history_type": "out",
+      "category_no": 11,
+      "history_date": "2026-04-05",
+      "user_no": 2,
       "history_state": 0
     }
   ],
@@ -227,6 +355,14 @@
       "id": 21,
       "category_name": "보험",
       "category_type": "out"
+    }
+  ],
+  "budget": [
+    {
+      "id": 1,
+      "budget_date": "2026-04",
+      "budget_money": 1000000,
+      "user_no": 2
     }
   ]
 }

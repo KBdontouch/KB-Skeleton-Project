@@ -1,8 +1,11 @@
 import { ref, computed, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useAuthStore } from './auth';
 
 export const useMainStore = defineStore('main', () => {
+  const authStore = useAuthStore();
+
   const states = reactive({
     history: [],
     category: [],
@@ -10,7 +13,9 @@ export const useMainStore = defineStore('main', () => {
 
   const dataInit = async () => {
     try {
-      const history = await axios.get('/api/history');
+      const history = await axios.get(
+        '/api/history?user_no=' + authStore.user.id,
+      );
       const category = await axios.get('/api/category');
       states.history = history.data;
       states.category = category.data;
@@ -66,7 +71,7 @@ export const useMainStore = defineStore('main', () => {
     const grouped = inHistory.reduce((acc, cur) => {
       // 카테고리 이름 찾기
       const cat = states.category.find(
-        (c) => Number(c.category_no) === Number(cur.category_no),
+        (c) => Number(c.id) === Number(cur.category_no),
       );
       const catName = cat ? cat.category_name : '미분류';
 
@@ -95,7 +100,7 @@ export const useMainStore = defineStore('main', () => {
     const grouped = outHistory.reduce((acc, cur) => {
       // 카테고리 이름 찾기
       const cat = states.category.find(
-        (c) => Number(c.category_no) === Number(cur.category_no),
+        (c) => Number(c.id) === Number(cur.category_no),
       );
       const catName = cat ? cat.category_name : '미분류';
 

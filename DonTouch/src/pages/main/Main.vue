@@ -6,7 +6,7 @@
       <span>
         {{ mainStore.recentHistory.history_title }}
         {{ (mainStore.recentHistory.history_money || 0).toLocaleString() }}원
-        {{ mainStore.recentHistory.history_type == 'in' ? '수입' : '지춞' }}
+        {{ mainStore.recentHistory.history_type == 'in' ? '수입' : '지출' }}
       </span>
       <span>{{ mainStore.recentHistory.history_date }}</span>
     </div>
@@ -36,7 +36,9 @@
 
     <!-- 거래내역 추가 버튼 영역 -->
     <div>
-      <span>+ 거래내역 추가</span>
+      <RouterLink to="/">
+        <span>+ 거래내역 추가</span>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -46,7 +48,9 @@ import { useMainStore } from '@/stores/main';
 import { onMounted } from 'vue';
 import MainChartIn from './MainChartIn.vue';
 import MainChartOut from './MainChartOut.vue';
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore();
 const mainStore = useMainStore();
 
 onMounted(async () => {
