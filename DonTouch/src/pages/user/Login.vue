@@ -22,8 +22,14 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const authStore = useAuthStore();
 
 // 로그인 데이터
 const loginData = reactive({
@@ -46,9 +52,12 @@ const handleLogin = async () => {
 
   // 유저 데이터 있으면 로그인 되고 , 없으면 로그인 안되게
   if (user) {
+    const token = `token_${Date.now()}_${user.user_id}`;
+    authStore.login(user, token);
+
     // 로그인 성공 시 로직
-    localStorage.setItem('user', JSON.stringify(user));
     alert(`${user.id}님, 안녕하세요!`);
+    router.push('/main');
   } else {
     // 로그인 실패 시 로직
     alert('아이디 또는 비밀번호가 일치하지 않습니다.');
