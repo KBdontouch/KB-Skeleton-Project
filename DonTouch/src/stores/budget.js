@@ -26,7 +26,6 @@ export const useBudgetStore = defineStore('budget', () => {
   const updateMoney = ref(0);
 
   const initBudget = async () => {
-    authStore.user.id = 2;
     const res = await axios.get('/api/budget?user_no=' + authStore.user.id);
     budget.value = res.data;
     const findBudget = budget.value.find((i) => {
