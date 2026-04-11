@@ -144,7 +144,7 @@ export const useBudgetStore = defineStore('budget', () => {
     const budgetMoney = res.data[0]?.budget_money || 0;
 
     const historyRes = await axios.get(
-      `/api/history?user_no=${authStore.user.id}`,
+      `/api/history?user_no=${authStore.user.id}&history_type=out`,
     );
 
     const historyData = historyRes.data.filter(
