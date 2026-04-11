@@ -70,7 +70,7 @@ const handleLogin = async () => {
     authStore.login(user, token);
 
     // 로그인 성공 시 로직
-    alert(`${user.id}님, 안녕하세요!`);
+    alert(`${user.name}님, 안녕하세요!`);
     router.push('/main');
   } else {
     // 로그인 실패 시 로직
