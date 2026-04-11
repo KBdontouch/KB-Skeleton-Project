@@ -60,10 +60,10 @@
 
             <div class="money">
               <div v-if="trans.history_type === 'in'" class="money-in">
-                <span>{{ "+ " + trans.history_money.toLocaleString() }}원</span>
+                <span>{{ '+ ' + trans.history_money.toLocaleString() }}원</span>
               </div>
               <div v-else class="money-out">
-                <span>{{ "- " + trans.history_money.toLocaleString() }}원</span>
+                <span>{{ '- ' + trans.history_money.toLocaleString() }}원</span>
               </div>
             </div>
             <!-- 수정/삭제 버튼 -->
@@ -90,7 +90,7 @@
       <br />
       <!-- 제목/내용 검색창 -->
       <div class="inquiry-search">
-        <span>검색</span>
+        <span>검색 : </span>
         <input
           class="searchbox"
           type="text"
@@ -105,8 +105,8 @@
         <span>조회기간 :</span>
         <!-- 버튼 눌렀을 때 시작/ 끝 각각 캘린더 떠서 선택가능 -->
         <!-- 캘린더에도 완료버튼 -->
-        <input type="date" class="start_date" v-model="startDate" />
-        ~<input type="date" class="end_date" v-model="endDate" />
+        <input type="date" class="start_date" v-model="startDate" /> <br />
+        ~ <input type="date" class="end_date" v-model="endDate" />
       </div>
       <hr />
       <div>거래유형 별 조회</div>
@@ -146,22 +146,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
-import axios from "axios";
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios';
 
-import { useSearchStore } from "@/stores/transactionsearch";
-import { useTransactionStore } from "@/stores/transaction";
-import TypeIn from "./transactionslistmenu/TypeIn.vue";
-import TypeOut from "./transactionslistmenu/TypeOut.vue";
-import { useRouter } from "vue-router";
+import { useSearchStore } from '@/stores/transactionsearch';
+import { useTransactionStore } from '@/stores/transaction';
+import TypeIn from './transactionslistmenu/TypeIn.vue';
+import TypeOut from './transactionslistmenu/TypeOut.vue';
+import { useRouter } from 'vue-router';
 
 // data
 const searchStore = useSearchStore();
 const transactionStore = useTransactionStore();
 const router = useRouter();
 // 7. 현재 선택된 탭을 저장 (기본값: 'all')
-const currentTab = ref("all");
-const activeTabInfo = ref("in");
+const currentTab = ref('all');
+const activeTabInfo = ref('in');
 
 // 1.4 컴포넌트 Mount시 요청
 onMounted(async () => {
@@ -172,14 +172,14 @@ onMounted(async () => {
 
 // 1. 수입/지출 카테고리 동적 컴포넌트
 // 1.1 (ai) 컴포넌트 넣을 변수 지정(ref)
-const activeTab = ref("TypeIn"); // 기본값
+const activeTab = ref('TypeIn'); // 기본값
 const tabs = { TypeIn, TypeOut };
 
 // 3. 수정/삭제 버튼 이벤트
 // 3.0 수정 컴포넌트로 이동
 const editMove = (trans) => {
   transactionStore.history = trans;
-  router.push("/transaction/edit/:id");
+  router.push('/transaction/edit/:id');
 };
 
 // 3.2 삭제 이벤트
@@ -187,27 +187,27 @@ const deleteInquiry = async (id) => {
   console.log(id);
 
   try {
-    if (confirm("거래 내역을 삭제하겠습니까?")) {
+    if (confirm('거래 내역을 삭제하겠습니까?')) {
       // (ai) CRUD 삭제
-      await axios.delete("/api/history/" + id);
+      await axios.delete('/api/history/' + id);
       // (ai) 스토어에 만들어둔 데이터 로드 함수를 다시 실행
       await searchStore.fetchHistory();
 
-      alert("삭제 되었습니다.");
+      alert('삭제 되었습니다.');
     } else {
-      alert("삭제가 취소되었습니다.");
+      alert('삭제가 취소되었습니다.');
     }
   } catch (e) {
-    alert("오류 발생: " + e);
+    alert('오류 발생: ' + e);
   }
 };
 
 // **필터바**
 // 100. 전체 조건 적용 함수
-const searchKeyword = ref("");
+const searchKeyword = ref('');
 // 4.1 날짜 입력을 저장할 변수
-const startDate = ref("");
-const endDate = ref("");
+const startDate = ref('');
+const endDate = ref('');
 
 const applyFilter = () => {
   let filtered = [...searchStore.sortedHistory];
@@ -219,8 +219,8 @@ const applyFilter = () => {
     filtered = filtered.filter((item) => {
       // 3.3 제목(history_title) 또는 내용(history_content)에 키워드가 포함되어 있는지 확인
       //     제목/내용값 falsy일 경우 대비 기본값('') 처리
-      const title = item.history_title || "";
-      const content = item.history_content || "";
+      const title = item.history_title || '';
+      const content = item.history_content || '';
 
       return title.includes(keyword) || content.includes(keyword);
     });
@@ -234,7 +234,7 @@ const applyFilter = () => {
 
     // 시작일이 종료일보다 반드시 이전일로 선택
     if (startDate.value > endDate.value) {
-      alert("시작 날짜는 종료 날짜보다 빠를 수 없습니다.");
+      alert('시작 날짜는 종료 날짜보다 빠를 수 없습니다.');
       return;
     }
 
@@ -257,7 +257,7 @@ const applyFilter = () => {
       return searchStore.selectedCategories.includes(item.category_no);
     });
   }
-  currentTab.value = "";
+  currentTab.value = '';
   searchStore.inquiry = filtered;
   console.log(`필터링 완료: ${filtered.length}건`);
 };
@@ -267,30 +267,33 @@ watch(activeTab, () => {
 });
 
 // 7. 버튼 클릭시 선택된 버튼 정보 저장(배경색 CSS 적용)
+<<<<<<< HEAD
 // 현재 선택된 탭을 저장 (기본값: 'all')
 //const currentTab = ref("all");
+=======
+>>>>>>> a442cec83dbd1ab9597361b75c07cb8ae47169d8
 
 // 버튼 클릭 시 실행될 함수 목록
 const selectAll = () => {
-  currentTab.value = "all";
+  currentTab.value = 'all';
   searchStore.showAll();
 };
 
 const selectIn = () => {
-  currentTab.value = "in";
+  currentTab.value = 'in';
   searchStore.showIn();
 };
 
 const selectOut = () => {
-  currentTab.value = "out";
+  currentTab.value = 'out';
   searchStore.showOut();
 };
 
 const selectCateIn = () => {
-  activeTabInfo.value = "in";
+  activeTabInfo.value = 'in';
 };
 const selectCateOut = () => {
-  activeTabInfo.value = "out";
+  activeTabInfo.value = 'out';
 };
 // 999. 콘솔 확인용
 // const check = () => console.log('코드 확인', sortedHistory);
@@ -298,5 +301,5 @@ const selectCateOut = () => {
 </script>
 
 <style>
-@import "@/assets/transactionList.css";
+@import '@/assets/transactionList.css';
 </style>
