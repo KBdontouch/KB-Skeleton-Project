@@ -32,8 +32,10 @@ const router = useRouter();
 
 const authStore = useAuthStore();
 const logout = () => {
-  authStore.logout();
-  router.push('/');
+  if (confirm('로그아웃 하시겠습니까?')) {
+    authStore.logout();
+    router.push('/');
+  }
 };
 </script>
 
