@@ -36,6 +36,12 @@ ChartJS.register(
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  scales: {
+    y: {
+      beginAtZero: true,
+      grace: '30%',
+    },
+  },
   plugins: {
     legend: {
       display: true,
@@ -46,6 +52,7 @@ const chartOptions = {
       anchor: 'end',
       align: 'top',
       formatter: (value) => value.toLocaleString() + '원',
+      clip: false,
     },
   },
 };
