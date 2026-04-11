@@ -193,7 +193,7 @@ const deleteInquiry = async (id) => {
       // (ai) 스토어에 만들어둔 데이터 로드 함수를 다시 실행
       await searchStore.fetchHistory();
       // 데이터 갱신
-      searchStore.inquiry = searchStore.sortedHistory;
+      applyFilter();
 
       alert('삭제 되었습니다.');
     } else {
