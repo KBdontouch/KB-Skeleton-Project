@@ -1,10 +1,12 @@
 import { ref, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useAuthStore } from './auth';
 
 export const useSearchStore = defineStore('search', () => {
+  const authStore = useAuthStore();
   // 0. db.json data API
-  const historyURL = '/api/history?user_no=1';
+  const historyURL = '/api/history?user_no=' + authStore.user.id;
   // 1. db.json에서 거래 내역 데이터 가져오기
   // 1.1 history/inquiry 배열 생성
   const history = ref([]);
@@ -43,6 +45,12 @@ export const useSearchStore = defineStore('search', () => {
   // 3. 카테고리 항목
   const selectedCategories = ref([]);
 
+  const resetState = () => {
+    history.value = [];
+    inquiry.value = [];
+    selectedCategories.value = [];
+  };
+
   return {
     history,
     fetchHistory,
@@ -52,5 +60,6 @@ export const useSearchStore = defineStore('search', () => {
     showAll,
     showIn,
     showOut,
+    resetState,
   };
 });
