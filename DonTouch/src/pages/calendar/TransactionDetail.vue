@@ -104,7 +104,6 @@
           취소하기
         </button>
       </div>
-      <div class="footer-placeholder">footer</div>
     </div>
   </div>
 </template>

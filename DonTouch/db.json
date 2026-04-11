@@ -107,10 +107,10 @@
     {
       "id": 10,
       "history_title": "zzzzz",
-      "history_content": "zzzzz",
+      "history_content": "ㅇㅇ",
       "history_money": 5000,
       "history_type": "out",
-      "category_no": 3,
+      "category_no": 20,
       "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
@@ -260,34 +260,23 @@
     },
     {
       "id": 24,
-      "history_title": "zzzzz",
-      "history_content": "zzzzz",
+      "history_title": "원래 ",
+      "history_content": "되는 건가",
       "history_money": 50000,
-      "history_type": "in",
-      "category_no": 3,
+      "history_type": "out",
+      "category_no": 17,
       "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
     },
     {
       "id": 25,
-      "history_title": "zzzzz",
-      "history_content": "zzzzz",
+      "history_title": "고침",
+      "history_content": "고침2",
       "history_money": 50000,
       "history_type": "in",
-      "category_no": 3,
+      "category_no": 2,
       "history_date": "2026-04-07",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 26,
-      "history_title": "auth",
-      "history_content": "ㅇㅇㅇ",
-      "history_money": 153153,
-      "history_type": "in",
-      "category_no": 3,
-      "history_date": "2026-04-24",
       "user_no": 1,
       "history_state": 0
     },
@@ -314,25 +303,14 @@
       "history_state": 0
     },
     {
-      "id": 29,
-      "history_title": "빵",
-      "history_content": "빵빵",
-      "history_money": 15000,
+      "id": 31,
+      "history_title": "5만원",
+      "history_content": "바나나우유",
+      "history_money": 50000,
       "history_type": "out",
-      "category_no": 19,
+      "category_no": 10,
       "history_date": "2026-04-11",
       "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 30,
-      "user_no": 1,
-      "category_no": 11,
-      "history_title": "무신사",
-      "history_money": 23000,
-      "history_type": "out",
-      "history_date": "2026-04-11",
-      "history_content": "무신사요",
       "history_state": 0
     }
   ],
