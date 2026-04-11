@@ -35,31 +35,18 @@
       "user_email": "dddd",
       "user_phone": "010-2668-2959",
       "user_state": 0
+    },
+    {
+      "id": 5,
+      "user_id": "u",
+      "user_pw": "0000",
+      "user_name": "dfdfdf",
+      "user_email": "s",
+      "user_phone": "s",
+      "user_state": 0
     }
   ],
   "history": [
-    {
-      "id": 1,
-      "history_title": "가게이름",
-      "history_content": "사용내용",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 1,
-      "history_date": "2026-04-07",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 2,
-      "history_title": "aaaaa",
-      "history_content": "aaaa",
-      "history_money": 33333,
-      "history_type": "in",
-      "category_no": 2,
-      "history_date": "2026-03-07",
-      "user_no": 1,
-      "history_state": 0
-    },
     {
       "id": 3,
       "history_title": "bbbbb",
@@ -83,17 +70,6 @@
       "history_state": 0
     },
     {
-      "id": 7,
-      "history_title": "fffffff",
-      "history_content": "fffffff",
-      "history_money": 10000,
-      "history_type": "out",
-      "category_no": 1,
-      "history_date": "2026-03-25",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
       "id": 9,
       "history_title": "hhhhhhh",
       "history_content": "hhhhhhh",
@@ -101,17 +77,6 @@
       "history_type": "in",
       "category_no": 2,
       "history_date": "2026-02-06",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 10,
-      "history_title": "zzzzz",
-      "history_content": "ㅇㅇ",
-      "history_money": 5000,
-      "history_type": "out",
-      "category_no": 20,
-      "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
     },
@@ -259,23 +224,12 @@
       "history_state": 0
     },
     {
-      "id": 24,
-      "history_title": "원래 ",
-      "history_content": "되는 건가",
-      "history_money": 50000,
-      "history_type": "out",
-      "category_no": 17,
-      "history_date": "2026-04-07",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
       "id": 25,
-      "history_title": "고침",
-      "history_content": "고침2",
+      "history_title": "zzzzz",
+      "history_content": "zzzzz",
       "history_money": 50000,
       "history_type": "in",
-      "category_no": 2,
+      "category_no": 3,
       "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
@@ -303,14 +257,25 @@
       "history_state": 0
     },
     {
-      "id": 31,
-      "history_title": "5만원",
-      "history_content": "바나나우유",
-      "history_money": 50000,
+      "id": 29,
+      "history_title": "빵",
+      "history_content": "빵빵",
+      "history_money": 15000,
       "history_type": "out",
-      "category_no": 10,
+      "category_no": 19,
       "history_date": "2026-04-11",
       "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 30,
+      "user_no": 1,
+      "category_no": 11,
+      "history_title": "무신사",
+      "history_money": 23000,
+      "history_type": "out",
+      "history_date": "2026-04-11",
+      "history_content": "무신사요",
       "history_state": 0
     }
   ],
