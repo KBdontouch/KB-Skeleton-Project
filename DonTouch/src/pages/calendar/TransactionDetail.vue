@@ -1,4 +1,3 @@
-//api 고치기
 <template>
   <div class="page">
     <div class="container">
@@ -111,15 +110,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useTransactionStore } from '@/stores/transaction';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useTransactionStore } from "@/stores/transaction";
+import { useRouter } from "vue-router";
 
 const transactionStore = useTransactionStore();
 
 // 카테고리 API
-const categoryURL = '/api/category';
+const categoryURL = "/api/category";
 const category = ref([]);
 
 // 카테고리 데이터 가져오기
@@ -127,29 +126,31 @@ const fetchCategory = async () => {
   try {
     const response = await axios.get(categoryURL);
     category.value = response.data;
-    console.log('category 데이터 로드 완료:', category.value);
+    console.log("category 데이터 로드 완료:", category.value);
   } catch (error) {
-    console.error('데이터를 가져오는데 실패했습니다:', error);
+    console.error("데이터를 가져오는데 실패했습니다:", error);
   }
 };
 // 컴포넌트 실행 시 카테고리 요청
 onMounted(async () => {
   await fetchCategory();
+  // 오늘 날짜 형식으로 설정
+  const today = new Date().toISOString().split("T")[0];
   categoryIn();
 });
 // 수입 카테고리
 const categoryIn = () => {
-  transactionStore.history.history_type = 'in';
+  transactionStore.history.history_type = "in";
   currentCategories.value = category.value.filter(
-    (item) => item.category_type === 'in',
+    (item) => item.category_type === "in",
   );
   console.log(currentCategories.value);
 };
 // 지출 카테고리
 const categoryOut = () => {
-  transactionStore.history.history_type = 'out';
+  transactionStore.history.history_type = "out";
   currentCategories.value = category.value.filter(
-    (item) => item.category_type === 'out',
+    (item) => item.category_type === "out",
   );
 };
 // 거래 내역 x 버튼 되돌리기
@@ -162,35 +163,38 @@ const currentCategories = ref([]);
 
 const router = useRouter();
 const cancel = () => {
-  if (confirm('취소하시겠습니까?')) {
-    router.push('/transaction');
+  if (confirm("취소하시겠습니까?")) {
+    router.push("/transaction");
   }
 };
+// 등록되었습니다 안나와서 추가
+const history = transactionStore.history;
 
 const register = async () => {
-  const res = await axios.get('/api/history');
+  const res = await axios.get("/api/history");
   const id = res.data[res.data.length - 1].id;
   transactionStore.history.id = parseInt(id) + 1;
-  console.log(transactionStore.history);
+  console.log(history);
 
   if (
-    transactionStore.history.id == 0 ||
-    transactionStore.history.history_title == '' ||
-    transactionStore.history.history_content == '' ||
-    transactionStore.history.history_money == 0 ||
-    transactionStore.history.category_no == 0
+    !history.id ||
+    !history.category_no ||
+    !history.history_money ||
+    !history.history_title ||
+    !history.history_content ||
+    !history.history_date
   ) {
-    alert('데이터를 입력하세요.');
+    alert("데이터를 입력하세요.");
   } else {
     const postResult = await axios.post(
-      '/api/history',
+      "/api/history",
       transactionStore.history,
     );
     if (postResult.status == 201) {
-      alert('거래 내역이 등록 되었습니다.');
-      router.push('/transaction');
+      alert("거래 내역이 등록 되었습니다.");
+      router.push("/transaction");
     } else {
-      alert('거래 내역 등록이 실패하였습니다.');
+      alert("거래 내역 등록이 실패하였습니다.");
     }
   }
 };

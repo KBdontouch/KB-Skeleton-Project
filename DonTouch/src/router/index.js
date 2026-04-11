@@ -1,70 +1,71 @@
-import SideBar from '@/components/SideBar.vue';
-import Budget from '@/pages/budget/Budget.vue';
-import Calendar from '@/pages/calendar/Calendar.vue';
-import TransactionDetail from '@/pages/calendar/TransactionDetail.vue';
-import TransactionEdit from '@/pages/calendar/TransactionEdit.vue';
-import TransactionList from '@/pages/calendar/TransactionList.vue';
-import Main from '@/pages/main/Main.vue';
-import Join from '@/pages/user/Join.vue';
-import Login from '@/pages/user/Login.vue';
-import MyPage from '@/pages/user/MyPage.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import SideBar from "@/components/SideBar.vue";
+import Budget from "@/pages/budget/Budget.vue";
+import Calendar from "@/pages/calendar/Calendar.vue";
+import TransactionDetail from "@/pages/calendar/TransactionDetail.vue";
+import TransactionEdit from "@/pages/calendar/TransactionEdit.vue";
+import TransactionList from "@/pages/calendar/TransactionList.vue";
+import Main from "@/pages/main/Main.vue";
+import Join from "@/pages/user/Join.vue";
+import Login from "@/pages/user/Login.vue";
+import MyPage from "@/pages/user/MyPage.vue";
+
+import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: "/",
       component: Login,
     },
     {
-      path: '/join',
+      path: "/join",
       component: Join,
     },
     {
-      path: '/mypage',
+      path: "/mypage",
       components: {
         default: MyPage,
         side: SideBar,
       },
     },
     {
-      path: '/main',
+      path: "/main",
       components: {
         default: Main,
         side: SideBar,
       },
     },
     {
-      path: '/budget',
+      path: "/budget",
       components: {
         default: Budget,
         side: SideBar,
       },
     },
     {
-      path: '/calendar',
+      path: "/calendar",
       components: {
         default: Calendar,
         side: SideBar,
       },
     },
     {
-      path: '/transaction',
+      path: "/transaction",
       components: {
         default: TransactionList,
         side: SideBar,
       },
     },
     {
-      path: '/transaction/add',
+      path: "/transaction/add",
       components: {
         default: TransactionDetail,
         side: SideBar,
       },
     },
     {
-      path: '/transaction/edit',
+      path: "/transaction/edit/:id",
       components: {
         default: TransactionEdit,
         side: SideBar,
