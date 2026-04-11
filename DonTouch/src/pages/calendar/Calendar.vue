@@ -19,7 +19,7 @@
 
       <div class="budget-center">
         예산 :
-        {{ (budgetStore.activeBudget?.budget_money || 0).toLocaleString() }}원
+        {{ (currentBudget?.budget_money || 0).toLocaleString() }}원
       </div>
 
       <div class="total-stats">
@@ -60,58 +60,75 @@ import { useCalendarStore } from "@/stores/calendar";
 import { useBudgetStore } from "@/stores/budget";
 import { useRouter } from "vue-router";
 
-// 수정함
+// 1. 기초 도구 및 스토어 초기화 (최상단)
 const router = useRouter();
-
-const goToAddPage = () => {
-  router.push('/transaction/add')
-}
-
-// 예산 데이터 불러오기
 const budgetStore = useBudgetStore();
-
+const calendarStore = useCalendarStore();
 const fullCalendar = ref(null);
 const monthInputRef = ref(null);
-const calendarStore = useCalendarStore();
 
-// --- [초기값 및 상태] ---
+// 2. 핵심 상태 변수 (이 변수들이 computed보다 위에 있어야 함)
 const now = new Date();
 const selectedYear = ref(now.getFullYear());
 const selectedMonth = ref(now.getMonth() + 1);
 
-// [연동] calendar.js에서 가공한 날짜별 합계 데이터
-const dailyData = computed(() => calendarStore.dailyTotals || {});
+// 3. 예산 관련 computed 로직
+const currentBudget = computed(() => {
+  if (!budgetStore.budget) return null;
+  return budgetStore.budget.find((item) => {
+    const itemDate = new Date(item.budget_date);
+    return (
+      itemDate.getFullYear() === selectedYear.value &&
+      itemDate.getMonth() + 1 === selectedMonth.value
+    );
+  }) || null;
+});
 
-const triggerPicker = () => {
-  if (monthInputRef.value) monthInputRef.value.showPicker();
-};
-
+// 4. 날짜 입력창(input type="month")과 연결된 computed
 const selectedMonthStr = computed({
-  get: () =>
-    `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}`,
+  get: () => `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}`,
   set: (val) => {
     if (!val) return;
     const [y, m] = val.split("-");
     selectedYear.value = parseInt(y);
     selectedMonth.value = parseInt(m);
-    // 스토어에 현재 보고 있는 날짜 알려주기
     calendarStore.setCurrentDate(parseInt(y), parseInt(m));
   },
 });
 
+// 5. 감시자(watch) 및 로직들
+watch([selectedYear, selectedMonth], async () => {
+  // 예산 스토어 동기화
+  budgetStore.activeYear = selectedYear.value;
+  budgetStore.activeMonth = selectedMonth.value;
+  await budgetStore.fetchDate();
+  
+  // 캘린더 데이터 다시 계산 (주별 요약 포함)
+  nextTick(() => setTimeout(updateWeeklySummary, 300));
+});
+
+// [추가] 달력 날짜 변경 시 동작
 const handleMonthChange = () => {
   if (fullCalendar.value) {
     const calendarApi = fullCalendar.value.getApi();
     const target = `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}-01`;
     calendarApi.gotoDate(target);
-    setTimeout(updateWeeklySummary, 100);
   }
 };
 
-// --- [로직] 주별 요약 (기존 유지) ---
+const goToAddPage = () => {
+  router.push('/transaction/add');
+};
+
+const triggerPicker = () => {
+  if (monthInputRef.value) monthInputRef.value.showPicker();
+};
+
+// [로직] 주별 요약 (기존 코드 유지)
+const dailyData = computed(() => calendarStore.dailyTotals || {});
+
 const updateWeeklySummary = () => {
   document.querySelectorAll(".weekly-summary-bar").forEach((el) => el.remove());
-
   const calendarApi = fullCalendar.value?.getApi();
   if (!calendarApi) return;
 
@@ -129,10 +146,7 @@ const updateWeeklySummary = () => {
       if (!cell) continue;
       const dateStr = cell.getAttribute("data-date");
       if (!dateStr) continue;
-      if (parseInt(dateStr.split("-")[1]) === currentViewMonth)
-        hasCurrentMonthDay = true;
-
-      // [연동] 스토어의 dailyData에서 주간 합계 계산
+      if (parseInt(dateStr.split("-")[1]) === currentViewMonth) hasCurrentMonthDay = true;
       if (dailyData.value[dateStr]) {
         weeklyExpense += dailyData.value[dateStr].expense || 0;
         weeklyIncome += dailyData.value[dateStr].income || 0;
@@ -143,13 +157,10 @@ const updateWeeklySummary = () => {
       const summaryBar = document.createElement("div");
       summaryBar.className = "weekly-summary-bar";
       let htmlContent = `<div class="summary-content">`;
-      if (weeklyIncome > 0)
-        htmlContent += `<span class="w-income">+ ${weeklyIncome.toLocaleString()}원</span>`;
-      if (weeklyExpense > 0)
-        htmlContent += `<span class="w-expense">- ${weeklyExpense.toLocaleString()}원</span>`;
+      if (weeklyIncome > 0) htmlContent += `<span class="w-income">+ ${weeklyIncome.toLocaleString()}원</span>`;
+      if (weeklyExpense > 0) htmlContent += `<span class="w-expense">- ${weeklyExpense.toLocaleString()}원</span>`;
       htmlContent += `</div>`;
       summaryBar.innerHTML = htmlContent;
-
       const firstCellInWeek = days[i * 7];
       if (firstCellInWeek) {
         const frame = firstCellInWeek.querySelector(".fc-daygrid-day-frame");
@@ -159,18 +170,9 @@ const updateWeeklySummary = () => {
   }
 };
 
-// 데이터나 날짜가 바뀌면 주별 요약 다시 계산
-watch(
-  [dailyData, selectedMonth, selectedYear],
-  () => {
-    nextTick(() => setTimeout(updateWeeklySummary, 300));
-  },
-  { deep: true },
-);
-
-// --- [설정] FullCalendar ---
+// --- [FullCalendar 설정] ---
 const calendarOptions = reactive({
-  plugins: [dayGridPlugin], // interaction 제거
+  plugins: [dayGridPlugin],
   initialView: "dayGridMonth",
   locale: "ko",
   headerToolbar: false,
@@ -181,8 +183,6 @@ const calendarOptions = reactive({
     const m = String(arg.date.getMonth() + 1).padStart(2, "0");
     const d = String(arg.date.getDate()).padStart(2, "0");
     const dateStr = `${y}-${m}-${d}`;
-
-    // [연동] 스토어의 날짜별 상자에서 데이터 꺼내기
     const data = dailyData.value[dateStr];
     const isSunday = arg.date.getDay() === 0;
     const sundayClass = isSunday ? "is-sunday" : "";
@@ -193,31 +193,42 @@ const calendarOptions = reactive({
                     <span class='day-number ${sundayClass}'>${dayNum}</span>
                   </div>`;
     if (data) {
-      if (data.expense > 0)
-        html += `<p class='daily-expense'>-${data.expense.toLocaleString()}</p>`;
-      if (data.income > 0)
-        html += `<p class='daily-income'>+${data.income.toLocaleString()}</p>`;
+      if (data.expense > 0) html += `<p class='daily-expense'>-${data.expense.toLocaleString()}</p>`;
+      if (data.income > 0) html += `<p class='daily-income'>+${data.income.toLocaleString()}</p>`;
     }
     html += `</div>`;
     return { html };
   },
   datesSet: (info) => {
     const currentStart = info.view.currentStart;
-    const y = currentStart.getFullYear();
-    const m = currentStart.getMonth() + 1;
-    selectedYear.value = y;
-    selectedMonth.value = m;
-
-    // 스토어 상태 업데이트
-    calendarStore.setCurrentDate(y, m);
+    selectedYear.value = currentStart.getFullYear();
+    selectedMonth.value = currentStart.getMonth() + 1;
+    calendarStore.setCurrentDate(selectedYear.value, selectedMonth.value);
     nextTick(() => setTimeout(updateWeeklySummary, 300));
   },
 });
 
 onMounted(async () => {
-  // [연동] 페이지 로드 시 데이터 불러오기
-  await calendarStore.fetchHistory();
-  await budgetStore.initBudget();
+  // 1. 필요한 데이터를 모두 불러올 때까지 대기
+  await Promise.all([
+    calendarStore.fetchHistory(),
+    budgetStore.initBudget()
+  ]);
+
+  // 2. 데이터가 스토어에 담긴 후, DOM이 업데이트될 때까지 대기
+  await nextTick();
+
+  // 3. 캘린더 API를 사용하여 강제로 다시 그리기
+  if (fullCalendar.value) {
+    const calendarApi = fullCalendar.value.getApi();
+    
+    // 캘린더 내부 상태를 새로고침하여 dayCellContent가 다시 실행되도록 함
+    calendarApi.render(); 
+    
+    // 4. 데이터 로드 후 주별 요약 바를 그리기 위해 약간의 지연 후 실행
+    // (FullCalendar의 내부 렌더링 속도에 맞추기 위함)
+    setTimeout(updateWeeklySummary, 300);
+  }
 });
 </script>
 
