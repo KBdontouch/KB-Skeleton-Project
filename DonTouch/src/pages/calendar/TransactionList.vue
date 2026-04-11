@@ -178,8 +178,8 @@ const tabs = { TypeIn, TypeOut };
 // 3. 수정/삭제 버튼 이벤트
 // 3.0 수정 컴포넌트로 이동
 const editMove = (trans) => {
-  transactionStore.history = trans;
-  router.push("/transaction/edit/:id");
+  transactionStore.history = { ...trans };
+  router.push(`/transaction/edit/${trans.id}`);
 };
 
 // 3.2 삭제 이벤트
