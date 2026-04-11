@@ -26,6 +26,15 @@
       "user_email": "user03@gmail.com",
       "user_phone": "010-4444-3333",
       "user_state": 0
+    },
+    {
+      "id": 4,
+      "user_id": "ㅇㅇㅇ",
+      "user_pw": "1234",
+      "user_name": "안녕나",
+      "user_email": "dddd",
+      "user_phone": "010-2668-2959",
+      "user_state": 0
     }
   ],
   "history": [
@@ -74,28 +83,6 @@
       "history_state": 0
     },
     {
-      "id": 5,
-      "history_title": "ddddd",
-      "history_content": "ddddd",
-      "history_money": 10000,
-      "history_type": "out",
-      "category_no": 7,
-      "history_date": "2026-04-15",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 6,
-      "history_title": "eeeeee",
-      "history_content": "eeeeee",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 6,
-      "history_date": "2026-04-09",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
       "id": 7,
       "history_title": "fffffff",
       "history_content": "fffffff",
@@ -103,17 +90,6 @@
       "history_type": "out",
       "category_no": 1,
       "history_date": "2026-03-25",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 8,
-      "history_title": "ggggggg",
-      "history_content": "gggggg",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 4,
-      "history_date": "2026-04-01",
       "user_no": 1,
       "history_state": 0
     },
@@ -247,6 +223,116 @@
       "category_no": 11,
       "history_date": "2026-04-05",
       "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 21,
+      "history_title": "ㅌㅌ",
+      "history_content": "ㅌㅌㅌ",
+      "history_money": 20000,
+      "history_type": "in",
+      "category_no": 1,
+      "history_date": "2026-04-16",
+      "user_no": 0,
+      "history_state": 0
+    },
+    {
+      "id": 22,
+      "history_title": "집에 가고 싶어상",
+      "history_content": "나야나상",
+      "history_money": 22000,
+      "history_type": "in",
+      "category_no": 1,
+      "history_date": "2026-04-16",
+      "user_no": 0,
+      "history_state": 0
+    },
+    {
+      "id": 23,
+      "history_title": "dd",
+      "history_content": "ddd",
+      "history_money": 16000,
+      "history_type": "in",
+      "category_no": 1,
+      "history_date": "2026-04-10T12:28:06.141Z",
+      "user_no": 0,
+      "history_state": 0
+    },
+    {
+      "id": 24,
+      "history_title": "zzzzz",
+      "history_content": "zzzzz",
+      "history_money": 50000,
+      "history_type": "in",
+      "category_no": 3,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 25,
+      "history_title": "zzzzz",
+      "history_content": "zzzzz",
+      "history_money": 50000,
+      "history_type": "in",
+      "category_no": 3,
+      "history_date": "2026-04-07",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 26,
+      "history_title": "auth",
+      "history_content": "ㅇㅇㅇ",
+      "history_money": 153153,
+      "history_type": "in",
+      "category_no": 3,
+      "history_date": "2026-04-24",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 27,
+      "history_title": "이건가",
+      "history_content": "이건가",
+      "history_money": 15000,
+      "history_type": "in",
+      "category_no": 4,
+      "history_date": "2026-04-02",
+      "user_no": 0,
+      "history_state": 0
+    },
+    {
+      "id": 28,
+      "history_title": "아니야",
+      "history_content": "아니야",
+      "history_money": 6000,
+      "history_type": "in",
+      "category_no": 4,
+      "history_date": "2026-04-02",
+      "user_no": 0,
+      "history_state": 0
+    },
+    {
+      "id": 29,
+      "history_title": "빵",
+      "history_content": "빵빵",
+      "history_money": 15000,
+      "history_type": "out",
+      "category_no": 19,
+      "history_date": "2026-04-11",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 30,
+      "user_no": 1,
+      "category_no": 11,
+      "history_title": "무신사",
+      "history_money": 23000,
+      "history_type": "out",
+      "history_date": "2026-04-11",
+      "history_content": "무신사요",
       "history_state": 0
     }
   ],
