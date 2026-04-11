@@ -61,7 +61,7 @@ onMounted(async () => {
 });
 
 const move = () => {
-  router.push('/');
+  router.push('/transaction/add');
 };
 </script>
 
