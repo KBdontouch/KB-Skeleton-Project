@@ -6,6 +6,7 @@ import { useAuthStore } from './auth';
 export const useBudgetStore = defineStore('budget', () => {
   const authStore = useAuthStore();
   const budget = ref([]);
+  const budgetId = ref();
   const activeBudget = ref(null);
 
   const now = new Date();
@@ -27,6 +28,7 @@ export const useBudgetStore = defineStore('budget', () => {
 
   const initBudget = async () => {
     const res = await axios.get('/api/budget?user_no=' + authStore.user.id);
+
     budget.value = res.data;
     const findBudget = budget.value.find((i) => {
       return (
@@ -38,6 +40,13 @@ export const useBudgetStore = defineStore('budget', () => {
       activeBudget.value = findBudget;
       updateMoney.value = activeBudget.value.budget_money;
     }
+
+    const id = await axios.get('/api/budget');
+    budgetId.value = id.data[id.data.length - 1].id + 1;
+  };
+
+  const fetchDate = async () => {
+    await changeMonth();
   };
 
   // 이전 달
@@ -47,7 +56,7 @@ export const useBudgetStore = defineStore('budget', () => {
       activeMonth.value = 12;
       activeYear.value--;
     }
-    changeMonth(activeYear.value, activeMonth.value);
+    fetchDate();
   };
 
   // 다음 달
@@ -57,12 +66,12 @@ export const useBudgetStore = defineStore('budget', () => {
       activeMonth.value = 1;
       activeYear.value++;
     }
-    changeMonth(activeYear.value, activeMonth.value);
+    fetchDate();
   };
 
-  const changeMonth = async (year, month) => {
+  const changeMonth = async () => {
     const res = await axios.get(
-      `/api/budget?user_no=${authStore.user.id}&budget_date=${year + '-' + String(month).padStart(2, '0')}`,
+      `/api/budget?user_no=${authStore.user.id}&budget_date=${formatDate.value}`,
     );
     if (res.data.length == 0) {
       activeBudget.value = null;
@@ -75,49 +84,39 @@ export const useBudgetStore = defineStore('budget', () => {
   };
 
   const updateBudget = async () => {
+    if (updateMoney.value <= 0 || updateMoney.value == '') {
+      return alert('예산을 입력하세요 음수는 예산 설정이 불가능합니다.');
+    }
+
+    if (!confirm('예산을 설정하시겠습니까?')) return;
+
     const res = await axios.get(
-      `/api/budget?user_no=${authStore.user.id}&budget_date=${activeYear.value + '-' + String(activeMonth.value).padStart(2, '0')}`,
+      `/api/budget?user_no=${authStore.user.id}&budget_date=${formatDate.value}`,
     );
 
-    let update = {
-      id: 0,
-      budget_date: '',
-      budget_money: 0,
-      user_no: 0,
-    };
+    let serverData;
 
     if (res.data.length == 0) {
-      update.id = parseInt(budget.value[budget.value.length - 1].id) + 1;
-      update.budget_date =
-        activeYear.value + '-' + String(activeMonth.value).padStart(2, '0');
-      update.budget_money = updateMoney.value;
-      update.user_no = authStore.user.id;
-
-      if (update.budget_money <= 0 || update.budget_money == '') {
-        alert('예산을 입력하세요 음수는 예산 설정이 불가능합니다.');
-      } else {
-        if (confirm('예산을 설정하시겠습니까?')) {
-          const postResult = await axios.post('/api/budget', update);
-          alert('예산 설정이 완료되었습니다.');
-        }
-      }
+      const newBudget = {
+        id: budgetId.value,
+        budget_date: formatDate.value,
+        budget_money: updateMoney.value,
+        user_no: authStore.user.id,
+      };
+      serverData = await axios.post('/api/budget', newBudget);
     } else {
-      update = { ...activeBudget.value };
-      update.budget_money = updateMoney.value;
-      if (update.budget_money <= 0 || update.budget_money == '') {
-        alert('예산을 입력하세요 음수는 예산 설정이 불가능합니다.');
-      } else {
-        if (confirm('예산을 설정하시겠습니까?')) {
-          const updateResult = await axios.put(
-            '/api/budget/' + update.id,
-            update,
-          );
-          alert('예산 설정이 완료되었습니다.');
-        }
-      }
+      const updateBudget = {
+        ...activeBudget.value,
+        budget_money: updateMoney.value,
+      };
+      serverData = await axios.put(
+        '/api/budget/' + updateBudget.id,
+        updateBudget,
+      );
     }
-    initBudget();
-    getChartData();
+    activeBudget.value = serverData.data;
+    alert('예산 설정이 완료되었습니다.');
+    await getChartData();
   };
 
   const chartData = ref({
@@ -136,11 +135,7 @@ export const useBudgetStore = defineStore('budget', () => {
     );
 
     const historyData = historyRes.data.filter(
-      (h) =>
-        new Date(h.history_date).getFullYear() +
-          '-' +
-          String(new Date(h.history_date).getMonth() + 1).padStart(2, '0') ==
-        formatDate.value,
+      (h) => h.history_date.substring(0, 7) == formatDate.value,
     );
 
     const totalSpend = historyData.reduce(
@@ -160,17 +155,6 @@ export const useBudgetStore = defineStore('budget', () => {
     };
   };
 
-  const handleDateChange = async (newDate) => {
-    if (!newDate) return;
-
-    const [y, m] = newDate.split('-');
-
-    activeYear.value = parseInt(y);
-    activeMonth.value = parseInt(m);
-
-    await changeMonth(activeYear.value, activeMonth.value);
-  };
-
   return {
     budget,
     activeBudget,
@@ -184,6 +168,6 @@ export const useBudgetStore = defineStore('budget', () => {
     updateBudget,
     chartData,
     getChartData,
-    handleDateChange,
+    fetchDate,
   };
 });
