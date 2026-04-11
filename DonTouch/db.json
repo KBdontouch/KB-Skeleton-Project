@@ -35,6 +35,15 @@
       "user_email": "dddd",
       "user_phone": "010-2668-2959",
       "user_state": 0
+    },
+    {
+      "id": 5,
+      "user_id": "user05",
+      "user_pw": "0000",
+      "user_name": "밤밤",
+      "user_email": "BAM",
+      "user_phone": "010-1234-5678",
+      "user_state": 0
     }
   ],
   "history": [
@@ -62,12 +71,12 @@
     },
     {
       "id": 3,
-      "history_title": "bbbbb",
-      "history_content": "bbbbb",
-      "history_money": 555555,
+      "history_title": "IT's your Life",
+      "history_content": "훈련장려금",
+      "history_money": 20000,
       "history_type": "in",
-      "category_no": 6,
-      "history_date": "2026-01-21",
+      "category_no": 1,
+      "history_date": "2026-03-04",
       "user_no": 1,
       "history_state": 0
     },
@@ -84,12 +93,12 @@
     },
     {
       "id": 7,
-      "history_title": "fffffff",
-      "history_content": "fffffff",
-      "history_money": 10000,
+      "history_title": "국민은행",
+      "history_content": "체크카드",
+      "history_money": 15000,
       "history_type": "out",
-      "category_no": 1,
-      "history_date": "2026-03-25",
+      "category_no": 8,
+      "history_date": "2026-03-08",
       "user_no": 1,
       "history_state": 0
     },
@@ -101,17 +110,6 @@
       "history_type": "in",
       "category_no": 2,
       "history_date": "2026-02-06",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 10,
-      "history_title": "zzzzz",
-      "history_content": "ㅇㅇ",
-      "history_money": 5000,
-      "history_type": "out",
-      "category_no": 20,
-      "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
     },
@@ -260,11 +258,11 @@
     },
     {
       "id": 24,
-      "history_title": "원래 ",
-      "history_content": "되는 건가",
+      "history_title": "ORIGIN",
+      "history_content": "휴지",
       "history_money": 50000,
       "history_type": "out",
-      "category_no": 17,
+      "category_no": 12,
       "history_date": "2026-04-07",
       "user_no": 1,
       "history_state": 0
