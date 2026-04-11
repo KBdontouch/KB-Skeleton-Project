@@ -41,6 +41,10 @@
         </p>
       </div>
     </header>
+    <!-- 수정함 -->
+    <div class ='button-container'>
+      <button class = 'add-transaction-btn' @click="goToAddPage">+</button>
+    </div>
 
     <div class="calendar-body-wrapper">
       <FullCalendar ref="fullCalendar" :options="calendarOptions" />
@@ -52,9 +56,16 @@
 import { ref, computed, reactive, onMounted, nextTick, watch } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
-// interactionPlugin과 useRouter는 요청하신 대로 제거했습니다.
 import { useCalendarStore } from "@/stores/calendar";
 import { useBudgetStore } from "@/stores/budget";
+import { useRouter } from "vue-router";
+
+// 수정함
+const router = useRouter();
+
+const goToAddPage = () => {
+  router.push('/transaction/add')
+}
 
 // 예산 데이터 불러오기
 const budgetStore = useBudgetStore();
@@ -225,7 +236,7 @@ onMounted(async () => {
   background-color: #d1d1d1;
   padding: 0 20px;
   height: 80px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .month-selector-wrapper {
   display: flex;
@@ -292,6 +303,42 @@ onMounted(async () => {
   color: #28a745;
   font-size: 18px;
   font-weight: bold;
+}
+
+/* 수정함 */
+.button-container {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  background-color: white;
+}
+
+.add-transaction-btn {
+  position: absolute;
+  top: 50%;
+  right: 15px; /* 우측 끝에서 살짝 띄움 */
+  transform: translateY(-50%); /* 세로 중앙 정렬 */
+  
+  width: 28px;
+  height: 28px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background-color: #fbd14b; /* 프로젝트 메인 컬러 */
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-transaction-btn:hover {
+  background-color: #f9c21a; /* 호버 시 약간 진하게 */
 }
 
 :deep(.day-header) {
@@ -386,4 +433,5 @@ onMounted(async () => {
 :deep(.fc-daygrid-day-number) {
   text-decoration: none !important;
 }
+
 </style>
