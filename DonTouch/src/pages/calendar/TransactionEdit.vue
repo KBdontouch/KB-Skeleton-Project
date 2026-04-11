@@ -157,16 +157,30 @@ const fetchCategory = async () => {
 };
 // 카테고리 콤보
 const currentCategories = ref([]);
+
 // 컴포넌트 실행 시
 onMounted(async () => {
   //1. 카테고리 목록부터 가져오기
   await fetchCategory();
-  //2. 만약 store에 데이터가 없다면(새로고침 등 )
+  //2. 만약 store에 데이터가 없다면 DB(api)에서 다시 조회
   if (!transactionStore.history.id) {
-    alert("수정할 거래 정보가 없습니다.");
-    router.push("/transaction");
-    return;
+    try {
+      const response = await axios(`/api/history/${historyId}`);
+      transactionStore.history = response.data;
+    } catch (error) {
+      console.error(error);
+      alert("거래 정보를 불러오지 못했습니다.");
+      router.push("/transaction");
+      return;
+    }
   }
+
+  //3.날짜 포맷이 필요하면
+  if (transactionStore.history.history_date) {
+    transactionStore.history.history_date =
+      transactionStore.history.history_date.setMilliseconds(0, 10);
+  }
+  // history_type이 없을 때만 기본값 설정
   if (transactionStore.history.history_type) {
     transactionStore.history.history_type = "in";
   }
