@@ -53,7 +53,7 @@ const loginData = reactive({
 // id, pw 중 하나라도 없으면 알림창
 const handleLogin = async () => {
   if (!loginData.id || !loginData.password) {
-    alert('빈칸 입력하세요');
+    alert('빈칸을 입력하세요');
   }
 
   const infoUser = await axios.get('/api/user');
@@ -70,7 +70,7 @@ const handleLogin = async () => {
     authStore.login(user, token);
 
     // 로그인 성공 시 로직
-    alert(`${user.id}님, 안녕하세요!`);
+    alert(`${user.user_name}님, 안녕하세요!`);
     router.push('/main');
   } else {
     // 로그인 실패 시 로직
