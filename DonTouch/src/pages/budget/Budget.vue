@@ -56,7 +56,6 @@
         </div>
         <div class="chart-area">
           <BudgetChart />
-          <!-- <div class="chart-label">지난달 예산 / 대비 소비 막대그래프</div> -->
         </div>
       </div>
     </div>

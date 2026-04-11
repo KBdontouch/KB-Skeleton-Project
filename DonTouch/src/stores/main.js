@@ -116,6 +116,11 @@ export const useMainStore = defineStore('main', () => {
     };
   });
 
+  const resetState = () => {
+    states.history = [];
+    states.category = [];
+  };
+
   return {
     states,
     dataInit,
@@ -125,5 +130,6 @@ export const useMainStore = defineStore('main', () => {
     totalOut,
     chartIn,
     chartOut,
+    resetState,
   };
 });

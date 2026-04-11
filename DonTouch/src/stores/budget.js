@@ -10,10 +10,7 @@ export const useBudgetStore = defineStore('budget', () => {
   const activeBudget = ref(null);
 
   const now = new Date();
-
-  // 2. 연도와 월 추출
   const year = now.getFullYear();
-  // 월은 0부터 시작하므로 1을 더하고, 10보다 작을 경우 앞에 '0'을 붙여 2자리로 만듭니다.
   const month = String(now.getMonth() + 1).padStart(2, '0');
 
   const formatDate = computed({
@@ -168,6 +165,19 @@ export const useBudgetStore = defineStore('budget', () => {
     };
   };
 
+  const resetState = () => {
+    budget.value = [];
+    budgetId.value = undefined;
+    activeBudget.value = null;
+    activeYear.value = parseInt(year);
+    activeMonth.value = parseInt(month);
+    updateMoney.value = 0;
+    chartData.value = {
+      labels: [],
+      datasets: [],
+    };
+  };
+
   return {
     budget,
     activeBudget,
@@ -182,5 +192,6 @@ export const useBudgetStore = defineStore('budget', () => {
     chartData,
     getChartData,
     fetchDate,
+    resetState,
   };
 });

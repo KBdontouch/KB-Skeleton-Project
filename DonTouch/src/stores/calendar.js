@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import axios from "axios";
-import { useAuthStore } from "./auth";
+import { defineStore } from 'pinia';
+import axios from 'axios';
+import { useAuthStore } from './auth';
 
-export const useCalendarStore = defineStore("calendar", {
+export const useCalendarStore = defineStore('calendar', {
   state: () => ({
     history: [], // db.json의 history 데이터 저장하는 배열
     budget: 0, // 예산
@@ -15,11 +15,11 @@ export const useCalendarStore = defineStore("calendar", {
     async fetchHistory() {
       try {
         const response = await axios.get(
-          "http://localhost:3000/history?user_no=" + useAuthStore().user.id,
+          'http://localhost:3000/history?user_no=' + useAuthStore().user.id,
         ); // 윤재야 프록시 설정 해야한다 나중에 반드시 꼬
         this.history = response.data;
       } catch (error) {
-        console.error("데이터 로드 실패 : ", error);
+        console.error('데이터 로드 실패 : ', error);
       }
     },
 
@@ -31,6 +31,13 @@ export const useCalendarStore = defineStore("calendar", {
     setBudget(amount) {
       this.budget = amount;
     },
+
+    resetState() {
+      this.history = [];
+      this.budget = 0;
+      this.currentYear = new Date().getFullYear();
+      this.currentMonth = new Date().getMonth() + 1;
+    },
   },
 
   getters: {
@@ -41,7 +48,7 @@ export const useCalendarStore = defineStore("calendar", {
         if (!acc[date]) acc[date] = { expense: 0, income: 0 };
 
         const money = Number(item.history_money);
-        if (item.history_type === "out") {
+        if (item.history_type === 'out') {
           acc[date].expense += money;
         } else {
           acc[date].income += money;
@@ -52,7 +59,7 @@ export const useCalendarStore = defineStore("calendar", {
 
     monthlyStats: (state) => {
       const yearStr = String(state.currentYear);
-      const monthStr = String(state.currentMonth).padStart(2, "0");
+      const monthStr = String(state.currentMonth).padStart(2, '0');
       const targetMonth = `${yearStr}-${monthStr}`;
 
       return state.history
@@ -60,7 +67,7 @@ export const useCalendarStore = defineStore("calendar", {
         .reduce(
           (acc, item) => {
             const money = Number(item.history_money);
-            if (item.history_type === "out") {
+            if (item.history_type === 'out') {
               acc.totalExpense += money;
             } else {
               acc.totalIncome += money;
