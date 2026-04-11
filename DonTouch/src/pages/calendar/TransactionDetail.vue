@@ -113,9 +113,11 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useTransactionStore } from "@/stores/transaction";
+import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
 const transactionStore = useTransactionStore();
+const authstore = useAuthStore();
 
 // 카테고리 API
 const categoryURL = "/api/category";
