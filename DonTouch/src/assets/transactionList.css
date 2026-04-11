@@ -1,7 +1,10 @@
 .page {
   display: flex;
   justify-content: center;
+<<<<<<< HEAD
+=======
   margin-bottom: 0;
+>>>>>>> a442cec83dbd1ab9597361b75c07cb8ae47169d8
   /* align-items: center; */
 }
 .body {
@@ -42,7 +45,18 @@ button:hover {
   color: #f2f2f2;
   cursor: pointer;
 }
+.typeButton > button {
+  width: 200px;
+}
+.btn-all {
+  border-radius: 20px 0 0 20px;
+}
+.btn-out {
+  border-radius: 0 20px 20px 0;
+}
 
+<<<<<<< HEAD
+=======
 .typeButton {
   width: 590px;
   margin-bottom: 10px;
@@ -57,6 +71,7 @@ button:hover {
   border-radius: 0 10px 10px 0;
 }
 
+>>>>>>> a442cec83dbd1ab9597361b75c07cb8ae47169d8
 .button-group {
   display: flex;
   flex-direction: column; /* ★ 세로 배치 */
@@ -174,10 +189,13 @@ button:hover {
   text-align: center;
 }
 
+<<<<<<< HEAD
+=======
 .inquiry-search input {
   width: 180px;
 }
 
+>>>>>>> a442cec83dbd1ab9597361b75c07cb8ae47169d8
 .filter-menu button {
   margin-top: 5px;
   width: 50%;
@@ -194,9 +212,16 @@ button:hover {
 }
 #filter-search {
   width: 100%;
+<<<<<<< HEAD
+  margin-top: 0;
+  background-color: #0d0d0d;
+  color: #f2f2f2;
+  border-radius: 0 0 20px 20px;
+=======
   margin-top: 15px;
   background-color: #0d0d0d;
   color: #f2f2f2;
   border-radius: 0 0 15px 15px;
   height: 30px;
+>>>>>>> a442cec83dbd1ab9597361b75c07cb8ae47169d8
 }

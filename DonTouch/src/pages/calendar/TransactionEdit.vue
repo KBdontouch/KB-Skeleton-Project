@@ -227,6 +227,7 @@ const editup = () => {
   const history = transactionStore.history;
   if (
     !history.id ||
+    !history.user_no ||
     !history.category_no ||
     !history.history_title ||
     !history.history_money ||
