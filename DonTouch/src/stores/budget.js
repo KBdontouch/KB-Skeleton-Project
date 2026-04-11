@@ -16,10 +16,18 @@ export const useBudgetStore = defineStore('budget', () => {
   // 월은 0부터 시작하므로 1을 더하고, 10보다 작을 경우 앞에 '0'을 붙여 2자리로 만듭니다.
   const month = String(now.getMonth() + 1).padStart(2, '0');
 
-  // 3. YYYY-MM 형식으로 조합
-  const formatDate = computed(
-    () => `${activeYear.value}-${String(activeMonth.value).padStart(2, '0')}`,
-  );
+  const formatDate = computed({
+    get() {
+      return `${activeYear.value}-${String(activeMonth.value).padStart(2, '0')}`;
+    },
+    set(newValue) {
+      if (newValue) {
+        const [y, m] = newValue.split('-');
+        activeYear.value = parseInt(y);
+        activeMonth.value = parseInt(m);
+      }
+    },
+  });
 
   const activeYear = ref(parseInt(year));
   const activeMonth = ref(parseInt(month));
@@ -96,27 +104,32 @@ export const useBudgetStore = defineStore('budget', () => {
 
     let serverData;
 
-    if (res.data.length == 0) {
-      const newBudget = {
-        id: budgetId.value,
-        budget_date: formatDate.value,
-        budget_money: updateMoney.value,
-        user_no: authStore.user.id,
-      };
-      serverData = await axios.post('/api/budget', newBudget);
-    } else {
-      const updateBudget = {
-        ...activeBudget.value,
-        budget_money: updateMoney.value,
-      };
-      serverData = await axios.put(
-        '/api/budget/' + updateBudget.id,
-        updateBudget,
-      );
+    try {
+      if (res.data.length == 0) {
+        const newBudget = {
+          id: budgetId.value,
+          budget_date: formatDate.value,
+          budget_money: updateMoney.value,
+          user_no: authStore.user.id,
+        };
+        serverData = await axios.post('/api/budget', newBudget);
+        budgetId.value++;
+      } else {
+        const updateBudget = {
+          ...activeBudget.value,
+          budget_money: updateMoney.value,
+        };
+        serverData = await axios.put(
+          '/api/budget/' + updateBudget.id,
+          updateBudget,
+        );
+      }
+      activeBudget.value = serverData.data;
+      alert('예산 설정이 완료되었습니다.');
+      await getChartData();
+    } catch (e) {
+      console.log(e);
     }
-    activeBudget.value = serverData.data;
-    alert('예산 설정이 완료되었습니다.');
-    await getChartData();
   };
 
   const chartData = ref({
