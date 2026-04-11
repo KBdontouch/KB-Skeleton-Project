@@ -268,7 +268,7 @@ watch(activeTab, () => {
 
 // 7. 버튼 클릭시 선택된 버튼 정보 저장(배경색 CSS 적용)
 // 현재 선택된 탭을 저장 (기본값: 'all')
-const currentTab = ref("all");
+//const currentTab = ref("all");
 
 // 버튼 클릭 시 실행될 함수 목록
 const selectAll = () => {
