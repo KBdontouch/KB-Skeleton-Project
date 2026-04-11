@@ -1,4 +1,3 @@
-//api 고치기
 <template>
   <div class="page">
     <div class="container">
@@ -81,8 +80,8 @@
           <option disabled value="">카테고리 선택</option>
           <option
             v-for="item in currentCategories"
-            :key="item.id"
-            :value="item.id"
+            :key="item.category_no"
+            :value="item.category_no"
           >
             {{ item.category_name }}
           </option>
@@ -98,7 +97,9 @@
       </div>
       <!-- 메모와 메모창 입력 -->
       <div class="actions">
-        <button type="button" class="action-btn" @click="edit">수정하기</button>
+        <button type="button" class="action-btn" @click="editup">
+          수정하기
+        </button>
         <button type="button" class="action-btn" @click="cancel">
           취소하기
         </button>
@@ -109,10 +110,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useTransactionStore } from '@/stores/transaction';
-import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useTransactionStore } from "@/stores/transaction";
+import { useRouter, useRoute } from "vue-router";
 
 // 거래 내역 리스트 불러오기 (id 포함해서)
 const transactionStore = useTransactionStore();
@@ -129,19 +130,19 @@ const edit = async () => {
     );
 
     if (putResult.status === 200) {
-      alert('거래 내역이 수정되었습니다.');
-      router.push('/transaction');
+      alert("거래 내역이 수정되었습니다.");
+      router.push("/transaction");
     } else {
-      alert('거래 내역 수정이 실패했습니다.');
+      alert("거래 내역 수정이 실패했습니다.");
     }
   } catch (error) {
     console.error(error);
-    alert('에러발생');
+    alert("에러발생");
   }
 };
 
 // 카테고리 API
-const categoryURL = '/api/category';
+const categoryURL = "/api/category";
 const category = ref([]);
 
 // 카테고리 데이터 가져오기
@@ -149,47 +150,53 @@ const fetchCategory = async () => {
   try {
     const response = await axios.get(categoryURL);
     category.value = response.data;
-    console.log('category 데이터 로드 완료:', category.value);
+    console.log("category 데이터 로드 완료:", category.value);
   } catch (error) {
-    console.error('데이터를 가져오는데 실패했습니다:', error);
+    console.error("데이터를 가져오는데 실패했습니다:", error);
   }
 };
-
+// 카테고리 콤보
+const currentCategories = ref([]);
 // 컴포넌트 실행 시
 onMounted(async () => {
+  //1. 카테고리 목록부터 가져오기
   await fetchCategory();
+  //2. 만약 store에 데이터가 없다면(새로고침 등 )
   if (!transactionStore.history.id) {
-    alert('수정할 거래 정보가 없습니다.');
-    router.push('/transaction');
+    alert("수정할 거래 정보가 없습니다.");
+    router.push("/transaction");
     return;
   }
-  if (transactionStore.history.history_type === 'in') {
+  if (transactionStore.history.history_type) {
+    transactionStore.history.history_type = "in";
+  }
+  if (transactionStore.history.history_type === "in") {
     currentCategories.value = category.value.filter(
-      (item) => item.category_type === 'in',
+      (item) => item.category_type === "in",
     );
   } else {
     currentCategories.value = category.value.filter(
-      (item) => (item.category_type = 'out'),
+      (item) => item.category_type === "out",
     );
   }
 });
 
 // 수입 카테고리
 const categoryIn = () => {
-  transactionStore.history.history_type = 'in';
+  transactionStore.history.history_type = "in";
   currentCategories.value = category.value.filter(
-    (item) => item.category_type === 'in',
+    (item) => item.category_type === "in",
   );
   //추가
-  transactionStore.history.category_no = 0;
+  transactionStore.history.category_no = "";
 };
 // 지출 카테고리
 const categoryOut = () => {
-  transactionStore.history.history_type = 'out';
+  transactionStore.history.history_type = "out";
   currentCategories.value = category.value.filter(
-    (item) => item.category_type === 'out',
+    (item) => item.category_type === "out",
   );
-  transactionStore.history.category_no = 0;
+  transactionStore.history.category_no = "";
 };
 // 거래 내역 x 버튼 되돌리기
 const clearAmount = () => {
@@ -197,37 +204,26 @@ const clearAmount = () => {
 };
 
 const cancel = () => {
-  if (confirm('취소하시겠습니까?')) {
-    router.push('/transaction');
+  if (confirm("취소하시겠습니까?")) {
+    router.push("/transaction");
   }
 };
-const editget = async () => {
-  console.log(transactionStore.history);
+// 수정해야할 거래 내역 정보 불러오기
+const editup = () => {
+  const history = transactionStore.history;
   if (
-    transactionStore.history.id == 0 ||
-    transactionStore.history.history_title == '' ||
-    transactionStore.history_content == '' ||
-    transactionStore.history.history_money == 0 ||
-    transactionStore.history.category_no == 0
+    !history.id ||
+    !history.category_no ||
+    !history.history_title ||
+    !history.history_money ||
+    !history.history_content ||
+    !history.history_date
   ) {
-    alert('데이터를 입력하세요.');
-  } else {
-    try {
-      const putResult = await axios.put(
-        `/api/history/${historyId}`,
-        transactionStore.history,
-      );
-      if (putResult.status === 200) {
-        alert('거래 냉역이 수정되었습니다.');
-        router.push('/transaction');
-      } else {
-        alert('거래 내역 수정이 실패했습니다.');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('에러발생');
-    }
+    alert("데이터를 입력하세요.");
+    return;
   }
+  // 검사 통과 수정한 부분 실행
+  edit();
 };
 </script>
 
