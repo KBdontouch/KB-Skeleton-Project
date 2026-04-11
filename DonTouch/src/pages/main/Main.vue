@@ -57,7 +57,6 @@ const router = useRouter();
 
 onMounted(async () => {
   await mainStore.dataInit();
-  console.log(authStore.user);
 });
 
 const move = () => {
