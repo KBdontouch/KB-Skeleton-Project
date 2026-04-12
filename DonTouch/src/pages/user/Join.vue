@@ -1,75 +1,86 @@
 <template>
-  <div class="header">회원가입</div>
-  <div class="join-wrapper">
-    <div class="input-row">
-      <div class="form-item">
-        <div class="name">이름</div>
-        <input type="text" v-model="joinData.user_name" placeholder="이름" />
-      </div>
-      <div class="form-item">
-        <div class="id">아이디</div>
-        <div class="input-container">
-          <input
-            type="text"
-            v-model="joinData.user_id"
-            @input="isIdAvailable = false"
-            placeholder="아이디"
-          />
-          <span v-if="isIdAvailable" class="v-icon">V</span>
-          <button @click="checkedId">중복확인</button>
+  <div class="page">
+    <div class="main-container">
+      <div class="header">회원가입</div>
+      <div class="join-wrapper">
+        <div class="input-row">
+          <div class="form-item">
+            <div class="name">이름</div>
+            <input
+              type="text"
+              v-model="joinData.user_name"
+              placeholder="이름"
+            />
+          </div>
+          <div class="form-item">
+            <div class="id">아이디</div>
+            <div class="input-container">
+              <input
+                type="text"
+                v-model="joinData.user_id"
+                @input="isIdAvailable = false"
+                placeholder="아이디"
+              />
+              <span v-if="isIdAvailable" class="v-icon">V</span>
+              <button @click="checkedId">중복확인</button>
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-item">
+            <div class="pw">비밀번호</div>
+            <input
+              type="password"
+              v-model="joinData.user_pw"
+              placeholder="비밀번호"
+            />
+          </div>
+          <div class="form-item">
+            <div class="pw-confirm">비밀번호 확인</div>
+            <input
+              type="password"
+              v-model="passwordConfirm"
+              placeholder="비밀번호 확인"
+            />
+          </div>
+        </div>
+        <p
+          v-if="passwordConfirm"
+          :class="isPasswordMatch ? 'success-msg' : 'error-msg'"
+        >
+          {{
+            isPasswordMatch
+              ? '비밀번호가 일치합니다.'
+              : '비밀번호가 일치하지 않습니다.'
+          }}
+        </p>
+        <div class="input-row">
+          <div class="form-item">
+            <div class="email">이메일</div>
+            <input
+              type="email"
+              v-model="joinData.user_email"
+              placeholder="이메일"
+            />
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-item">
+            <div class="tel">전화번호</div>
+            <input
+              type="tel"
+              v-model="joinData.user_phone"
+              placeholder="010-1234-5678"
+            />
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="submit-btn" @click="newJoin">가입하기</button>
+          <button class="withdraw-btn" @click="cancel">취소하기</button>
         </div>
       </div>
     </div>
-    <div class="input-row">
-      <div class="form-item">
-        <div class="pw">비밀번호</div>
-        <input
-          type="password"
-          v-model="joinData.user_pw"
-          placeholder="비밀번호"
-        />
-      </div>
-      <div class="form-item">
-        <div class="pw-confirm">비밀번호 확인</div>
-        <input
-          type="password"
-          v-model="passwordConfirm"
-          placeholder="비밀번호 확인"
-        />
-      </div>
-    </div>
-    <p
-      v-if="passwordConfirm"
-      :class="isPasswordMatch ? 'success-msg' : 'error-msg'"
-    >
-      {{
-        isPasswordMatch
-          ? '비밀번호가 일치합니다.'
-          : '비밀번호가 일치하지 않습니다.'
-      }}
-    </p>
-    <div class="input-row">
-      <div class="form-item">
-        <div class="email">이메일</div>
-        <input
-          type="email"
-          v-model="joinData.user_email"
-          placeholder="이메일"
-        />
-      </div>
-    </div>
-    <div class="input-row">
-      <div class="form-item">
-        <div class="tel">전화번호</div>
-        <input
-          type="tel"
-          v-model="joinData.user_phone"
-          placeholder="010-1234-5678"
-        />
-      </div>
-    </div>
   </div>
-  <button class="submit-btn" @click="newJoin">가입하기</button>
 </template>
 
 <script setup>
@@ -120,6 +131,16 @@ const checkedId = async () => {
     alert('오류가 발생했습니다.');
   }
 };
+const cancel = () => {
+  joinData.id = 0;
+  joinData.user_id = '';
+  joinData.user_pw = '';
+  joinData.user_name = '';
+  joinData.user_email = '';
+  joinData.user_phone = '';
+  joinData.user_state = 0;
+  router.push('/');
+};
 const newJoin = async () => {
   // 항목 누락 체크
   const labels = {
@@ -167,23 +188,39 @@ const newJoin = async () => {
 </script>
 
 <style scoped>
+/*페이지 요소 전체 중앙정렬*/
+.page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.main-container {
+  width: fit-content;
+  display: flex;
+  flex-direction: column; /* 제목과 아래 내용을 세로로 배치 */
+  align-items: flex-start; /*자식 요소(제목)를 왼쪽 끝으로 밀착 */
+}
+
 /* 전체 컨테이너 배경 및 폰트 설정 */
 .join-wrapper {
   background-color: #f2f2f2;
-  width: 1000px;
+  width: 800px;
   height: auto;
   padding: 25px 50px;
   margin: 0 auto;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7.5px;
   box-sizing: border-box;
 }
 
 /* 상단 '회원가입' 타이틀 */
 .header {
   width: 900px;
-  margin: 15px 0 20px 100px;
+  margin: 15px 0 15px 100px;
   font-size: 30px;
   font-weight: bold;
   color: #333;
@@ -263,17 +300,31 @@ input {
   margin-top: -10px;
 }
 
-/* 가입하기 버튼 */
-.submit-btn {
+/* 가입하기, 취소하기 버튼 */
+
+.button-group {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+}
+
+.submit-btn,
+.withdraw-btn {
   display: block;
   width: 400px;
-  margin: 15px auto;
-  padding: 10px;
+  margin: 0;
+  padding: 8px 10px;
   background-color: #d9d9d9;
   border: none;
   border-radius: 20px;
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.submit-btn {
+  background-color: #f2b705;
 }
 </style>
