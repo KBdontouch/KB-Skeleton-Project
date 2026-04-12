@@ -1,109 +1,120 @@
 <template>
   <div class="page" v-if="transactionStore.history">
-    <div class="container">
-      <h2 class="title">거래 내역 수정</h2>
+    <div class="container-wrap">
+      <div class="container">
+        <h2 class="title">거래 내역 수정</h2>
 
-      <button
-        type="button"
-        class="btn tab"
-        :class="{ active: transactionStore.history.history_type === 'in' }"
-        @click="categoryIn"
-      >
-        수입
-      </button>
-
-      <button
-        type="button"
-        class="btn tab"
-        :class="{ active: transactionStore.history.history_type === 'out' }"
-        @click="categoryOut"
-      >
-        지출
-      </button>
-
-      <div class="field">
-        <label for="transaction-date">날짜</label>
-        <input
-          type="date"
-          id="transaction-date"
-          v-model="transactionStore.history.history_date"
-        />
-      </div>
-
-      <div class="field">
-        <label>거래 제목</label>
-        <input
-          type="text"
-          class="input-box"
-          v-model="transactionStore.history.history_title"
-          placeholder="거래 제목 입력"
-        />
-      </div>
-      <div class="field">
-        <label>금액</label>
-      </div>
-      <div class="amount-wrapper">
-        <input
-          type="number"
-          class="input-box"
-          v-model.number="transactionStore.history.history_money"
-          placeholder="금액입력"
-        />
-        <button
-          type="button"
-          v-if="transactionStore.history.history_money !== null"
-          class="clear-btn"
-          @click="clearAmount"
-        >
-          X
-        </button>
-      </div>
-      <div class="amount-buttons">
-        <button
-          type="button"
-          class="amount-btn"
-          v-for="amount in [1000, 5000, 10000]"
-          :key="amount"
-          @click="addAmount(amount)"
-        >
-          +{{ amount.toLocaleString() }}
-        </button>
-        <!-- // 빠른 추가 amount 버튼 -->
-      </div>
-      <!-- 카테고리 -->
-      <div class="field">
-        <label>카테고리</label>
-        <select
-          class="input-box"
-          v-model="transactionStore.history.category_no"
-        >
-          <!-- 카테고리 정보 불러오기 가능(id에러이슈 해결) -->
-          <option disabled value="">카테고리 선택</option>
-          <option
-            v-for="item in currentCategories"
-            :key="item.id"
-            :value="item.id"
+        <div class="tab-group">
+          <button
+            type="button"
+            class="btn tab"
+            :class="{
+              'tab-active': transactionStore.history.history_type === 'in',
+            }"
+            @click="categoryIn"
           >
-            {{ item.category_name }}
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label>메모</label>
-        <textarea
-          class="memo-box"
-          v-model="transactionStore.history.history_content"
-          placeholder="메모 입력"
-        ></textarea>
-      </div>
-      <!-- 메모와 메모창 입력 -->
-      <div class="actions">
-        <button type="button" class="action-btn" @click="editup">
-          수정하기
-        </button>
-        <button type="button" class="action-btn" @click="cancel">
-          취소하기
-        </button>
+            수입
+          </button>
+
+          <button
+            type="button"
+            class="btn tab"
+            :class="{
+              'tab-active': transactionStore.history.history_type === 'out',
+            }"
+            @click="categoryOut"
+          >
+            지출
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="transaction-date">날짜</label>
+          <input
+            type="date"
+            id="transaction-date"
+            class="input-box"
+            v-model="transactionStore.history.history_date"
+          />
+        </div>
+
+        <div class="field">
+          <label>거래 제목</label>
+          <input
+            type="text"
+            class="input-box"
+            v-model="transactionStore.history.history_title"
+            placeholder="거래 제목 입력"
+          />
+        </div>
+
+        <div class="field">
+          <label>금액</label>
+        </div>
+
+        <div class="amount-wrapper">
+          <input
+            type="number"
+            class="input-box"
+            v-model.number="transactionStore.history.history_money"
+            placeholder="금액입력"
+          />
+          <button
+            type="button"
+            v-if="transactionStore.history.history_money !== null"
+            class="clear-btn"
+            @click="clearAmount"
+          >
+            X
+          </button>
+        </div>
+
+        <div class="amount-buttons">
+          <button
+            type="button"
+            class="amount-btn"
+            v-for="amount in [1000, 5000, 10000]"
+            :key="amount"
+            @click="addAmount(amount)"
+          >
+            +{{ amount.toLocaleString() }}
+          </button>
+        </div>
+
+        <div class="field">
+          <label>카테고리</label>
+          <select
+            class="input-box"
+            v-model="transactionStore.history.category_no"
+          >
+            <option disabled value="">카테고리 선택</option>
+            <option
+              v-for="item in currentCategories"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.category_name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>메모</label>
+          <textarea
+            class="memo-box"
+            v-model="transactionStore.history.history_content"
+            placeholder="메모 입력"
+          ></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="action-btn primary" @click="editup">
+            수정하기
+          </button>
+          <button type="button" class="action-btn secondary" @click="cancel">
+            취소하기
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -302,20 +313,4 @@ const addAmount = (amount) => {
 };
 </script>
 
-<style>
-.title {
-  text-align: center;
-}
-.tab {
-  background: #d9d9d9;
-  border: none;
-}
-
-.tab.active {
-  background: #735e53;
-  color: white;
-}
-.field label {
-  display: block;
-}
-</style>
+<style scoped src="@/assets/transactionEdit.css"></style>
