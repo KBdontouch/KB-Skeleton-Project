@@ -2,9 +2,14 @@
   <div class="calendar-container">
     <header class="calendar-header">
       <div class="month-selector-wrapper">
+
+        <!-- 선택한 월 표시 -->
         <span class="year-month-display">
           {{ selectedYear }}년 {{ selectedMonth }}월
         </span>
+        <!-- 미니 캘린더 팝업창
+            -> 클릭 시 triggerPicker 함수 호출 
+        -->
         <div class="input-wrapper" @click="triggerPicker">
           <input
             type="month"
@@ -17,16 +22,24 @@
         </div>
       </div>
 
+      <!-- 예산 데이터 불러오기 -->
       <div class="budget-center">
         예산 :
+        <!-- currentBudget?.budget_money || 0.toLacaleString()
+             - currentBudget? : currentBudget이 로드되지 않거나 null/undefined일 때 에러가 발생해서 화면이 멈추는 것을 방지.
+             - || 0 : currentBudget 값이 null/undefined 일 경우, 화면에 0을 출력
+             - .toLocaleString() : 숫자 데이터를 문자열로 변환 
+        -->
         {{ (currentBudget?.budget_money || 0).toLocaleString() }}원
       </div>
 
+      <!-- 총 지출/수입 데이터 불러오기 -->
       <div class="total-stats">
         <p>
           <b>총 지출 : </b>
           <span class="expense"
             >-{{
+              // calendar.js 에서 monthlyStats 값(totalExpense) 불러오기
               calendarStore.monthlyStats.totalExpense.toLocaleString()
             }}원</span
           >
@@ -35,24 +48,37 @@
           <b>총 수입 : </b>
           <span class="income"
             >+{{
+              // calendar.js 에서 monthlyStats 값(totalIncome) 불러오기
               calendarStore.monthlyStats.totalIncome.toLocaleString()
             }}원</span
           >
         </p>
       </div>
     </header>
-    <!-- 수정함 -->
+    
+    <!-- 거래 내역 추가 버튼 -->
     <div class ='button-container'>
+      <!-- + 버튼 클릭 시 goToAddPage 함수를 통해 거래 내역 추가 페이지로 이동 -->
       <button class = 'add-transaction-btn' @click="goToAddPage">+</button>
     </div>
 
+    <!-- 캘린더 화면 -->
     <div class="calendar-body-wrapper">
+      <!-- 
+      - ref="fullCalendar" : 캘린더 화면을 불러올 때 사용할 이름
+      - :options="calendarOptions" : 캘린더의 모든 설정값을 이 이름으로...
+      -->
       <FullCalendar ref="fullCalendar" :options="calendarOptions" />
     </div>
   </div>
 </template>
 
 <script setup>
+// 필요한 라이브러리 불러오기
+
+// watch vs nextTick
+// watch : 특정 데이터 변화 감지 및 대응 -> 데이터가 바뀌면 즉시
+// nextTick : 화면 업데이트 완료 보장 -> 화면이 다 그려지면 이후
 import { ref, computed, reactive, onMounted, nextTick, watch } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -60,73 +86,91 @@ import { useCalendarStore } from "@/stores/calendar";
 import { useBudgetStore } from "@/stores/budget";
 import { useRouter } from "vue-router";
 
-// 1. 기초 도구 및 스토어 초기화 (최상단)
 const router = useRouter();
 const budgetStore = useBudgetStore();
 const calendarStore = useCalendarStore();
-const fullCalendar = ref(null);
-const monthInputRef = ref(null);
+const fullCalendar = ref(null); // 초기값 null
+const monthInputRef = ref(null); // 초기값 null
 
-// 2. 핵심 상태 변수 (이 변수들이 computed보다 위에 있어야 함)
 const now = new Date();
 const selectedYear = ref(now.getFullYear());
 const selectedMonth = ref(now.getMonth() + 1);
 
-// 3. 예산 관련 computed 로직
+// 현재 캘린더의 월 예산 출력
 const currentBudget = computed(() => {
+  // !budgetStore.budget : 값 없으면 null 값 리턴
   if (!budgetStore.budget) return null;
+
   return budgetStore.budget.find((item) => {
     const itemDate = new Date(item.budget_date);
     return (
+      // 현재 캘린더의 연도와 월 데이터와 예산의 연도와 월 데이터 일치 하는지 확인
       itemDate.getFullYear() === selectedYear.value &&
       itemDate.getMonth() + 1 === selectedMonth.value
     );
   }) || null;
 });
 
-// 4. 날짜 입력창(input type="month")과 연결된 computed
+// 서로 다른 데이터(숫자 & 문자열) 형식 연결 
 const selectedMonthStr = computed({
+  // padStart : 월이 한자리 수 일때 앞에 0을 붙여 두자리 수로 통일
   get: () => `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}`,
+  // 문자열 -> 숫자로 변환
   set: (val) => {
     if (!val) return;
+    // -(하이푼) 기준으로 연도와 월 분리
     const [y, m] = val.split("-");
+    // parseInt() : 문자열 -> 숫자로 변환 후 selected.value에 저장
     selectedYear.value = parseInt(y);
     selectedMonth.value = parseInt(m);
+    // calendar.js에 있는 바뀐 데이터 전달
     calendarStore.setCurrentDate(parseInt(y), parseInt(m));
   },
 });
 
-// 5. 감시자(watch) 및 로직들
+// selectedYear / selectedMonth 둘 중 하나라도 바뀌면 실행
 watch([selectedYear, selectedMonth], async () => {
-  // 예산 스토어 동기화
+  
+  // budget.js 에 있는 Year & Month 값 동기화
   budgetStore.activeYear = selectedYear.value;
   budgetStore.activeMonth = selectedMonth.value;
+
   await budgetStore.fetchDate();
   
-  // 캘린더 데이터 다시 계산 (주별 요약 포함)
+  // nextTick : 캘린더 화면 그리기 전까지 기다리는
+  // 300ms(0.3초) 대기
+  // updateWeeklySummary : 요약 함수 불러오기
   nextTick(() => setTimeout(updateWeeklySummary, 300));
 });
 
-// [추가] 달력 날짜 변경 시 동작
+// 미니 캘린더 팝업 창에서 월 이동시 데이터 전달 해주는 함수
 const handleMonthChange = () => {
-  if (fullCalendar.value) {
-    const calendarApi = fullCalendar.value.getApi();
+  if (fullCalendar.value) { // fullCalendar가 불러졌을때만 실행
+    const calendarApi = fullCalendar.value.getApi(); // fullCalendar 불러오기
+    // target 문자열 생성
+    // FullCalendar 날짜 형식 맞추기
     const target = `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}-01`;
+    // 이동할 월 로 페이지 이동
     calendarApi.gotoDate(target);
   }
 };
 
+// 거래 내역 추가 버튼 클릭 시 거래 내역 추가 페이지로 이동
 const goToAddPage = () => {
   router.push('/transaction/add');
 };
 
+// ▼ 화살표 클릭 시 실행되는 함수
 const triggerPicker = () => {
+  // 미니 캘린더 팝업창 불러오기
   if (monthInputRef.value) monthInputRef.value.showPicker();
 };
 
-// [로직] 주별 요약 (기존 코드 유지)
+// calendar.js에 있는 dailyData 함수 가져오기
+// || {} : 데이터 없으면 null 값이 아닌 빈 객체 전달하여 오류 방지
 const dailyData = computed(() => calendarStore.dailyTotals || {});
 
+//
 const updateWeeklySummary = () => {
   document.querySelectorAll(".weekly-summary-bar").forEach((el) => el.remove());
   const calendarApi = fullCalendar.value?.getApi();
@@ -170,7 +214,6 @@ const updateWeeklySummary = () => {
   }
 };
 
-// --- [FullCalendar 설정] ---
 const calendarOptions = reactive({
   plugins: [dayGridPlugin],
   initialView: "dayGridMonth",
@@ -209,24 +252,18 @@ const calendarOptions = reactive({
 });
 
 onMounted(async () => {
-  // 1. 필요한 데이터를 모두 불러올 때까지 대기
   await Promise.all([
     calendarStore.fetchHistory(),
     budgetStore.initBudget()
   ]);
 
-  // 2. 데이터가 스토어에 담긴 후, DOM이 업데이트될 때까지 대기
   await nextTick();
 
-  // 3. 캘린더 API를 사용하여 강제로 다시 그리기
   if (fullCalendar.value) {
     const calendarApi = fullCalendar.value.getApi();
     
-    // 캘린더 내부 상태를 새로고침하여 dayCellContent가 다시 실행되도록 함
     calendarApi.render(); 
     
-    // 4. 데이터 로드 후 주별 요약 바를 그리기 위해 약간의 지연 후 실행
-    // (FullCalendar의 내부 렌더링 속도에 맞추기 위함)
     setTimeout(updateWeeklySummary, 300);
   }
 });
@@ -316,7 +353,6 @@ onMounted(async () => {
   font-weight: bold;
 }
 
-/* 수정함 */
 .button-container {
   position: relative;
   height: 50px;
@@ -327,8 +363,8 @@ onMounted(async () => {
 .add-transaction-btn {
   position: absolute;
   top: 50%;
-  right: 15px; /* 우측 끝에서 살짝 띄움 */
-  transform: translateY(-50%); /* 세로 중앙 정렬 */
+  right: 15px;
+  transform: translateY(-50%);
   
   width: 28px;
   height: 28px;
@@ -337,7 +373,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   
-  background-color: #fbd14b; /* 프로젝트 메인 컬러 */
+  background-color: #fbd14b;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -349,7 +385,7 @@ onMounted(async () => {
 }
 
 .add-transaction-btn:hover {
-  background-color: #f9c21a; /* 호버 시 약간 진하게 */
+  background-color: #f9c21a;
 }
 
 :deep(.day-header) {
