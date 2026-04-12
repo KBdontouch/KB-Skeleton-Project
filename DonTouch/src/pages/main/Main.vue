@@ -101,9 +101,8 @@ const move = () => {
   display: flex;
   justify-content: space-between;
   gap: 15px;
-  height: 350px;
+  height: 100%;
   min-width: 0;
-  /* min-height: 0; */
 }
 
 .summary-card {
