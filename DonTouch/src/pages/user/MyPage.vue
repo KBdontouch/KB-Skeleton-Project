@@ -1,69 +1,77 @@
 <template>
-  <div class="header">마이페이지</div>
-  <div class="mypage-wrapper">
-    <div>개인정보 수정</div>
-    <div class="input-row">
-      <div class="form-item">
-        <div>이름</div>
-        <input type="text" v-model="editData.user_name" placeholder="이름" />
-      </div>
-      <div class="form-item">
-        <div>아이디</div>
-        <div class="input-container">
-          <input
-            type="text"
-            v-model="editData.user_id"
-            @input="isIdAvailable = false"
-            placeholder="아이디"
-            readonly
-          />
+  <div class="page">
+    <div class="main-container">
+      <div class="header">마이페이지</div>
+      <div class="mypage-wrapper">
+        <div>개인정보 수정</div>
+        <div class="input-row">
+          <div class="form-item">
+            <div>이름</div>
+            <input
+              type="text"
+              v-model="editData.user_name"
+              placeholder="이름"
+            />
+          </div>
+          <div class="form-item">
+            <div>아이디</div>
+            <div class="input-container">
+              <input
+                type="text"
+                v-model="editData.user_id"
+                @input="isIdAvailable = false"
+                placeholder="아이디"
+                readonly
+              />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="input-row">
-      <div class="form-item">
-        <div>이메일</div>
-        <input
-          type="email"
-          v-model="editData.user_email"
-          placeholder="이메일"
-          readonly
-        />
-      </div>
-    </div>
-    <div class="input-row">
-      <div class="form-item">
-        <div>전화번호</div>
-        <input
-          type="tel"
-          v-model="editData.user_phone"
-          placeholder="010-1234-5678"
-        />
-      </div>
-    </div>
-    <div class="password-row">
-      <div class="password-field">
-        <div>비밀번호 확인 :</div>
-        <div class="input-confirm">
-          <input
-            type="password"
-            v-model="passwordConfirm"
-            placeholder="비밀번호 확인"
-          />
+        <div class="input-row">
+          <div class="form-item">
+            <div>이메일</div>
+            <input
+              type="email"
+              v-model="editData.user_email"
+              placeholder="이메일"
+              readonly
+            />
+          </div>
         </div>
+        <div class="input-row">
+          <div class="form-item">
+            <div>전화번호</div>
+            <input
+              type="tel"
+              v-model="editData.user_phone"
+              placeholder="010-1234-5678"
+            />
+          </div>
+        </div>
+        <div class="password-row">
+          <div class="password-field">
+            <div>비밀번호 확인 :</div>
+            <div class="input-confirm">
+              <input
+                type="password"
+                v-model="passwordConfirm"
+                placeholder="비밀번호 확인"
+              />
+            </div>
+          </div>
+          <button class="edit-btn" @click="infoEdit">수정</button>
+        </div>
+        <p
+          v-if="passwordConfirm"
+          :class="isPasswordMatch ? 'success-msg' : 'error-msg'"
+        >
+          {{
+            isPasswordMatch
+              ? '비밀번호가 일치합니다.'
+              : '비밀번호가 일치하지 않습니다.'
+          }}
+        </p>
       </div>
-      <button class="edit-btn" @click="infoEdit">수정</button>
     </div>
-    <p
-      v-if="passwordConfirm"
-      :class="isPasswordMatch ? 'success-msg' : 'error-msg'"
-    >
-      {{
-        isPasswordMatch
-          ? '비밀번호가 일치합니다.'
-          : '비밀번호가 일치하지 않습니다.'
-      }}
-    </p>
   </div>
 </template>
 
@@ -100,13 +108,29 @@ const infoEdit = async () => {
 </script>
 
 <style scoped>
+/*페이지 요소 전체 중앙정렬*/
+.page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.main-container {
+  width: fit-content;
+  display: flex;
+  flex-direction: column; /* 제목과 아래 내용을 세로로 배치 */
+  align-items: flex-start; /*자식 요소(제목)를 왼쪽 끝으로 밀착 */
+}
+
 /* 전체 컨테이너 배경 및 폰트 설정 */
 .mypage-wrapper {
   background-color: #f2f2f2;
-  width: 1000px;
+  width: 800px;
   height: auto;
   padding: 25px 50px;
   margin: 0 auto;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
