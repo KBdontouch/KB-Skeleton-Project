@@ -1,0 +1,295 @@
+:root {
+  --brand-primary: #f2b705;
+  --brand-primary-dark: #f29f05;
+  --brand-accent: #f27b35;
+  --brand-sub: #629d9e;
+  --brand-text: #735e53;
+
+  --bg-page: #f4efe6;
+  --bg-card: #fffaf2;
+  --bg-soft: #f9edd0;
+  --bg-soft-2: #efe7dc;
+
+  --text-main: #2f241f;
+  --text-sub: #735e53;
+  --border-color: #d8c9b8;
+  --placeholder: #a99688;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 16px 36px rgba(115, 94, 83, 0.16);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* 핵심: 이 페이지 자체가 main 안에서 스크롤되게 */
+.page {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 스크롤바 */
+.page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page::-webkit-scrollbar-thumb {
+  background: #d8c9b8;
+  border-radius: 10px;
+}
+
+.container-wrap {
+  margin-top: 0px;
+  width: 380px;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.container {
+  width: 100%;
+  position: relative;
+  padding: 6px 8px 32px 8px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: none;
+}
+
+.container::before {
+  display: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 4px;
+  left: 0px;
+  right: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+  z-index: 10;
+  border-top-left-radius: 18px; /* 안쪽으로 들어온 만큼 살짝 조절 */
+  border-top-right-radius: 18px;
+}
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0px 0 10px 0;
+  color: var(--text-main);
+  text-align: center;
+  letter-spacing: 0;
+}
+
+/* 수입 / 지출 */
+.tab-group {
+  display: flex;
+  width: 364px;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tab {
+  width: 178px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: #e9e9e9;
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 700;
+  background-color: #e9e9e9;
+}
+
+.tab:hover {
+  background: #e6dccf;
+  /* 지출 비활성 */
+}
+
+button.tab.tab-active,
+button.tab.active {
+  background-color: #f2b705 !important;
+}
+
+/* field */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* input 공통 */
+.input-box,
+.memo-box,
+select,
+input[type="date"] {
+  width: 364px;
+  border: 1px solid var(--border-color);
+  border-radius: 15px; /* 살짝 덜 둥글게 하면 더 깔끔합니다 */
+  background: #fcfaf7; /* 노란색 대신 아주 연한 미색 사용 */
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text-main);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+input[type="date"] {
+  min-height: 40px;
+}
+
+.input-box::placeholder,
+.memo-box::placeholder {
+  color: #a99688;
+}
+/* 입력창  */
+.input-box,
+.memo-box,
+select,
+input[type="date"] {
+  background: #fcfaf7;
+  border: 1px solid #d8c9b8;
+  color: #2f241f;
+}
+/* 입력창 포커스 */
+.input-box:focus,
+.memo-box:focus,
+select:focus,
+input[type="date"]:focus {
+  border-color: #f29f05;
+  box-shadow: 0 0 0 4px rgba(242, 183, 5, 0.18);
+}
+
+/* 금액 */
+.amount-wrapper {
+  position: relative;
+  width: 364px;
+  margin-bottom: 10px;
+}
+
+.amount-wrapper .input-box {
+  width: 364px;
+  padding-right: 42px;
+}
+
+/* x 버튼  */
+.clear-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--brand-text);
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.clear-btn:hover {
+  color: var(--brand-accent);
+}
+
+.amount-buttons {
+  display: flex;
+  gap: 8px;
+  width: 364px;
+  margin-bottom: 12px;
+}
+/* 빠른 금액 버튼  */
+.amount-btn {
+  flex: 1;
+  height: 34px;
+  border: 1px solid #e2d6c5;
+  background: #faf4eb;
+  color: #8b7355;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.amount-btn:hover {
+  background: #f6c94c;
+  color: #2f241f;
+  border-color: #f6c94c;
+  transform: translateY(-1px);
+}
+
+/* 메모 */
+.memo-box {
+  width: 364px;
+  min-height: 55px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* 버튼 영역 */
+.actions {
+  display: flex;
+  width: 364px;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+/* 공통 버튼 */
+.action-btn {
+  flex: 1;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 등록하기 */
+.action-btn.primary {
+  background: #f2b705;
+  color: #2b211b;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.action-btn.primary:hover {
+  background: #e0aa00;
+  transform: translateY(-1px);
+}
+
+/* 취소하기 */
+.action-btn.secondary {
+  background: #e7dfd3;
+  color: #7a685c;
+}
+
+.action-btn.secondary:hover {
+  background: #ddd3c4;
+  transform: translateY(-1px);
+}
