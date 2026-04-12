@@ -1,7 +1,21 @@
 .page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.main-container {
+  width: fit-content;
+  display: flex;
+  flex-direction: column; /* 제목과 아래 내용을 세로로 배치 */
+  align-items: flex-start; /* 자식 요소(제목)를 왼쪽 끝으로 밀착 */
+}
+.content {
   display: flex;
   justify-content: center;
   margin-bottom: 0;
+  justify-content: center;
   /* align-items: center; */
 }
 .body {
@@ -10,10 +24,10 @@
   gap: 5px;
 }
 .header {
+  display: flex;
   font-size: 32px;
   font-weight: bold;
-  margin: 15px;
-  margin-left: 80px;
+  margin-bottom: 15px;
 }
 
 /* .headerBar {

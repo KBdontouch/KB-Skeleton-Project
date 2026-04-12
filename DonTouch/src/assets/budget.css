@@ -1,7 +1,23 @@
+.page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.main-container {
+  width: fit-content;
+  display: flex;
+  flex-direction: column; /* 제목과 아래 내용을 세로로 배치 */
+  align-items: flex-start; /* 자식 요소(제목)를 왼쪽 끝으로 밀착 */
+}
+
 .header {
+  display: flex;
   font-size: 32px;
   font-weight: bold;
-  margin: 15px 0 0 80px;
+  padding-left: 20px;
+  /* margin-bottom: 15px; */
 }
 
 /* 전체 컨테이너: 좌/우 배치 */
@@ -10,7 +26,7 @@
   width: 850px;
   height: 480px;
   gap: 20px;
-  padding: 20px;
+  /* padding: 20px; */
   background-color: #ffffff;
   margin-top: 0;
 
