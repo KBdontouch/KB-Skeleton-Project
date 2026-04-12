@@ -53,4 +53,8 @@ const chartOptions = {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+div {
+  height: 200px;
+}
+</style>
