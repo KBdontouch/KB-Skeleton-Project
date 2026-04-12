@@ -52,7 +52,9 @@
                 :key="trans.id"
               >
                 <div>{{ trans.history_date }}</div>
-                <div>icon {{ trans.category_no }}</div>
+                <div class="category-name">
+                  {{ getCategoryName(trans.category_no) }}
+                </div>
                 <!-- 기본 정보창 -->
                 <div class="info-group">
                   <div class="title">{{ trans.history_title }}</div>
@@ -168,6 +170,7 @@ const activeTabInfo = ref('in');
 
 // 1.4 컴포넌트 Mount시 요청
 onMounted(async () => {
+  await searchStore.fetchCategory();
   await searchStore.fetchHistory();
   searchStore.inquiry = searchStore.sortedHistory;
 });
@@ -295,6 +298,20 @@ const selectCateIn = () => {
 const selectCateOut = () => {
   activeTabInfo.value = 'out';
 };
+
+// 8. category_name 출력
+const getCategoryName = (no) => {
+  // 1. searchStore.category가 있는지, 배열인지 먼저 확인
+  if (!searchStore.category || !Array.isArray(searchStore.category)) {
+    return '로딩중...';
+  }
+
+  // 2. 안전하게 find 실행
+  const target = searchStore.category.find((item) => item.id == no);
+
+  return target ? target.category_name : '기타';
+};
+
 // 999. 콘솔 확인용
 // const check = () => console.log('코드 확인', sortedHistory);
 // check();

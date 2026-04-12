@@ -51,6 +51,23 @@ export const useSearchStore = defineStore('search', () => {
     selectedCategories.value = [];
   };
 
+  // 2. category 데이터
+  const categoryURL = '/api/category';
+  // 2.1 category 배열 생성
+  const category = ref([]);
+
+  // 2.2 데이터 가져오는 함수
+  const fetchCategory = async () => {
+    try {
+      const response = await axios.get(categoryURL);
+      // axios 결과의 data를 categoryDatas에 할당
+      category.value = response.data;
+      console.log('category 데이터 로드 완료:', category.value);
+    } catch (error) {
+      console.error('데이터를 가져오는데 실패했습니다:', error);
+    }
+  };
+
   return {
     history,
     fetchHistory,
@@ -61,5 +78,7 @@ export const useSearchStore = defineStore('search', () => {
     showIn,
     showOut,
     resetState,
+    category,
+    fetchCategory,
   };
 });
