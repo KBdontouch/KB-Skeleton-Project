@@ -68,11 +68,13 @@ const move = () => {
 /* 전체 컨테이너 여백 */
 .dashboard-container {
   padding: 20px;
+
   display: flex;
   flex-direction: column;
   gap: 20px;
   font-family: 'Pretendard', sans-serif; /* 폰트는 프로젝트에 맞게 설정 */
   background-color: #ffffff;
+  /* height: 90%; */
 }
 
 /* 상단 최근 거래 내역 */
@@ -99,6 +101,9 @@ const move = () => {
   display: flex;
   justify-content: space-between;
   gap: 15px;
+  height: 350px;
+  min-width: 0;
+  /* min-height: 0; */
 }
 
 .summary-card {
@@ -110,7 +115,7 @@ const move = () => {
   flex-direction: column;
   align-items: center;
   min-height: 250px;
-  margin: 15px;
+  margin: 0 15px;
 }
 
 .card-title {
@@ -128,6 +133,9 @@ const move = () => {
 /* 차트가 들어갈 공간 확보 */
 .chart-placeholder {
   width: 100%;
+  height: 60%;
+  padding-top: 20%;
+  padding-bottom: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,6 +165,7 @@ const move = () => {
   font-weight: bold;
   transition: background 0.2s;
   margin: 0px 15px;
+  min-height: 0;
 }
 
 .add-button:hover {

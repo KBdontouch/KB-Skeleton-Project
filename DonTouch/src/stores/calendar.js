@@ -4,19 +4,19 @@ import { useAuthStore } from './auth';
 
 export const useCalendarStore = defineStore('calendar', {
   state: () => ({
-    history: [], // db.json의 history 데이터 저장하는 배열
-    budget: 0, // 예산
+    history: [],
+    budget: 0,
     currentYear: new Date().getFullYear(),
     currentMonth: new Date().getMonth() + 1,
   }),
 
   actions: {
-    // 데이터를 서버(db.json)에서 불러오는 함수
+    
     async fetchHistory() {
       try {
         const response = await axios.get(
           'http://localhost:3000/history?user_no=' + useAuthStore().user.id,
-        ); // 윤재야 프록시 설정 해야한다 나중에 반드시 꼬
+        ); 
         this.history = response.data;
       } catch (error) {
         console.error('데이터 로드 실패 : ', error);
@@ -41,12 +41,14 @@ export const useCalendarStore = defineStore('calendar', {
   },
 
   getters: {
-    // 날짜별로 지출/수입 합계를 구하는 로직 -> 확인해봐라 윤재야
+    
     dailyTotals: (state) => {
       return state.history.reduce((acc, item) => {
         const date = item.history_date;
+        // 데이터 없으면 초기값 설정
         if (!acc[date]) acc[date] = { expense: 0, income: 0 };
 
+        // 수입/지출 나누기
         const money = Number(item.history_money);
         if (item.history_type === 'out') {
           acc[date].expense += money;
