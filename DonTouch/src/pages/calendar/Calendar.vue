@@ -2,7 +2,6 @@
   <div class="calendar-container">
     <header class="calendar-header">
       <div class="month-selector-wrapper">
-
         <!-- 선택한 월 표시 -->
         <span class="year-month-display">
           {{ selectedYear }}년 {{ selectedMonth }}월
@@ -55,11 +54,11 @@
         </p>
       </div>
     </header>
-    
+
     <!-- 거래 내역 추가 버튼 -->
-    <div class ='button-container'>
+    <div class="button-container">
       <!-- + 버튼 클릭 시 goToAddPage 함수를 통해 거래 내역 추가 페이지로 이동 -->
-      <button class = 'add-transaction-btn' @click="goToAddPage">+</button>
+      <button class="add-transaction-btn" @click="goToAddPage">+</button>
     </div>
 
     <!-- 캘린더 화면 -->
@@ -101,20 +100,23 @@ const currentBudget = computed(() => {
   // !budgetStore.budget : 값 없으면 null 값 리턴
   if (!budgetStore.budget) return null;
 
-  return budgetStore.budget.find((item) => {
-    const itemDate = new Date(item.budget_date);
-    return (
-      // 현재 캘린더의 연도와 월 데이터와 예산의 연도와 월 데이터 일치 하는지 확인
-      itemDate.getFullYear() === selectedYear.value &&
-      itemDate.getMonth() + 1 === selectedMonth.value
-    );
-  }) || null;
+  return (
+    budgetStore.budget.find((item) => {
+      const itemDate = new Date(item.budget_date);
+      return (
+        // 현재 캘린더의 연도와 월 데이터와 예산의 연도와 월 데이터 일치 하는지 확인
+        itemDate.getFullYear() === selectedYear.value &&
+        itemDate.getMonth() + 1 === selectedMonth.value
+      );
+    }) || null
+  );
 });
 
-// 서로 다른 데이터(숫자 & 문자열) 형식 연결 
+// 서로 다른 데이터(숫자 & 문자열) 형식 연결
 const selectedMonthStr = computed({
   // padStart : 월이 한자리 수 일때 앞에 0을 붙여 두자리 수로 통일
-  get: () => `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}`,
+  get: () =>
+    `${selectedYear.value}-${String(selectedMonth.value).padStart(2, "0")}`,
   // 문자열 -> 숫자로 변환
   set: (val) => {
     if (!val) return;
@@ -130,13 +132,12 @@ const selectedMonthStr = computed({
 
 // selectedYear / selectedMonth 둘 중 하나라도 바뀌면 실행
 watch([selectedYear, selectedMonth], async () => {
-  
   // budget.js 에 있는 Year & Month 값 동기화
   budgetStore.activeYear = selectedYear.value;
   budgetStore.activeMonth = selectedMonth.value;
 
   await budgetStore.fetchDate();
-  
+
   // nextTick : 캘린더 화면 그리기 전까지 기다리는
   // 300ms(0.3초) 대기
   // updateWeeklySummary : 요약 함수 불러오기
@@ -145,7 +146,8 @@ watch([selectedYear, selectedMonth], async () => {
 
 // 미니 캘린더 팝업 창에서 월 이동시 데이터 전달 해주는 함수
 const handleMonthChange = () => {
-  if (fullCalendar.value) { // fullCalendar가 불러졌을때만 실행
+  if (fullCalendar.value) {
+    // fullCalendar가 불러졌을때만 실행
     const calendarApi = fullCalendar.value.getApi(); // fullCalendar 불러오기
     // target 문자열 생성
     // FullCalendar 날짜 형식 맞추기
@@ -157,7 +159,7 @@ const handleMonthChange = () => {
 
 // 거래 내역 추가 버튼 클릭 시 거래 내역 추가 페이지로 이동
 const goToAddPage = () => {
-  router.push('/transaction/add');
+  router.push("/transaction/add");
 };
 
 // ▼ 화살표 클릭 시 실행되는 함수
@@ -170,8 +172,9 @@ const triggerPicker = () => {
 // || {} : 데이터 없으면 null 값이 아닌 빈 객체 전달하여 오류 방지
 const dailyData = computed(() => calendarStore.dailyTotals || {});
 
-//
+// 주간 수입/지출 요약 바 계산
 const updateWeeklySummary = () => {
+  //
   document.querySelectorAll(".weekly-summary-bar").forEach((el) => el.remove());
   const calendarApi = fullCalendar.value?.getApi();
   if (!calendarApi) return;
@@ -190,7 +193,8 @@ const updateWeeklySummary = () => {
       if (!cell) continue;
       const dateStr = cell.getAttribute("data-date");
       if (!dateStr) continue;
-      if (parseInt(dateStr.split("-")[1]) === currentViewMonth) hasCurrentMonthDay = true;
+      if (parseInt(dateStr.split("-")[1]) === currentViewMonth)
+        hasCurrentMonthDay = true;
       if (dailyData.value[dateStr]) {
         weeklyExpense += dailyData.value[dateStr].expense || 0;
         weeklyIncome += dailyData.value[dateStr].income || 0;
@@ -201,8 +205,10 @@ const updateWeeklySummary = () => {
       const summaryBar = document.createElement("div");
       summaryBar.className = "weekly-summary-bar";
       let htmlContent = `<div class="summary-content">`;
-      if (weeklyIncome > 0) htmlContent += `<span class="w-income">+ ${weeklyIncome.toLocaleString()}원</span>`;
-      if (weeklyExpense > 0) htmlContent += `<span class="w-expense">- ${weeklyExpense.toLocaleString()}원</span>`;
+      if (weeklyIncome > 0)
+        htmlContent += `<span class="w-income">+ ${weeklyIncome.toLocaleString()}원</span>`;
+      if (weeklyExpense > 0)
+        htmlContent += `<span class="w-expense">- ${weeklyExpense.toLocaleString()}원</span>`;
       htmlContent += `</div>`;
       summaryBar.innerHTML = htmlContent;
       const firstCellInWeek = days[i * 7];
@@ -236,8 +242,10 @@ const calendarOptions = reactive({
                     <span class='day-number ${sundayClass}'>${dayNum}</span>
                   </div>`;
     if (data) {
-      if (data.expense > 0) html += `<p class='daily-expense'>-${data.expense.toLocaleString()}</p>`;
-      if (data.income > 0) html += `<p class='daily-income'>+${data.income.toLocaleString()}</p>`;
+      if (data.expense > 0)
+        html += `<p class='daily-expense'>-${data.expense.toLocaleString()}</p>`;
+      if (data.income > 0)
+        html += `<p class='daily-income'>+${data.income.toLocaleString()}</p>`;
     }
     html += `</div>`;
     return { html };
@@ -252,18 +260,15 @@ const calendarOptions = reactive({
 });
 
 onMounted(async () => {
-  await Promise.all([
-    calendarStore.fetchHistory(),
-    budgetStore.initBudget()
-  ]);
+  await Promise.all([calendarStore.fetchHistory(), budgetStore.initBudget()]);
 
   await nextTick();
 
   if (fullCalendar.value) {
     const calendarApi = fullCalendar.value.getApi();
-    
-    calendarApi.render(); 
-    
+
+    calendarApi.render();
+
     setTimeout(updateWeeklySummary, 300);
   }
 });
@@ -365,23 +370,23 @@ onMounted(async () => {
   top: 50%;
   right: 15px;
   transform: translateY(-50%);
-  
+
   width: 28px;
   height: 28px;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   background-color: #fbd14b;
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  
+
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .add-transaction-btn:hover {
@@ -480,5 +485,4 @@ onMounted(async () => {
 :deep(.fc-daygrid-day-number) {
   text-decoration: none !important;
 }
-
 </style>
