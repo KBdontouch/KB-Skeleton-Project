@@ -89,6 +89,7 @@ DonTouch/
 
 ## 5. DB 구조
 
-<img width="1134" height="371" alt="image" src="https://github.com/user-attachments/assets/aa802e8e-94a9-4025-aa13-de2458017a10" />
+<img width="1140" height="371" alt="image" src="https://github.com/user-attachments/assets/0cafc7c2-e3bd-4e3c-b281-46a5f7c162e7" />
+
 
 ---
