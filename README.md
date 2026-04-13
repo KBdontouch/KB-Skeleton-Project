@@ -38,19 +38,37 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 ## 3. 디렉토리 구조
 
 KB-SKELETON-PROJECT/
-├── public/                 
-├── src/                    
-│   ├── assets/             # 이미지, 폰트, CSS 등 정적 자원
-│   ├── components/         # 공통 UI 컴포넌트 (Footer, SideBar 등)
-│   ├── pages/              # 서비스의 각 화면 (Page 단위 컴포넌트)
-│   │   ├── budget/         # 예산 관리 관련 페이지
-│   │   ├── calendar/       # 달력 및 거래 내역 페이지
-│   │   ├── main/           # 메인 대시보드 및 차트 페이지
-│   │   └── user/           # 로그인, 회원가입, 마이페이지
-│   ├── router/             # Vue Router 경로 설정 (index.js)
-│   ├── stores/             # Pinia 전역 상태 관리 (기능별 분리)
+├── public/                 # 정적 리소스 (favicon, index.html 등)
+├── src/
+│   ├── assets/             # 이미지, 스타일시트(CSS/SCSS) 등 정적 자산
+│   ├── components/         # 공통 UI 컴포넌트
+│   │   ├── Footer.vue      # 하단 정보 레이아웃
+│   │   └── SideBar.vue     # 사이드 내비게이션 바
+│   ├── pages/              # 페이지 단위 컴포넌트 (View)
+│   │   ├── budget/         # 예산 관리 도메인
+│   │   │   ├── Budget.vue
+│   │   │   └── BudgetChart.vue
+│   │   ├── calendar/       # 가계부/거래 내역 도메인
+│   │   │   ├── transactionslistmenu/ # 내역 필터링 메뉴
+│   │   │   ├── Calendar.vue
+│   │   │   ├── TransactionList.vue
+│   │   │   └── TransactionEdit.vue
+│   │   ├── main/           # 메인 대시보드 도메인
+│   │   │   ├── Main.vue
+│   │   │   ├── MainChartIn.vue
+│   │   │   └── MainChartOut.vue
+│   │   └── user/           # 사용자 인증/마이페이지 도메인
+│   │       ├── Join.vue
+│   │       ├── Login.vue
+│   │       └── MyPage.vue
+│   ├── router/             # Vue Router (페이지 경로 설정)
+│   ├── stores/             # Pinia 상태 관리 저장소 (Data)
+│   │   ├── auth.js         # 사용자 인증 상태
+│   │   ├── budget.js       # 예산 데이터 관리
+│   │   ├── transaction.js  # 거래 내역 데이터 관리
+│   │   └── ...             # 기능별 개별 스토어
 │   ├── App.vue             # 최상위 루트 컴포넌트
-│   └── main.js             # 프로젝트 엔트리 포인트 (App 마운트)
-├── db.json                 # Mock API 서버용 데이터 (json-server용)
-├── vite.config.js          # Vite 빌드 설정 파일
-└── package.json            # 의존성 라이브러리 관리 및 스크립트
+│   └── main.js             # 애플리케이션 엔트리 포인트
+├── db.json                 # 로컬 테스트용 Mock 데이터 (json-server)
+├── vite.config.js          # Vite 빌드 및 개발 환경 설정
+└── package.json            # 프로젝트 의존성 및 스크립트 관리
