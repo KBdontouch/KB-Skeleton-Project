@@ -121,11 +121,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import { useTransactionStore } from "@/stores/transaction";
-import { useRouter, useRoute } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useTransactionStore } from '@/stores/transaction';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 // 거래 내역 리스트 불러오기 (id 포함해서)
 const transactionStore = useTransactionStore();
@@ -153,29 +153,30 @@ const edit = async () => {
     // console.log("payload:", payload);
 
     // 문제발생1: 에러 발생 해결법1
-    console.log("PUT 주소:", `/api/history/${historyId}`);
-    console.log("PUT payload:", payload);
+    console.log('PUT 주소:', `/api/history/${historyId}`);
+    console.log('PUT payload:', payload);
 
     const putResult = await axios.put(`/api/history/${historyId}`, payload);
 
     if (putResult.status === 200) {
-      alert("거래 내역이 수정되었습니다.");
-      router.push("/transaction");
+      alert('거래 내역이 수정되었습니다.');
+      transactionStore.resetState();
+      router.push('/transaction');
     } else {
-      alert("거래 내역 수정이 실패했습니다.");
+      alert('거래 내역 수정이 실패했습니다.');
     }
   } catch (error) {
-    console.error("조회 에러", error);
-    console.error("historyId:", historyId);
+    console.error('조회 에러', error);
+    console.error('historyId:', historyId);
     //console.error("payload:", transactionStore.history);
-    console.error("response:", error.response?.data);
+    console.error('response:', error.response?.data);
     return;
     // alert("에러발생");
   }
 };
 
 // 카테고리 API
-const categoryURL = "/api/category";
+const categoryURL = '/api/category';
 const category = ref([]);
 
 // 카테고리 데이터 가져오기
@@ -183,9 +184,9 @@ const fetchCategory = async () => {
   try {
     const response = await axios.get(categoryURL);
     category.value = response.data;
-    console.log("category 데이터 로드 완료:", category.value);
+    console.log('category 데이터 로드 완료:', category.value);
   } catch (error) {
-    console.error("데이터를 가져오는데 실패했습니다:", error);
+    console.error('데이터를 가져오는데 실패했습니다:', error);
   }
 };
 // 카테고리 콤보
@@ -195,85 +196,67 @@ const currentCategories = ref([]);
 onMounted(async () => {
   //1. 카테고리 목록부터 가져오기
   await fetchCategory();
-  // 에러 발생
-  if (!transactionStore.history) {
+
+  //2. store 초기화 후 DB에서 최신 데이터 조회
+  transactionStore.resetState();
+  
+  try {
+    const response = await axios.get(`/api/history/${historyId}`);
+    console.log('조회 데이터', response.data);
+
+    // store의 history 초기화 후 DB 데이터로 설정
     transactionStore.history = {
-      id: null,
-      user_no: null,
-      category_no: "",
-      history_title: "",
-      history_money: null,
-      history_type: "in",
-      history_date: "",
-      history_content: "",
-      history_state: 0,
+      id: response.data.id,
+      user_no: response.data.user_no,
+      category_no: response.data.category_no,
+      history_title: response.data.history_title,
+      history_money: response.data.history_money,
+      history_type: response.data.history_type,
+      history_date: response.data.history_date,
+      history_content: response.data.history_content,
+      history_state: response.data.history_state,
     };
+  } catch (error) {
+    console.error(error);
+    alert('거래 정보를 불러오지 못했습니다.');
+    return;
   }
 
-  //2. 만약 store에 데이터가 없다면 DB(api)에서 다시 조회
-  if (!transactionStore.history.id) {
-    try {
-      const response = await axios.get(`/api/history/${historyId}`);
-      console.log("조회 데이터", response.data);
-
-      Object.assign(transactionStore.history, {
-        id: null,
-        user_no: null,
-        category_no: "",
-        history_title: "",
-        history_money: null,
-        history_type: "in",
-        history_date: "",
-        history_content: "",
-        history_state: 0,
-        ...response.data,
-      });
-    } catch (error) {
-      console.error(error);
-      alert("거래 정보를 불러오지 못했습니다.");
-      // router.push("/transaction");
-      return;
-    }
-  }
-
-  //3.날짜 포맷이 필요하면
+  //3. 날짜 포맷 처리
   if (transactionStore.history.history_date) {
     transactionStore.history.history_date = String(
       transactionStore.history.history_date,
     ).slice(0, 10);
   }
-  // history_type 조건 반대로 수정
-  if (!transactionStore.history.history_type) {
-    transactionStore.history.history_type = "in";
-  }
-  //
-  if (transactionStore.history.history_type === "in") {
+
+  //4. 카테고리 필터링
+  if (transactionStore.history.history_type === 'in') {
     currentCategories.value = category.value.filter(
-      (item) => item.category_type === "in",
+      (item) => item.category_type === 'in',
     );
   } else {
     currentCategories.value = category.value.filter(
-      (item) => item.category_type === "out",
+      (item) => item.category_type === 'out',
     );
   }
 });
 
 // 수입 카테고리
 const categoryIn = () => {
-  transactionStore.history.history_type = "in";
+  transactionStore.history.history_type = 'in';
   currentCategories.value = category.value.filter(
-    (item) => item.category_type === "in",
+    (item) => item.category_type === 'in',
   );
   //추가
-  transactionStore.history.category_no = "";
+  transactionStore.history.category_no = '';
 };
 // 지출 카테고리
 const categoryOut = () => {
-  transactionStore.history.history_type = "out";
+  transactionStore.history.history_type = 'out';
   currentCategories.value = category.value.filter(
-    (item) => item.category_type === "out",
+    (item) => item.category_type === 'out',
   );
-  transactionStore.history.category_no = "";
+  transactionStore.history.category_no = '';
 };
 // 거래 내역 x 버튼 되돌리기
 const clearAmount = () => {
@@ -281,8 +264,9 @@ const clearAmount = () => {
 };
 
 const cancel = () => {
-  if (confirm("취소하시겠습니까?")) {
-    router.push("/transaction");
+  if (confirm('취소하시겠습니까?')) {
+    transactionStore.resetState();
+    router.push('/transaction');
   }
 };
 // id 로그인 정보
@@ -293,14 +277,14 @@ const editup = () => {
   if (
     history.id == null ||
     (history.user_no == null && !authstore.user) ||
-    history.category_no == "" ||
+    history.category_no == '' ||
     history.category_no == null ||
     !history.history_title ||
     history.history_money == null ||
     !history.history_content ||
     !history.history_date
   ) {
-    alert("데이터를 입력하세요.");
+    alert('데이터를 입력하세요.');
     return;
   }
   // 검사 통과 수정한 부분 실행

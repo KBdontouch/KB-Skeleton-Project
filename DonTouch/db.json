@@ -4,8 +4,8 @@
       "id": 1,
       "user_id": "user01",
       "user_pw": "0000",
-      "user_name": "user01",
-      "user_email": "user01@gmail.com",
+      "user_name": "김철수",
+      "user_email": "chulsoo@gmail.com",
       "user_phone": "010-1234-5678",
       "user_state": 0
     },
@@ -13,436 +13,314 @@
       "id": 2,
       "user_id": "user02",
       "user_pw": "0000",
-      "user_name": "user02",
-      "user_email": "user02@gmail.com",
-      "user_phone": "010-0000-1111",
+      "user_name": "이영희",
+      "user_email": "younghee@naver.com",
+      "user_phone": "010-9876-5432",
       "user_state": 0
     },
     {
       "id": 3,
       "user_id": "user03",
       "user_pw": "0000",
-      "user_name": "user03",
-      "user_email": "user03@gmail.com",
-      "user_phone": "010-4444-3333",
-      "user_state": 0
-    },
-    {
-      "id": 4,
-      "user_id": "ㅇㅇㅇ",
-      "user_pw": "1234",
-      "user_name": "안녕나",
-      "user_email": "dddd",
-      "user_phone": "010-2668-2959",
-      "user_state": 0
-    },
-    {
-      "id": 5,
-      "user_id": "user05",
-      "user_pw": "0000",
-      "user_name": "밤밤",
-      "user_email": "BAM",
-      "user_phone": "010-1234-5678",
+      "user_name": "박민수",
+      "user_email": "minsu@daum.net",
+      "user_phone": "010-5555-4444",
       "user_state": 0
     }
   ],
   "history": [
     {
       "id": 1,
-      "history_title": "가게이름",
-      "history_content": "사용내용",
-      "history_money": 10000,
+      "history_title": "대한기업",
+      "history_content": "1월 급여",
+      "history_money": 3500000,
       "history_type": "in",
       "category_no": 1,
-      "history_date": "2026-04-07",
+      "history_date": "2026-01-25",
       "user_no": 1,
       "history_state": 0
     },
     {
       "id": 2,
-      "history_title": "aaaaa",
-      "history_content": "aaaa",
-      "history_money": 33333,
-      "history_type": "in",
-      "category_no": 2,
-      "history_date": "2026-03-07",
+      "history_title": "집주인",
+      "history_content": "1월 월세",
+      "history_money": 550000,
+      "history_type": "out",
+      "category_no": 18,
+      "history_date": "2026-01-26",
       "user_no": 1,
       "history_state": 0
     },
     {
       "id": 3,
-      "history_title": "IT's your Life",
-      "history_content": "훈련장려금",
-      "history_money": 20000,
-      "history_type": "in",
-      "category_no": 1,
-      "history_date": "2026-03-04",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 4,
-      "history_title": "cccccc",
-      "history_content": "cccccc",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 9,
+      "history_title": "맥도날드",
+      "history_content": "점심 식사",
+      "history_money": 8500,
+      "history_type": "out",
+      "category_no": 7,
       "history_date": "2026-01-27",
       "user_no": 1,
       "history_state": 0
     },
+
+    {
+      "id": 4,
+      "history_title": "외주업체",
+      "history_content": "앱 디자인 대금",
+      "history_money": 1500000,
+      "history_type": "in",
+      "category_no": 2,
+      "history_date": "2026-02-05",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 5,
+      "history_title": "교보문고",
+      "history_content": "디자인 서적",
+      "history_money": 45000,
+      "history_type": "out",
+      "category_no": 14,
+      "history_date": "2026-02-10",
+      "user_no": 2,
+      "history_state": 0
+    },
+    {
+      "id": 6,
+      "history_title": "넷플릭스",
+      "history_content": "정기 구독료",
+      "history_money": 17000,
+      "history_type": "out",
+      "category_no": 9,
+      "history_date": "2026-02-15",
+      "user_no": 2,
+      "history_state": 0
+    },
+
     {
       "id": 7,
-      "history_title": "국민은행",
-      "history_content": "체크카드",
-      "history_money": 15000,
-      "history_type": "out",
-      "category_no": 8,
-      "history_date": "2026-03-08",
+      "history_title": "대한기업",
+      "history_content": "2월 급여",
+      "history_money": 3500000,
+      "history_type": "in",
+      "category_no": 1,
+      "history_date": "2026-02-25",
+      "user_no": 1,
+      "history_state": 0
+    },
+    {
+      "id": 8,
+      "history_title": "설날 상여",
+      "history_content": "명절 보너스",
+      "history_money": 500000,
+      "history_type": "in",
+      "category_no": 4,
+      "history_date": "2026-02-10",
       "user_no": 1,
       "history_state": 0
     },
     {
       "id": 9,
-      "history_title": "hhhhhhh",
-      "history_content": "hhhhhhh",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 2,
-      "history_date": "2026-02-06",
+      "history_title": "부모님 용돈",
+      "history_content": "명절 용돈 드림",
+      "history_money": 300000,
+      "history_type": "out",
+      "category_no": 16,
+      "history_date": "2026-02-11",
       "user_no": 1,
+      "history_state": 0
+    },
+
+    {
+      "id": 10,
+      "history_title": "스타벅스",
+      "history_content": "커피 모임",
+      "history_money": 15000,
+      "history_type": "out",
+      "category_no": 7,
+      "history_date": "2026-03-02",
+      "user_no": 3,
       "history_state": 0
     },
     {
       "id": 11,
-      "history_title": "a2a2a2a2",
-      "history_content": "a2a22aa2",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 6,
-      "history_date": "2026-02-12",
-      "user_no": 2,
+      "history_title": "삼겹살집",
+      "history_content": "저녁 회식",
+      "history_money": 45000,
+      "history_type": "out",
+      "category_no": 7,
+      "history_date": "2026-03-05",
+      "user_no": 3,
       "history_state": 0
     },
     {
       "id": 12,
-      "history_title": "2b2bb2b2",
-      "history_content": "bbb222bb2",
-      "history_money": 40000,
+      "history_title": "프로젝트A",
+      "history_content": "프리랜서 정산",
+      "history_money": 2200000,
       "history_type": "in",
-      "category_no": 1,
-      "history_date": "2026-04-07",
+      "category_no": 2,
+      "history_date": "2026-03-15",
       "user_no": 2,
       "history_state": 0
     },
     {
       "id": 13,
-      "history_title": "l2l2l2l2l",
-      "history_content": "lllll",
-      "history_money": 5000,
+      "history_title": "나이키",
+      "history_content": "러닝화 구매",
+      "history_money": 129000,
       "history_type": "out",
-      "category_no": 16,
-      "history_date": "2026-03-18",
+      "category_no": 11,
+      "history_date": "2026-03-20",
       "user_no": 2,
       "history_state": 0
     },
+
     {
       "id": 14,
-      "history_title": "c3322c2c",
-      "history_content": "ccccc",
-      "history_money": 15000,
+      "history_title": "대한기업",
+      "history_content": "3월 급여",
+      "history_money": 3500000,
       "history_type": "in",
-      "category_no": 6,
-      "history_date": "2026-02-26",
-      "user_no": 2,
+      "category_no": 1,
+      "history_date": "2026-03-25",
+      "user_no": 1,
       "history_state": 0
     },
     {
       "id": 15,
-      "history_title": "2d2d2d2d",
-      "history_content": "dddddd",
-      "history_money": 20000,
+      "history_title": "한전",
+      "history_content": "전기 요금",
+      "history_money": 42000,
       "history_type": "out",
-      "category_no": 11,
-      "history_date": "2026-03-14",
-      "user_no": 2,
+      "category_no": 20,
+      "history_date": "2026-03-28",
+      "user_no": 1,
       "history_state": 0
     },
+
     {
       "id": 16,
-      "history_title": "2x2x2",
-      "history_content": "xxxxx",
-      "history_money": 10000,
-      "history_type": "in",
-      "category_no": 4,
-      "history_date": "2026-04-02",
-      "user_no": 2,
+      "history_title": "쿠팡",
+      "history_content": "식재료 구매",
+      "history_money": 65000,
+      "history_type": "out",
+      "category_no": 10,
+      "history_date": "2026-04-01",
+      "user_no": 1,
       "history_state": 0
     },
     {
       "id": 17,
-      "history_title": "3x3x33ee",
-      "history_content": "e33e2e2e",
-      "history_money": 5000,
+      "history_title": "주유소",
+      "history_content": "휘발유 가득",
+      "history_money": 85000,
       "history_type": "out",
-      "category_no": 16,
+      "category_no": 8,
       "history_date": "2026-04-03",
-      "user_no": 2,
+      "user_no": 1,
       "history_state": 0
     },
     {
       "id": 18,
-      "history_title": "2s2ss2s",
-      "history_content": "ssssss",
-      "history_money": 5000,
-      "history_type": "out",
-      "category_no": 13,
-      "history_date": "2026-04-01",
-      "user_no": 2,
-      "history_state": 0
-    },
-    {
-      "id": 19,
-      "history_title": "2v2v2v2v",
-      "history_content": "vvvvv",
-      "history_money": 100000,
-      "history_type": "out",
-      "category_no": 15,
-      "history_date": "2026-04-03",
-      "user_no": 2,
-      "history_state": 0
-    },
-    {
-      "id": 20,
-      "history_title": "2zz2z22",
-      "history_content": "z222z2z",
-      "history_money": 5000,
-      "history_type": "out",
-      "category_no": 11,
+      "history_title": "당근마켓",
+      "history_content": "중고 판매",
+      "history_money": 30000,
+      "history_type": "in",
+      "category_no": 6,
       "history_date": "2026-04-05",
       "user_no": 2,
       "history_state": 0
     },
     {
-      "id": 21,
-      "history_title": "ㅌㅌ",
-      "history_content": "ㅌㅌㅌ",
-      "history_money": 20000,
-      "history_type": "in",
-      "category_no": 1,
-      "history_date": "2026-04-16",
-      "user_no": 0,
-      "history_state": 0
-    },
-    {
-      "id": 22,
-      "history_title": "집에 가고 싶어상",
-      "history_content": "나야나상",
-      "history_money": 22000,
-      "history_type": "in",
-      "category_no": 1,
-      "history_date": "2026-04-16",
-      "user_no": 0,
-      "history_state": 0
-    },
-    {
-      "id": 23,
-      "history_title": "dd",
-      "history_content": "ddd",
-      "history_money": 16000,
-      "history_type": "in",
-      "category_no": 1,
-      "history_date": "2026-04-10T12:28:06.141Z",
-      "user_no": 0,
-      "history_state": 0
-    },
-    {
-      "id": 24,
-      "history_title": "ORIGIN",
-      "history_content": "휴지",
-      "history_money": 50000,
+      "id": 19,
+      "history_title": "약국",
+      "history_content": "감기약",
+      "history_money": 5000,
       "history_type": "out",
-      "category_no": 12,
+      "category_no": 13,
       "history_date": "2026-04-07",
-      "user_no": 1,
+      "user_no": 2,
       "history_state": 0
     },
     {
-      "id": 25,
-      "history_title": "고침",
-      "history_content": "고침2",
-      "history_money": 50000,
-      "history_type": "in",
-      "category_no": 2,
-      "history_date": "2026-04-07",
-      "user_no": 1,
-      "history_state": 0
-    },
-    {
-      "id": 27,
-      "history_title": "이건가",
-      "history_content": "이건가",
-      "history_money": 15000,
-      "history_type": "in",
-      "category_no": 4,
-      "history_date": "2026-04-02",
-      "user_no": 0,
-      "history_state": 0
-    },
-    {
-      "id": 28,
-      "history_title": "아니야",
-      "history_content": "아니야",
-      "history_money": 6000,
-      "history_type": "in",
-      "category_no": 4,
-      "history_date": "2026-04-02",
-      "user_no": 0,
-      "history_state": 0
-    },
-    {
-      "id": 31,
-      "history_title": "5만원",
-      "history_content": "바나나우유",
-      "history_money": 50000,
+      "id": 20,
+      "history_title": "신한카드",
+      "history_content": "보험료 납부",
+      "history_money": 120000,
       "history_type": "out",
-      "category_no": 10,
-      "history_date": "2026-04-11",
+      "category_no": 21,
+      "history_date": "2026-04-10",
       "user_no": 1,
       "history_state": 0
     }
   ],
   "category": [
-    {
-      "id": 1,
-      "category_name": "급여",
-      "category_type": "in"
-    },
-    {
-      "id": 2,
-      "category_name": "부수입",
-      "category_type": "in"
-    },
-    {
-      "id": 3,
-      "category_name": "용돈",
-      "category_type": "in"
-    },
-    {
-      "id": 4,
-      "category_name": "상여",
-      "category_type": "in"
-    },
-    {
-      "id": 5,
-      "category_name": "금융소득",
-      "category_type": "in"
-    },
-    {
-      "id": 6,
-      "category_name": "기타",
-      "category_type": "in"
-    },
-    {
-      "id": 7,
-      "category_name": "식비",
-      "category_type": "out"
-    },
-    {
-      "id": 8,
-      "category_name": "교통/차량",
-      "category_type": "out"
-    },
-    {
-      "id": 9,
-      "category_name": "문화생활",
-      "category_type": "out"
-    },
-    {
-      "id": 10,
-      "category_name": "마트/편의점",
-      "category_type": "out"
-    },
-    {
-      "id": 11,
-      "category_name": "패션/미용",
-      "category_type": "out"
-    },
-    {
-      "id": 12,
-      "category_name": "생필품",
-      "category_type": "out"
-    },
-    {
-      "id": 13,
-      "category_name": "의료/건강",
-      "category_type": "out"
-    },
-    {
-      "id": 14,
-      "category_name": "교육",
-      "category_type": "out"
-    },
-    {
-      "id": 15,
-      "category_name": "경조사/회비",
-      "category_type": "out"
-    },
-    {
-      "id": 16,
-      "category_name": "부모님",
-      "category_type": "out"
-    },
-    {
-      "id": 17,
-      "category_name": "저축",
-      "category_type": "out"
-    },
-    {
-      "id": 18,
-      "category_name": "월세",
-      "category_type": "out"
-    },
-    {
-      "id": 19,
-      "category_name": "통신비",
-      "category_type": "out"
-    },
-    {
-      "id": 20,
-      "category_name": "공과금",
-      "category_type": "out"
-    },
-    {
-      "id": 21,
-      "category_name": "보험",
-      "category_type": "out"
-    }
+    { "id": 1, "category_name": "급여", "category_type": "in" },
+    { "id": 2, "category_name": "부수입", "category_type": "in" },
+    { "id": 3, "category_name": "용돈", "category_type": "in" },
+    { "id": 4, "category_name": "상여", "category_type": "in" },
+    { "id": 5, "category_name": "금융소득", "category_type": "in" },
+    { "id": 6, "category_name": "기타", "category_type": "in" },
+    { "id": 7, "category_name": "식비", "category_type": "out" },
+    { "id": 8, "category_name": "교통/차량", "category_type": "out" },
+    { "id": 9, "category_name": "문화생활", "category_type": "out" },
+    { "id": 10, "category_name": "마트/편의점", "category_type": "out" },
+    { "id": 11, "category_name": "패션/미용", "category_type": "out" },
+    { "id": 12, "category_name": "생필품", "category_type": "out" },
+    { "id": 13, "category_name": "의료/건강", "category_type": "out" },
+    { "id": 14, "category_name": "교육", "category_type": "out" },
+    { "id": 15, "category_name": "경조사/회비", "category_type": "out" },
+    { "id": 16, "category_name": "부모님", "category_type": "out" },
+    { "id": 17, "category_name": "저축", "category_type": "out" },
+    { "id": 18, "category_name": "월세", "category_type": "out" },
+    { "id": 19, "category_name": "통신비", "category_type": "out" },
+    { "id": 20, "category_name": "공과금", "category_type": "out" },
+    { "id": 21, "category_name": "보험", "category_type": "out" }
   ],
   "budget": [
     {
       "id": 1,
-      "budget_date": "2026-05",
-      "budget_money": 1000000,
-      "user_no": 2
+      "budget_date": "2026-01",
+      "budget_money": 2000000,
+      "user_no": 1
     },
     {
       "id": 2,
-      "budget_date": "2026-03",
-      "budget_money": 20000000,
-      "user_no": 2
+      "budget_date": "2026-02",
+      "budget_money": 2500000,
+      "user_no": 1
     },
     {
       "id": 3,
-      "budget_date": "2026-02",
-      "budget_money": 30000000,
-      "user_no": 2
+      "budget_date": "2026-03",
+      "budget_money": 2000000,
+      "user_no": 1
     },
     {
       "id": 4,
       "budget_date": "2026-04",
-      "budget_money": 111111,
+      "budget_money": 2000000,
+      "user_no": 1
+    },
+    {
+      "id": 5,
+      "budget_date": "2026-02",
+      "budget_money": 1000000,
       "user_no": 2
-    }
+    },
+    {
+      "id": 6,
+      "budget_date": "2026-03",
+      "budget_money": 1200000,
+      "user_no": 2
+    },
+    {
+      "id": 7,
+      "budget_date": "2026-04",
+      "budget_money": 1500000,
+      "user_no": 2
+    },
+    { "id": 8, "budget_date": "2026-04", "budget_money": 500000, "user_no": 3 }
   ]
 }
