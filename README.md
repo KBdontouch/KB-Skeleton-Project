@@ -43,6 +43,11 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 - json-server
 - axios
 
+### Library
+
+- chartJs
+- v-calendar
+
 ---
 
 ## 4. 디렉토리 구조
