@@ -9,7 +9,7 @@
             type="button"
             class="btn tab"
             :class="{
-              'tab-active': transactionStore.history.history_type === 'in',
+              'tab-active': transactionAddStore.history.history_type === 'in',
             }"
             @click="categoryIn"
           >
@@ -20,7 +20,7 @@
             type="button"
             class="btn tab"
             :class="{
-              'tab-active': transactionStore.history.history_type === 'out',
+              'tab-active': transactionAddStore.history.history_type === 'out',
             }"
             @click="categoryOut"
           >
@@ -34,7 +34,7 @@
             type="date"
             id="transaction-date"
             class="input-box"
-            v-model="transactionStore.history.history_date"
+            v-model="transactionAddStore.history.history_date"
           />
         </div>
 
@@ -43,7 +43,7 @@
           <input
             type="text"
             class="input-box"
-            v-model="transactionStore.history.history_title"
+            v-model="transactionAddStore.history.history_title"
             placeholder="거래 제목 입력"
           />
         </div>
@@ -56,12 +56,12 @@
           <input
             type="number"
             class="input-box"
-            v-model.number="transactionStore.history.history_money"
+            v-model.number="transactionAddStore.history.history_money"
             placeholder="금액입력"
           />
           <button
             type="button"
-            v-if="transactionStore.history.history_money !== null"
+            v-if="transactionAddStore.history.history_money !== null"
             class="clear-btn"
             @click="clearAmount"
           >
@@ -75,7 +75,7 @@
             class="amount-btn"
             v-for="amount in [1000, 5000, 10000]"
             :key="amount"
-            @click="transactionStore.plusBtn(amount)"
+            @click="transactionAddStore.plusBtn(amount)"
           >
             +{{ amount.toLocaleString() }}
           </button>
@@ -85,7 +85,7 @@
           <label>카테고리</label>
           <select
             class="input-box"
-            v-model="transactionStore.history.category_no"
+            v-model="transactionAddStore.history.category_no"
           >
             <option disabled value="">카테고리 선택</option>
             <option
@@ -102,7 +102,7 @@
           <label>메모</label>
           <textarea
             class="memo-box"
-            v-model="transactionStore.history.history_content"
+            v-model="transactionAddStore.history.history_content"
             placeholder="메모 입력"
           ></textarea>
         </div>
@@ -123,11 +123,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useTransactionStore } from '@/stores/transaction';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter, useRoute } from 'vue-router'; // 윤재 수정
+import { useTransactionAddStore } from '@/stores/transactionadd';
 
-const transactionStore = useTransactionStore();
+const transactionAddStore = useTransactionAddStore();
 // user 정보 추가
 const authstore = useAuthStore();
 // console.log(authstore.user);
@@ -145,7 +145,7 @@ const route = useRoute(); //윤재 수정
 
 // 카테고리 데이터 가져오기
 const fetchCategory = async () => {
-  transactionStore.resetState();
+  transactionAddStore.resetState();
   try {
     const response = await axios.get(categoryURL);
     category.value = response.data;
@@ -161,7 +161,7 @@ onMounted(async () => {
   // 오늘 날짜 형식으로 설정
   const today = new Date().toISOString().split('T')[0];
   const targetDate = route.query.date || today; // 윤재 데이터
-  transactionStore.history.history_date = targetDate; // 윤재 수정
+  transactionAddStore.history.history_date = targetDate; // 윤재 수정
 
   categoryIn();
 
@@ -172,34 +172,34 @@ onMounted(async () => {
 
 // 수입 카테고리
 const categoryIn = () => {
-  transactionStore.history.history_type = 'in';
+  transactionAddStore.history.history_type = 'in';
   currentCategories.value = category.value.filter(
     (item) => item.category_type === 'in',
   );
-  transactionStore.history.category_no = '';
+  transactionAddStore.history.category_no = '';
 };
 // 지출 카테고리
 const categoryOut = () => {
-  transactionStore.history.history_type = 'out';
+  transactionAddStore.history.history_type = 'out';
   currentCategories.value = category.value.filter(
     (item) => item.category_type === 'out',
   );
-  transactionStore.history.category_no = '';
+  transactionAddStore.history.category_no = '';
 };
 // 거래 내역 x 버튼 되돌리기
 const clearAmount = () => {
-  transactionStore.history.history_money = null;
+  transactionAddStore.history.history_money = null;
 };
 
 // 취소하기 버튼 실행 시
 const cancel = () => {
   if (confirm('취소하시겠습니까?')) {
-    transactionStore.resetState();
+    transactionAddStore.resetState();
     router.push('/transaction');
   }
 };
 // 등록되었습니다 안나와서 추가
-const history = transactionStore.history;
+const history = transactionAddStore.history;
 
 // 등록 시 로그인 여부 추가
 const register = async () => {
@@ -212,7 +212,7 @@ const register = async () => {
     }
 
     // 2. 로그인 사용자 번호 저장
-    transactionStore.history.user_no = authstore.user.id;
+    transactionAddStore.history.user_no = authstore.user.id;
 
     // 3. history id 생성
     const res = await axios.get('/api/history');
@@ -220,39 +220,39 @@ const register = async () => {
 
     if (historyList.length > 0) {
       const lastId = historyList[historyList.length - 1].id;
-      transactionStore.history.id = Number(lastId) + 1;
+      transactionAddStore.history.id = Number(lastId) + 1;
     } else {
-      transactionStore.history.id = 1;
+      transactionAddStore.history.id = 1;
     }
 
-    console.log('등록할 데이터:', transactionStore.history);
+    console.log('등록할 데이터:', transactionAddStore.history);
 
     // 4. 유효성 검사- 추가
     if (
-      !transactionStore.history.id ||
-      !transactionStore.history.user_no ||
-      !transactionStore.history.category_no ||
-      !transactionStore.history.history_money ||
-      !transactionStore.history.history_title ||
-      !transactionStore.history.history_content ||
-      !transactionStore.history.history_date
+      !transactionAddStore.history.id ||
+      !transactionAddStore.history.user_no ||
+      !transactionAddStore.history.category_no ||
+      !transactionAddStore.history.history_money ||
+      !transactionAddStore.history.history_title ||
+      !transactionAddStore.history.history_content ||
+      !transactionAddStore.history.history_date
     ) {
       alert('데이터를 입력하세요.');
       return;
     }
 
     // 5. 상태값 세팅 -state 추가
-    transactionStore.history.history_state = 0;
+    transactionAddStore.history.history_state = 0;
 
     // 6. 등록 요청
     const postResult = await axios.post(
       '/api/history',
-      transactionStore.history,
+      transactionAddStore.history,
     );
 
     if (postResult.status === 201) {
       alert('거래 내역이 등록 되었습니다.');
-      transactionStore.resetState();
+      transactionAddStore.resetState();
       router.push('/transaction');
     } else {
       alert('거래 내역 등록이 실패하였습니다.');
