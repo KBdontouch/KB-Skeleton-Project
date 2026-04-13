@@ -24,7 +24,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 
 ## 2. 팀원
 
-|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|
+|<img src="https://img.shields.io/badge/React-61DAFB?style=badge&logo=React&logoColor=black" width="150" height="150"/>|<img src="https://img.shields.io/badge/React-61DAFB?style=badge&logo=React&logoColor=black" width="150" height="150"/>|<img src="https://img.shields.io/badge/React-61DAFB?style=badge&logo=React&logoColor=black" width="150" height="150"/>|<img src="https://img.shields.io/badge/React-61DAFB?style=badge&logo=React&logoColor=black" width="150" height="150"/>|<img src="https://img.shields.io/badge/React-61DAFB?style=badge&logo=React&logoColor=black" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|:-:|
 |박성훈<br/>[@shpark47](https://github.com/shpark47)|김하진<br/>[@hajink00](https://github.com/hajink00)|박서영<br/>[@abideinme88](https://github.com/abideinme88)|박은진<br/>[@pisejin](https://github.com/pisejin)|주윤재<br/>[@yunjaejoo](https://github.com/yunjaejoo)|
 
