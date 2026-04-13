@@ -37,6 +37,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 
 ## 3. 디렉토리 구조
 
+````
 KB-SKELETON-PROJECT/
 ├── public/                 # 정적 리소스 (favicon, index.html 등)
 ├── src/
@@ -72,3 +73,4 @@ KB-SKELETON-PROJECT/
 ├── db.json                 # 로컬 테스트용 Mock 데이터 (json-server)
 ├── vite.config.js          # Vite 빌드 및 개발 환경 설정
 └── package.json            # 프로젝트 의존성 및 스크립트 관리
+````
