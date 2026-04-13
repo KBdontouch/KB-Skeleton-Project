@@ -11,12 +11,13 @@ export const useCalendarStore = defineStore('calendar', {
   }),
 
   actions: {
-    
     async fetchHistory() {
       try {
+        // 매번 동적으로 현재 사용자의 ID를 이용해서 URL 생성
+        const authStore = useAuthStore();
         const response = await axios.get(
-          'http://localhost:3000/history?user_no=' + useAuthStore().user.id,
-        ); 
+          '/api/history?user_no=' + authStore.user.id,
+        );
         this.history = response.data;
       } catch (error) {
         console.error('데이터 로드 실패 : ', error);
@@ -41,7 +42,6 @@ export const useCalendarStore = defineStore('calendar', {
   },
 
   getters: {
-    
     dailyTotals: (state) => {
       return state.history.reduce((acc, item) => {
         const date = item.history_date;

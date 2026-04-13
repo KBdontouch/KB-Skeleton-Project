@@ -5,14 +5,15 @@ import { useAuthStore } from './auth';
 
 export const useSearchStore = defineStore('search', () => {
   const authStore = useAuthStore();
-  // 0. db.json data API
-  const historyURL = '/api/history?user_no=' + authStore.user.id;
+
   // 1. db.json에서 거래 내역 데이터 가져오기
   // 1.1 history/inquiry 배열 생성
   const history = ref([]);
   // 1.2 데이터 가져오는 함수
   const fetchHistory = async () => {
     try {
+      // 매번 동적으로 현재 사용자의 ID를 이용해서 URL 생성
+      const historyURL = '/api/history?user_no=' + authStore.user.id;
       const response = await axios.get(historyURL);
       // axios 결과의 data를 historyDatas에 할당
       history.value = response.data;
@@ -52,13 +53,13 @@ export const useSearchStore = defineStore('search', () => {
   };
 
   // 2. category 데이터
-  const categoryURL = '/api/category';
   // 2.1 category 배열 생성
   const category = ref([]);
 
   // 2.2 데이터 가져오는 함수
   const fetchCategory = async () => {
     try {
+      const categoryURL = '/api/category';
       const response = await axios.get(categoryURL);
       // axios 결과의 data를 categoryDatas에 할당
       category.value = response.data;
