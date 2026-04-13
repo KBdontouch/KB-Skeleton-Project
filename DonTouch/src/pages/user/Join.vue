@@ -44,16 +44,18 @@
             />
           </div>
         </div>
-        <p
-          v-if="passwordConfirm"
-          :class="isPasswordMatch ? 'success-msg' : 'error-msg'"
-        >
-          {{
-            isPasswordMatch
-              ? '비밀번호가 일치합니다.'
-              : '비밀번호가 일치하지 않습니다.'
-          }}
-        </p>
+        <div class="msg-container">
+          <p
+            v-if="passwordConfirm"
+            :class="isPasswordMatch ? 'success-msg' : 'error-msg'"
+          >
+            {{
+              isPasswordMatch
+                ? '비밀번호가 일치합니다.'
+                : '비밀번호가 일치하지 않습니다.'
+            }}
+          </p>
+        </div>
         <div class="input-row">
           <div class="form-item">
             <div class="email">이메일</div>
@@ -208,7 +210,7 @@ const newJoin = async () => {
   background-color: #f2f2f2;
   width: 800px;
   height: auto;
-  padding: 25px 50px;
+  padding: 18px 50px 25px 50px;
   margin: 0 auto;
   border-radius: 20px;
   display: flex;
@@ -286,22 +288,30 @@ input {
 /* 비밀번호 일치 메시지 */
 .success-msg {
   color: #28a745;
-  font-size: 20px;
+  font-size: 12px;
   width: 100%;
   text-align: right;
-  margin-top: -10px;
+  margin: -10px 0 0 0;
 }
 
 .error-msg {
   color: #ff0000;
-  font-size: 20px;
+  font-size: 12px;
   width: 100%;
   text-align: right;
-  margin-top: -10px;
+  margin: -10px 0 0 0;
+}
+
+.msg-container {
+  /* 메시지 한 줄이 차지할 높이 */
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: -5px 0 -5px 0;
 }
 
 /* 가입하기, 취소하기 버튼 */
-
 .button-group {
   display: flex;
   align-items: center;

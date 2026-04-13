@@ -15,21 +15,21 @@
           </div>
           <div class="form-item">
             <div>아이디</div>
-            <div class="input-container">
-              <input
-                type="text"
-                v-model="editData.user_id"
-                @input="isIdAvailable = false"
-                placeholder="아이디"
-                readonly
-              />
-            </div>
+            <input
+              class="readonly-input"
+              type="text"
+              v-model="editData.user_id"
+              @input="isIdAvailable = false"
+              placeholder="아이디"
+              readonly
+            />
           </div>
         </div>
         <div class="input-row">
           <div class="form-item">
             <div>이메일</div>
             <input
+              class="readonly-input"
               type="email"
               v-model="editData.user_email"
               placeholder="이메일"
@@ -191,11 +191,9 @@ input {
   box-sizing: border-box;
 }
 
-.input-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.readonly-input {
+  color: #999; /* 회색 처리 */
+  cursor: not-allowed;
 }
 
 .input-container input {
