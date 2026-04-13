@@ -38,7 +38,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 ## 3. 디렉토리 구조
 
 ````
-KB-SKELETON-PROJECT/
+DonTouch/
 ├── public/                 # 정적 리소스 (favicon, index.html 등)
 ├── src/
 │   ├── assets/             # 이미지, 스타일시트(CSS/SCSS) 등 정적 자산
