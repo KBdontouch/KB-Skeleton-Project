@@ -22,7 +22,15 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 
 ---
 
-## 2. 기술 스택
+## 2. 팀원
+
+|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|<img src="" width="150" height="150"/>|
+|:-:|:-:|:-:|:-:|:-:|
+|박성훈<br/>[@shpark47](https://github.com/shpark47)|김하진<br/>[@hajink00](https://github.com/hajink00)|박서영<br/>[@abideinme88](https://github.com/abideinme88)|박은진<br/>[@pisejin](https://github.com/pisejin)|주윤재<br/>[@yunjaejoo](https://github.com/yunjaejoo)|
+
+---
+
+## 3. 기술 스택
 
 ### Frontend
 
@@ -37,7 +45,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 
 ---
 
-## 3. 디렉토리 구조
+## 4. 디렉토리 구조
 
 ````
 DonTouch/
@@ -79,7 +87,7 @@ DonTouch/
 
 ---
 
-## 4. DB 구조
+## 5. DB 구조
 
 <img width="1134" height="371" alt="image" src="https://github.com/user-attachments/assets/aa802e8e-94a9-4025-aa13-de2458017a10" />
 
