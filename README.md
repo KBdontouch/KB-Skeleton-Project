@@ -22,7 +22,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 
 ---
 
-## 2. 팀원
+## 2. 돈 터치 미 팀원
 
 |<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|:-:|
