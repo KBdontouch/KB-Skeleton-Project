@@ -18,6 +18,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 - Pinia를 활용한 전역 상태 관리
 - Vue Router 기반 페이지 구조 설계
 - json-server를 활용한 REST API 구현
+- chartJs를 이용해 데이터 시각화 구현
 
 ---
 
@@ -32,6 +33,7 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 ### Backend (Mock Server)
 
 - json-server
+- axios
 
 ---
 
@@ -74,3 +76,11 @@ DonTouch/
 ├── vite.config.js          # Vite 빌드 및 개발 환경 설정
 └── package.json            # 프로젝트 의존성 및 스크립트 관리
 ````
+
+---
+
+## 4. DB 구조
+
+<img width="1134" height="371" alt="image" src="https://github.com/user-attachments/assets/aa802e8e-94a9-4025-aa13-de2458017a10" />
+
+---
