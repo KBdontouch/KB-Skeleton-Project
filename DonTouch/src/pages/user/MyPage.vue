@@ -203,7 +203,7 @@ input {
 /* 비밀번호 일치 메시지 */
 .success-msg {
   color: #28a745;
-  font-size: 20px;
+  font-size: 12px;
   width: 100%;
   text-align: right;
   margin-top: -10px;
@@ -211,7 +211,7 @@ input {
 
 .error-msg {
   color: #ff0000;
-  font-size: 20px;
+  font-size: 12px;
   width: 100%;
   text-align: right;
   margin-top: -10px;
