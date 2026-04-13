@@ -34,3 +34,23 @@ Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.
 - json-server
 
 ---
+
+## 3. 디렉토리 구조
+
+KB-SKELETON-PROJECT/
+├── public/                 
+├── src/                    
+│   ├── assets/             # 이미지, 폰트, CSS 등 정적 자원
+│   ├── components/         # 공통 UI 컴포넌트 (Footer, SideBar 등)
+│   ├── pages/              # 서비스의 각 화면 (Page 단위 컴포넌트)
+│   │   ├── budget/         # 예산 관리 관련 페이지
+│   │   ├── calendar/       # 달력 및 거래 내역 페이지
+│   │   ├── main/           # 메인 대시보드 및 차트 페이지
+│   │   └── user/           # 로그인, 회원가입, 마이페이지
+│   ├── router/             # Vue Router 경로 설정 (index.js)
+│   ├── stores/             # Pinia 전역 상태 관리 (기능별 분리)
+│   ├── App.vue             # 최상위 루트 컴포넌트
+│   └── main.js             # 프로젝트 엔트리 포인트 (App 마운트)
+├── db.json                 # Mock API 서버용 데이터 (json-server용)
+├── vite.config.js          # Vite 빌드 설정 파일
+└── package.json            # 의존성 라이브러리 관리 및 스크립트
