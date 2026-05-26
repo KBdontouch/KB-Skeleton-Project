@@ -3,50 +3,51 @@
 Vue 기반으로 제작한 가계부 웹 애플리케이션입니다.  
 사용자가 수입과 지출을 효율적으로 관리하고 흐름을 파악할 수 있도록 설계했습니다.
 
+![Vue3](https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white)
+![Pinia](https://img.shields.io/badge/Pinia-47B5FF?style=flat-square&logo=pnpm&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+
 ---
 
 ## 1. 프로젝트 개요
 
-- 프로젝트명: DonTouch(돈 터치)
-- 개발 기간: (2026-04-07 ~ 2026-04-13)
-- 개발 인원: 5명 (돈 터치 미)
-
-### 프로젝트 목적
-
-단순 CRUD 구현을 넘어, 상태 관리와 라우팅, API 통신을 통합적으로 경험하기 위해 제작했습니다.
-
-- Pinia를 활용한 전역 상태 관리
-- Vue Router 기반 페이지 구조 설계
-- json-server를 활용한 REST API 구현
-- chartJs를 이용해 데이터 시각화 구현
+- **프로젝트명**: DonTouch(돈 터치)
+- **개발 기간**: (2026-04-07 ~ 2026-04-13)
+- **개발 인원**: 5명 (돈 터치 미)
+- **프로젝트 목적**:  
+  단순 CRUD 구현을 넘어, 상태 관리와 라우팅, API 통신을 통합적으로 경험하기 위해 제작했습니다.
+  - `Pinia`를 활용한 전역 상태 관리 및 데이터 흐름 동기화
+  - `Vue Router` 기반의 체계적인 대시보드/도메인 페이지 구조 설계
+  - `json-server`를 활용한 RESTful API 모킹(Mocking) 및 `Axios` 통신
+  - `Chart.js`를 이용한 지출/수입 통계 데이터 시각화
 
 ---
 
 ## 2. 돈 터치 미 팀원
 
-|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="150" height="150"/>|
+|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="130" height="130"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="130" height="130"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="130" height="130"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="130" height="130"/>|<img src="https://avatars.githubusercontent.com/u/9919?v=4" width="130" height="130"/>|
 |:-:|:-:|:-:|:-:|:-:|
-|박성훈<br/>[@shpark47](https://github.com/shpark47)|김하진<br/>[@hajink00](https://github.com/hajink00)|박서영<br/>[@abideinme88](https://github.com/abideinme88)|박은진<br/>[@pisejin](https://github.com/pisejin)|주윤재<br/>[@yunjaejoo](https://github.com/yunjaejoo)|
+|**박성훈 (팀장)**<br/>[@shpark47](https://github.com/shpark47)|**김하진**<br/>[@hajink00](https://github.com/hajink00)|**박서영**<br/>[@abideinme88](https://github.com/abideinme88)|**박은진**<br/>[@pisejin](https://github.com/pisejin)|**주윤재**<br/>[@yunjaejoo](https://github.com/yunjaejoo)|
 
 ---
 
 ## 3. 기술 스택
 
 ### Frontend
+<p>
+  <img src="https://img.shields.io/badge/Vue_3-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Vue_Router-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Pinia-FFD700?style=for-the-badge&logo=Pinia&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white"/>
+</p>
 
-- Vue 3 (Composition API)
-- Vue Router
-- Pinia
-
-### Backend (Mock Server)
-
-- json-server
-- axios
-
-### Library
-
-- chartJs
-- v-calendar
+### Backend & Libraries
+<p>
+  <img src="https://img.shields.io/badge/json--server-000000?style=for-the-badge&logo=JSON&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=Chart.js&logoColor=white"/>
+</p>
 
 ---
 
